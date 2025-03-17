@@ -13,5 +13,7 @@ namespace CashSmart.Repositorio.Contratos
 
         public Task DeletarUsuarioAsync(Usuario usuario);
 
+        public Task<Usuario> ObterUsuarioPorEmailAsync(string email);
+
     }
 }

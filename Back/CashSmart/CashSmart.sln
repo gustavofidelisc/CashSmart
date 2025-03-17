@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashSmart.Dominio", "CashSm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashSmart.Repositorio", "CashSmart.Repositorio\CashSmart.Repositorio.csproj", "{AA1F3938-31A8-4C9E-8E26-841AF2B371B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashSmart.Aplicacao", "..\CashSmart.Aplicacao\CashSmart.Aplicacao.csproj", "{98A66BB3-693C-47C8-AA64-D678F9CF00EC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashSmart.Aplicacao", "CashSmart.Aplicacao\CashSmart.Aplicacao.csproj", "{98A66BB3-693C-47C8-AA64-D678F9CF00EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

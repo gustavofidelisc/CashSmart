@@ -34,6 +34,8 @@ namespace CashSmart.Repositorio
             await _context.SaveChangesAsync();
         }
 
-
+        public async Task<Usuario> ObterUsuarioPorEmailAsync(string email){
+            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+        }
     }
 }
