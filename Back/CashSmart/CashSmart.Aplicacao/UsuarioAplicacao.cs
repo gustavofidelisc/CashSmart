@@ -1,6 +1,7 @@
 using CashSmart.Aplicacao.Interface;
 using CashSmart.Dominio.Entidades;
 using CashSmart.Repositorio.Contratos;
+using CashSmart.Servicos.Services.Criptografia.Interface;
 
 namespace CashSmart.Aplicacao
 {
@@ -8,15 +9,18 @@ namespace CashSmart.Aplicacao
     {
 
         private readonly IUsuarioRepositorio _usuarioRepositorio;
+        private readonly IBcryptSenhaService _bcryptSenhaService;
 
-        public UsuarioAplicacao(IUsuarioRepositorio usuarioRepositorio)
+        public UsuarioAplicacao(IUsuarioRepositorio usuarioRepositorio, IBcryptSenhaService bcryptSenhaService)
         {
             _usuarioRepositorio = usuarioRepositorio;
+            _bcryptSenhaService =  bcryptSenhaService;
         }
 
         public async Task AdicionarUsuarioAsync(Usuario usuario)
         {
             await ValidarDadosDoUsuario(usuario);
+            usuario.Senha = _bcryptSenhaService.CriptografarSenha(usuario.Senha);
 
             await _usuarioRepositorio.AdicionarUsuarioAsync(usuario);
         }
@@ -38,9 +42,15 @@ namespace CashSmart.Aplicacao
            return _usuarioRepositorio.ObterUsuarioPorIdAsync(id);
         }
 
-        public async Task RemoverUsuarioAsync(Usuario usuario)
+        public async Task RemoverUsuarioAsync(int id)
         {
-            await _usuarioRepositorio.DeletarUsuarioAsync(usuario);
+            var usuarioDominio =await _usuarioRepositorio.ObterUsuarioPorIdAsync(id);
+            if (usuarioDominio == null)
+            {
+                throw new ArgumentNullException("Usuário não encontrado");
+            }
+            await _usuarioRepositorio.AtualizarUsuarioAsync(usuarioDominio);
+            
         }
 
         #region Métodos Privados
@@ -52,6 +62,8 @@ namespace CashSmart.Aplicacao
             }
 
             await VerificarSeUsuarioExiste(usuario);
+
+
 
             if (string.IsNullOrEmpty(usuario.Nome))
             {
@@ -65,6 +77,8 @@ namespace CashSmart.Aplicacao
             {
                 throw new ArgumentNullException("Senha não pode ser nulo");
             }
+
+            
         }
 
         private async Task VerificarSeUsuarioExiste(Usuario usuario)
@@ -75,6 +89,8 @@ namespace CashSmart.Aplicacao
                 throw new ArgumentException("Email já cadastrado");
             }
         }
+
+        
         #endregion
     }
 }

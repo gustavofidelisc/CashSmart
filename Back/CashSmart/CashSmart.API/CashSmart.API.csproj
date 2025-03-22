@@ -15,6 +15,7 @@
     <ProjectReference Include="..\CashSmart.Dominio\CashSmart.Dominio.csproj" />
     <ProjectReference Include="..\CashSmart.Repositorio\CashSmart.Repositorio.csproj" />
     <ProjectReference Include="..\CashSmart.Aplicacao\CashSmart.Aplicacao.csproj" />
+    <ProjectReference Include="..\CashSmart.Servicos\CashSmart.Servicos.csproj" />
   </ItemGroup>
 
 </Project>

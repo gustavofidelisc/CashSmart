@@ -5,6 +5,8 @@ using CashSmart.Aplicacao.Interface;
 using CashSmart.Repositorio;
 using CashSmart.Repositorio.Contexto;
 using CashSmart.Repositorio.Contratos;
+using CashSmart.Servicos.Services.Criptografia;
+using CashSmart.Servicos.Services.Criptografia.Interface;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +23,8 @@ builder.Services.AddScoped<IUsuarioAplicacao, UsuarioAplicacao>();
 builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
 
 
+// criptografia 
+builder.Services.AddScoped<IBcryptSenhaService, BcryptSenhaService >();
 builder.Services.AddDbContext<CashSmartContexto>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("CashSmartContexto")));
 

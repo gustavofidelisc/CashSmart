@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "mW8qjvVkHqc=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Gustavo\\Documents\\cashSmart\\CashSmart\\Back\\CashSmart\\CashSmart.Servicos\\CashSmart.Servicos.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Gustavo\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
