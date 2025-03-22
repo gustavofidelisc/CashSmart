@@ -16,7 +16,7 @@ namespace CashSmart.Aplicacao
 
         public async Task AdicionarUsuarioAsync(Usuario usuario)
         {
-            ValidarDadosDoUsuario(usuario);
+            await ValidarDadosDoUsuario(usuario);
 
             await _usuarioRepositorio.AdicionarUsuarioAsync(usuario);
         }
@@ -24,7 +24,7 @@ namespace CashSmart.Aplicacao
 
         public async Task AtualizarUsuarioAsync(Usuario usuario)
         {
-            ValidarDadosDoUsuario(usuario);
+            await ValidarDadosDoUsuario(usuario);
             await _usuarioRepositorio.AtualizarUsuarioAsync(usuario);
         }
 
@@ -44,19 +44,14 @@ namespace CashSmart.Aplicacao
         }
 
         #region Métodos Privados
-        private async void ValidarDadosDoUsuario(Usuario usuario)
+        private async Task ValidarDadosDoUsuario(Usuario usuario)
         {
             if (usuario == null)
             {
                 throw new ArgumentNullException("Usuario não pode ser nulo");
             }
-            
 
-            var usuarioRepositorio = await _usuarioRepositorio.ObterUsuarioPorEmailAsync(usuario.Email);
-            if (usuarioRepositorio != null)
-            {
-                throw new ArgumentException("Email já cadastrado");
-            }
+            await VerificarSeUsuarioExiste(usuario);
 
             if (string.IsNullOrEmpty(usuario.Nome))
             {
@@ -69,6 +64,15 @@ namespace CashSmart.Aplicacao
             if (string.IsNullOrEmpty(usuario.Senha))
             {
                 throw new ArgumentNullException("Senha não pode ser nulo");
+            }
+        }
+
+        private async Task VerificarSeUsuarioExiste(Usuario usuario)
+        {
+            var usuarioRepositorio = await _usuarioRepositorio.ObterUsuarioPorEmailAsync(usuario.Email);
+            if (usuarioRepositorio != null)
+            {
+                throw new ArgumentException("Email já cadastrado");
             }
         }
         #endregion

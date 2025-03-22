@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashSmart.Repositorio", "Ca
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashSmart.Aplicacao", "CashSmart.Aplicacao\CashSmart.Aplicacao.csproj", "{98A66BB3-693C-47C8-AA64-D678F9CF00EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashSmart.API", "CashSmart.API\CashSmart.API.csproj", "{CE7AA4D8-CB57-43B6-9B12-951E6C9166F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,18 @@ Global
 		{98A66BB3-693C-47C8-AA64-D678F9CF00EC}.Release|x64.Build.0 = Release|Any CPU
 		{98A66BB3-693C-47C8-AA64-D678F9CF00EC}.Release|x86.ActiveCfg = Release|Any CPU
 		{98A66BB3-693C-47C8-AA64-D678F9CF00EC}.Release|x86.Build.0 = Release|Any CPU
+		{CE7AA4D8-CB57-43B6-9B12-951E6C9166F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE7AA4D8-CB57-43B6-9B12-951E6C9166F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE7AA4D8-CB57-43B6-9B12-951E6C9166F1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CE7AA4D8-CB57-43B6-9B12-951E6C9166F1}.Debug|x64.Build.0 = Debug|Any CPU
+		{CE7AA4D8-CB57-43B6-9B12-951E6C9166F1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CE7AA4D8-CB57-43B6-9B12-951E6C9166F1}.Debug|x86.Build.0 = Debug|Any CPU
+		{CE7AA4D8-CB57-43B6-9B12-951E6C9166F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE7AA4D8-CB57-43B6-9B12-951E6C9166F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE7AA4D8-CB57-43B6-9B12-951E6C9166F1}.Release|x64.ActiveCfg = Release|Any CPU
+		{CE7AA4D8-CB57-43B6-9B12-951E6C9166F1}.Release|x64.Build.0 = Release|Any CPU
+		{CE7AA4D8-CB57-43B6-9B12-951E6C9166F1}.Release|x86.ActiveCfg = Release|Any CPU
+		{CE7AA4D8-CB57-43B6-9B12-951E6C9166F1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

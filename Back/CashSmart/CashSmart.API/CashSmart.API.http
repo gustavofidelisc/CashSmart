@@ -1,0 +1,6 @@
+@CashSmart.API_HostAddress = http://localhost:5108
+
+GET {{CashSmart.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

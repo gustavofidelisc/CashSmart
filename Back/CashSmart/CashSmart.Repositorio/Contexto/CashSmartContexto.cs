@@ -5,11 +5,16 @@ using CashSmart.Dominio.Entidades;
 namespace CashSmart.Repositorio.Contexto;
 public class CashSmartContexto : DbContext
 {
+    private readonly DbContextOptions<CashSmartContexto> _options;
     public DbSet<Usuario> Usuarios { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public CashSmartContexto()
     {
-        optionsBuilder.UseSqlServer("Server=DESKTOP-Q3A4OIP;Database=CashSmart;Trusted_Connection=True;TrustServerCertificate=True;");
+        
+    }
+    public CashSmartContexto(DbContextOptions<CashSmartContexto> options) : base(options)
+    {
+        _options = options;
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
