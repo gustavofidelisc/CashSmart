@@ -16,12 +16,12 @@ namespace CashSmart.Repositorio
             return usuario.Id;
         }
 
-        public async Task<Usuario> ObterUsuarioPorIdAsync(int id){
-            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
+        public async Task<Usuario> ObterUsuarioPorIdAsync(int id, bool ativo){
+            return await _context.Usuarios.Where(u=> u.Ativo == ativo).FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public async Task<IEnumerable<Usuario>> ObterUsuariosAsync(){
-            return await _context.Usuarios.ToListAsync();
+        public async Task<IEnumerable<Usuario>> ObterUsuariosAsync(bool ativo ){
+            return await _context.Usuarios.Where(u=> u.Ativo == ativo).ToListAsync();
         }
 
         public async Task AtualizarUsuarioAsync(Usuario usuario){
@@ -35,7 +35,7 @@ namespace CashSmart.Repositorio
         }
 
         public async Task<Usuario> ObterUsuarioPorEmailAsync(string email){
-            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+            return await _context.Usuarios.Where(u => u.Ativo).FirstOrDefaultAsync(u => u.Email == email);
         }
     }
 }

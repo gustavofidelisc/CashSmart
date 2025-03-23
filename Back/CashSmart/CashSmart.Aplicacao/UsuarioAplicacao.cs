@@ -1,3 +1,4 @@
+using System.Data.SqlTypes;
 using CashSmart.Aplicacao.Interface;
 using CashSmart.Dominio.Entidades;
 using CashSmart.Repositorio.Contratos;
@@ -20,6 +21,11 @@ namespace CashSmart.Aplicacao
         public async Task AdicionarUsuarioAsync(Usuario usuario)
         {
             await ValidarDadosDoUsuario(usuario);
+            await VerificarSeUsuarioExiste(usuario);
+            if (string.IsNullOrEmpty(usuario.Senha))
+            {
+                throw new SqlNullValueException("Senha não pode ser nulo");
+            }
             usuario.Senha = _bcryptSenhaService.CriptografarSenha(usuario.Senha);
 
             await _usuarioRepositorio.AdicionarUsuarioAsync(usuario);
@@ -28,29 +34,56 @@ namespace CashSmart.Aplicacao
 
         public async Task AtualizarUsuarioAsync(Usuario usuario)
         {
-            await ValidarDadosDoUsuario(usuario);
-            await _usuarioRepositorio.AtualizarUsuarioAsync(usuario);
-        }
-
-        public async Task<IEnumerable<Usuario>> ObterTodosUsuariosAsync()
-        {
-            return await _usuarioRepositorio.ObterUsuariosAsync();
-        }
-
-        public Task<Usuario> ObterUsuarioPorIdAsync(int id)
-        {
-           return _usuarioRepositorio.ObterUsuarioPorIdAsync(id);
-        }
-
-        public async Task RemoverUsuarioAsync(int id)
-        {
-            var usuarioDominio =await _usuarioRepositorio.ObterUsuarioPorIdAsync(id);
+            var usuarioDominio = await _usuarioRepositorio.ObterUsuarioPorIdAsync(usuario.Id, true);
             if (usuarioDominio == null)
             {
                 throw new ArgumentNullException("Usuário não encontrado");
             }
+            await ValidarDadosDoUsuario(usuario);
+
+            usuarioDominio.DataAtualizacao = DateTime.Now;
+            usuarioDominio.Nome = usuario.Nome;
+            usuarioDominio.Email = usuario.Email;
+
+            await _usuarioRepositorio.AtualizarUsuarioAsync(usuarioDominio);
+        }
+
+        public async Task<IEnumerable<Usuario>> ObterTodosUsuariosAsync(bool ativo)
+        {
+            return await _usuarioRepositorio.ObterUsuariosAsync(ativo);
+        }
+
+        public async Task<Usuario> ObterUsuarioPorIdAsync(int id)
+        {
+           var usuario = await _usuarioRepositorio.ObterUsuarioPorIdAsync(id, true);
+           if (usuario == null)
+           {
+               throw new SqlNullValueException("Usuário não encontrado");
+           }
+           return usuario;
+        }
+
+        public async Task RemoverUsuarioAsync(int id)
+        {
+            var usuarioDominio =await _usuarioRepositorio.ObterUsuarioPorIdAsync(id, true);
+            if (usuarioDominio == null)
+            {
+                throw new SqlNullValueException("Usuário não encontrado");
+            }
+            usuarioDominio.Ativo = false;
             await _usuarioRepositorio.AtualizarUsuarioAsync(usuarioDominio);
             
+        }
+
+        public async Task RestaurarUsuarioAsync(int id)
+        {
+            var usuarioDominio =await _usuarioRepositorio.ObterUsuarioPorIdAsync(id, false);
+            if (usuarioDominio == null)
+            {
+                throw new SqlNullValueException("Usuário não encontrado");
+            }
+            usuarioDominio.Ativo = true;
+            await _usuarioRepositorio.AtualizarUsuarioAsync(usuarioDominio);
         }
 
         #region Métodos Privados
@@ -61,9 +94,6 @@ namespace CashSmart.Aplicacao
                 throw new ArgumentNullException("Usuario não pode ser nulo");
             }
 
-            await VerificarSeUsuarioExiste(usuario);
-
-
 
             if (string.IsNullOrEmpty(usuario.Nome))
             {
@@ -73,12 +103,7 @@ namespace CashSmart.Aplicacao
             {
                 throw new ArgumentNullException("Email não pode ser nulo");
             }
-            if (string.IsNullOrEmpty(usuario.Senha))
-            {
-                throw new ArgumentNullException("Senha não pode ser nulo");
-            }
-
-            
+     
         }
 
         private async Task VerificarSeUsuarioExiste(Usuario usuario)

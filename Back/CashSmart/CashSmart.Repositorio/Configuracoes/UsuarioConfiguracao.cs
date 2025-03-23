@@ -8,6 +8,7 @@ namespace CashSmart.Repositorio.Configuracoes
         public void Configure(EntityTypeBuilder<Usuario> builder)
         {
             builder.HasKey(u => u.Id);
+            builder.Property(u => u.Id).HasColumnName("Id").IsRequired();
             builder.Property(u => u.Nome).HasColumnName("Nome").IsRequired();
             builder.Property(u => u.Email).HasColumnName("Email").IsRequired();
             builder.Property(u => u.Senha).HasColumnName("Senha").IsRequired();
