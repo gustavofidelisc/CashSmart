@@ -9,9 +9,9 @@ namespace CashSmart.Repositorio.Configuracoes
         {
             builder.HasKey(u => u.Id);
             builder.Property(u => u.Id).HasColumnName("Id").IsRequired();
-            builder.Property(u => u.Nome).HasColumnName("Nome").IsRequired();
-            builder.Property(u => u.Email).HasColumnName("Email").IsRequired();
-            builder.Property(u => u.Senha).HasColumnName("Senha").IsRequired();
+            builder.Property(u => u.Nome).HasColumnName("Nome").HasMaxLength(127).IsRequired();
+            builder.Property(u => u.Email).HasColumnName("Email").HasMaxLength(127).IsRequired();
+            builder.Property(u => u.Senha).HasColumnName("Senha").HasMaxLength(127).IsRequired();
             builder.Property(u => u.Ativo).HasColumnName("Ativo").IsRequired();
             builder.Property(u => u.DataCriacao).HasColumnName("DataCriacao").IsRequired();
             builder.Property(u => u.DataAtualizacao).HasColumnName("DataAtualizacao").IsRequired();

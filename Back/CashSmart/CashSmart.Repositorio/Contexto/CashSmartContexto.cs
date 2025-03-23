@@ -7,6 +7,7 @@ public class CashSmartContexto : DbContext
 {
     private readonly DbContextOptions<CashSmartContexto> _options;
     public DbSet<Usuario> Usuarios { get; set; }
+    public DbSet<Categoria> Categorias { get; set; }
 
     public CashSmartContexto()
     {
@@ -20,6 +21,7 @@ public class CashSmartContexto : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new UsuarioConfiguracao());
+        modelBuilder.ApplyConfiguration(new CategoriaConfiguracao());
     }
 
 }
