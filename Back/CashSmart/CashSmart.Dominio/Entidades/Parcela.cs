@@ -2,7 +2,7 @@ using CashSmart.Dominio.Entidades;
 
 namespace CashSmart.Dominio.Entidades
 {
-    class Parcela 
+    public class Parcela 
     {
         public int Id { get; set; }
         public DateTime DataAtualizacao { get; set; }

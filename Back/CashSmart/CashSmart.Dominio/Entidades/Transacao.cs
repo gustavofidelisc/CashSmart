@@ -10,8 +10,6 @@ namespace CashSmart.Dominio.Entidades
         public int CategoriaID {get;set;}
         public Categoria Categoria {get;set;}        
         public int UsuarioID {get;set;}
-        public Usuario Usuario {get;set;}
-        public int TipoDaTransacaoID {get;set;}
-        
+        public Usuario Usuario {get;set;}        
     }
 }

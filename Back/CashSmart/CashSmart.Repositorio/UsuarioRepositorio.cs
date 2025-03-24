@@ -29,10 +29,6 @@ namespace CashSmart.Repositorio
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeletarUsuarioAsync(Usuario usuario){
-            _context.Usuarios.Remove(usuario);
-            await _context.SaveChangesAsync();
-        }
 
         public async Task<Usuario> ObterUsuarioPorEmailAsync(string email){
             return await _context.Usuarios.Where(u => u.Ativo).FirstOrDefaultAsync(u => u.Email == email);

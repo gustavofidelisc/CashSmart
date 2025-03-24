@@ -24,11 +24,6 @@ namespace CashSmart.Repositorio
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeletarCategoriaAsync(Categoria categoria)
-        {
-            _context.Categorias.Remove(categoria);
-            await _context.SaveChangesAsync();
-        }
 
         public async Task<Categoria> ObterCategoriaPorIdAsync(int id, bool ativo)
         {
