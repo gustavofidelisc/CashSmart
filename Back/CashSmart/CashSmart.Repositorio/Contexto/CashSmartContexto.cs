@@ -9,7 +9,7 @@ public class CashSmartContexto : DbContext
     public DbSet<Usuario> Usuarios { get; set; }
     public DbSet<Categoria> Categorias { get; set; }
     public DbSet<FormaPagamento> FormasPagamento { get; set; }
-    public DbSet<Parcela> parcelas { get; set;}
+    public DbSet<Parcela> Parcelas { get; set;}
 
     public CashSmartContexto()
     {
@@ -18,6 +18,14 @@ public class CashSmartContexto : DbContext
     public CashSmartContexto(DbContextOptions<CashSmartContexto> options) : base(options)
     {
         _options = options;
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlServer("Server=DESKTOP-Q3A4OIP;Database=CashSmart;Trusted_Connection=True;TrustServerCertificate=True;");
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

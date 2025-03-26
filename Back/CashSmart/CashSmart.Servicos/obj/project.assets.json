@@ -2736,6 +2736,7 @@
   "projectFileDependencyGroups": {
     "net8.0": [
       "Bcrypt.Net-Next >= 4.0.3",
+      "CashSmart.Dominio >= 1.0.0",
       "CashSmart.Repositorio >= 1.0.0"
     ]
   },
@@ -2771,6 +2772,9 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
+            "C:\\Users\\Gustavo\\Documents\\cashSmart\\CashSmart\\Back\\CashSmart\\CashSmart.Dominio\\CashSmart.Dominio.csproj": {
+              "projectPath": "C:\\Users\\Gustavo\\Documents\\cashSmart\\CashSmart\\Back\\CashSmart\\CashSmart.Dominio\\CashSmart.Dominio.csproj"
+            },
             "C:\\Users\\Gustavo\\Documents\\cashSmart\\CashSmart\\Back\\CashSmart\\CashSmart.Repositorio\\CashSmart.Repositorio.csproj": {
               "projectPath": "C:\\Users\\Gustavo\\Documents\\cashSmart\\CashSmart\\Back\\CashSmart\\CashSmart.Repositorio\\CashSmart.Repositorio.csproj"
             }

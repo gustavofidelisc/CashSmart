@@ -20,7 +20,7 @@ namespace CashSmart.Aplicacao
 
         public async Task AdicionarUsuarioAsync(Usuario usuario)
         {
-            await ValidarDadosDoUsuario(usuario);
+            ValidarDadosDoUsuario(usuario);
             await VerificarSeUsuarioExiste(usuario);
             if (string.IsNullOrEmpty(usuario.Senha))
             {
@@ -39,7 +39,7 @@ namespace CashSmart.Aplicacao
             {
                 throw new ArgumentNullException("Usuário não encontrado");
             }
-            await ValidarDadosDoUsuario(usuario);
+            ValidarDadosDoUsuario(usuario);
 
             usuarioDominio.DataAtualizacao = DateTime.Now;
             usuarioDominio.Nome = usuario.Nome;
@@ -53,7 +53,7 @@ namespace CashSmart.Aplicacao
             return await _usuarioRepositorio.ObterUsuariosAsync(ativo);
         }
 
-        public async Task<Usuario> ObterUsuarioPorIdAsync(int id)
+        public async Task<Usuario> ObterUsuarioPorIdAsync(Guid id)
         {
            var usuario = await _usuarioRepositorio.ObterUsuarioPorIdAsync(id, true);
            if (usuario == null)
@@ -63,7 +63,17 @@ namespace CashSmart.Aplicacao
            return usuario;
         }
 
-        public async Task RemoverUsuarioAsync(int id)
+        public async Task<Usuario> ObterUsuarioPorEmailAsync(string email)
+        {
+            var usuario = await _usuarioRepositorio.ObterUsuarioPorEmailAsync(email);
+            if (usuario == null)
+            {
+                throw new SqlNullValueException("Usuário não encontrado");
+            }
+            return usuario;
+        }
+
+        public async Task RemoverUsuarioAsync(Guid id)
         {
             var usuarioDominio =await _usuarioRepositorio.ObterUsuarioPorIdAsync(id, true);
             if (usuarioDominio == null)
@@ -75,7 +85,7 @@ namespace CashSmart.Aplicacao
             
         }
 
-        public async Task RestaurarUsuarioAsync(int id)
+        public async Task RestaurarUsuarioAsync(Guid id)
         {
             var usuarioDominio =await _usuarioRepositorio.ObterUsuarioPorIdAsync(id, false);
             if (usuarioDominio == null)
@@ -87,7 +97,7 @@ namespace CashSmart.Aplicacao
         }
 
         #region Métodos Privados
-        private async Task ValidarDadosDoUsuario(Usuario usuario)
+        private void ValidarDadosDoUsuario(Usuario usuario)
         {
             if (usuario == null)
             {

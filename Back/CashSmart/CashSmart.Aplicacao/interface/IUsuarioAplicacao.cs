@@ -5,10 +5,12 @@ namespace CashSmart.Aplicacao.Interface
     public interface IUsuarioAplicacao
     {
         Task AdicionarUsuarioAsync(Usuario usuario);
-        Task<Usuario> ObterUsuarioPorIdAsync(int id);
+        Task<Usuario> ObterUsuarioPorIdAsync(Guid id);
         Task<IEnumerable<Usuario>> ObterTodosUsuariosAsync(bool ativo);
+        public  Task<Usuario> ObterUsuarioPorEmailAsync(string email);
+
         Task AtualizarUsuarioAsync(Usuario usuario);
-        Task RemoverUsuarioAsync(int id);
-        Task RestaurarUsuarioAsync(int id);
+        Task RemoverUsuarioAsync(Guid id);
+        Task RestaurarUsuarioAsync(Guid id);
     }
 }

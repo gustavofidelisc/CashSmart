@@ -1,12 +1,17 @@
 C:\Users\Gustavo\Documents\cashSmart\CashSmart\Back\CashSmart\CashSmart.Servicos\bin\Debug\net8.0\CashSmart.Servicos.deps.json
 C:\Users\Gustavo\Documents\cashSmart\CashSmart\Back\CashSmart\CashSmart.Servicos\bin\Debug\net8.0\CashSmart.Servicos.dll
 C:\Users\Gustavo\Documents\cashSmart\CashSmart\Back\CashSmart\CashSmart.Servicos\bin\Debug\net8.0\CashSmart.Servicos.pdb
+C:\Users\Gustavo\Documents\cashSmart\CashSmart\Back\CashSmart\CashSmart.Servicos\bin\Debug\net8.0\CashSmart.Dominio.dll
+C:\Users\Gustavo\Documents\cashSmart\CashSmart\Back\CashSmart\CashSmart.Servicos\bin\Debug\net8.0\CashSmart.Repositorio.dll
+C:\Users\Gustavo\Documents\cashSmart\CashSmart\Back\CashSmart\CashSmart.Servicos\bin\Debug\net8.0\CashSmart.Repositorio.pdb
+C:\Users\Gustavo\Documents\cashSmart\CashSmart\Back\CashSmart\CashSmart.Servicos\bin\Debug\net8.0\CashSmart.Dominio.pdb
 C:\Users\Gustavo\Documents\cashSmart\CashSmart\Back\CashSmart\CashSmart.Servicos\obj\Debug\net8.0\CashSmart.Servicos.csproj.AssemblyReference.cache
 C:\Users\Gustavo\Documents\cashSmart\CashSmart\Back\CashSmart\CashSmart.Servicos\obj\Debug\net8.0\CashSmart.Servicos.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Gustavo\Documents\cashSmart\CashSmart\Back\CashSmart\CashSmart.Servicos\obj\Debug\net8.0\CashSmart.Servicos.AssemblyInfoInputs.cache
 C:\Users\Gustavo\Documents\cashSmart\CashSmart\Back\CashSmart\CashSmart.Servicos\obj\Debug\net8.0\CashSmart.Servicos.AssemblyInfo.cs
 C:\Users\Gustavo\Documents\cashSmart\CashSmart\Back\CashSmart\CashSmart.Servicos\obj\Debug\net8.0\CashSmart.Servicos.csproj.CoreCompileInputs.cache
 C:\Users\Gustavo\Documents\cashSmart\CashSmart\Back\CashSmart\CashSmart.Servicos\obj\Debug\net8.0\CashSmart.Servicos.sourcelink.json
+C:\Users\Gustavo\Documents\cashSmart\CashSmart\Back\CashSmart\CashSmart.Servicos\obj\Debug\net8.0\CashSmar.5237A770.Up2Date
 C:\Users\Gustavo\Documents\cashSmart\CashSmart\Back\CashSmart\CashSmart.Servicos\obj\Debug\net8.0\CashSmart.Servicos.dll
 C:\Users\Gustavo\Documents\cashSmart\CashSmart\Back\CashSmart\CashSmart.Servicos\obj\Debug\net8.0\refint\CashSmart.Servicos.dll
 C:\Users\Gustavo\Documents\cashSmart\CashSmart\Back\CashSmart\CashSmart.Servicos\obj\Debug\net8.0\CashSmart.Servicos.pdb

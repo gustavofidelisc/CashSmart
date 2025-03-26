@@ -10,13 +10,13 @@ namespace CashSmart.Repositorio
         {
         }
 
-        public async Task<int> AdicionarUsuarioAsync(Usuario usuario){
+        public async Task<Guid> AdicionarUsuarioAsync(Usuario usuario){
             await _context.Usuarios.AddAsync(usuario);
             await _context.SaveChangesAsync();
             return usuario.Id;
         }
 
-        public async Task<Usuario> ObterUsuarioPorIdAsync(int id, bool ativo){
+        public async Task<Usuario> ObterUsuarioPorIdAsync(Guid id, bool ativo){
             return await _context.Usuarios.Where(u=> u.Ativo == ativo).FirstOrDefaultAsync(u => u.Id == id);
         }
 

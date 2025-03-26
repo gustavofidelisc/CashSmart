@@ -182,6 +182,9 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
+              "C:\\Users\\Gustavo\\Documents\\cashSmart\\CashSmart\\Back\\CashSmart\\CashSmart.Dominio\\CashSmart.Dominio.csproj": {
+                "projectPath": "C:\\Users\\Gustavo\\Documents\\cashSmart\\CashSmart\\Back\\CashSmart\\CashSmart.Dominio\\CashSmart.Dominio.csproj"
+              },
               "C:\\Users\\Gustavo\\Documents\\cashSmart\\CashSmart\\Back\\CashSmart\\CashSmart.Repositorio\\CashSmart.Repositorio.csproj": {
                 "projectPath": "C:\\Users\\Gustavo\\Documents\\cashSmart\\CashSmart\\Back\\CashSmart\\CashSmart.Repositorio\\CashSmart.Repositorio.csproj"
               }

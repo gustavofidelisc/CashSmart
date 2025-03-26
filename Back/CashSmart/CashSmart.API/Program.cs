@@ -1,13 +1,20 @@
 
 
+using System.Text;
 using CashSmart.Aplicacao;
 using CashSmart.Aplicacao.Interface;
+using CashSmart.Dominio.Shared;
 using CashSmart.Repositorio;
 using CashSmart.Repositorio.Contexto;
 using CashSmart.Repositorio.Contratos;
 using CashSmart.Servicos.Services.Criptografia;
 using CashSmart.Servicos.Services.Criptografia.Interface;
+using CashSmart.Servicos.Services.Jwt;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,16 +25,35 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
 
+builder.Services.Configure<JwtConfiguracoes>(builder.Configuration.GetSection("Jwt"));
+
+
+builder.Services.AddDbContext<CashSmartContexto>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("CashSmartContexto")));
+
+
+builder.Services.AddAuthentication( x => {
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    
+    }).AddJwtBearer(x => {
+        x.TokenValidationParameters = new TokenValidationParameters{
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"])),
+            ValidateIssuer = false,
+            ValidateAudience = false,
+        };
+    });
+builder.Services.AddAuthorization();
+
 
 builder.Services.AddScoped<IUsuarioAplicacao, UsuarioAplicacao>();
 builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
 
+// jwt
+builder.Services.AddTransient<IJwtTokenService, JwtTokenService>();
 
 // criptografia 
-builder.Services.AddScoped<IBcryptSenhaService, BcryptSenhaService >();
-builder.Services.AddDbContext<CashSmartContexto>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("CashSmartContexto")));
-
+builder.Services.AddTransient<IBcryptSenhaService, BcryptSenhaService >();
 
 builder.Services.AddCors(options => {
     options.AddDefaultPolicy(builder => {
@@ -36,6 +62,37 @@ builder.Services.AddCors(options => {
         .AllowAnyHeader()
         .AllowAnyMethod();
     });
+});
+
+
+// Adicionar o Swagger e configurar a autenticação
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Por favor insira o token JWT",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "bearer"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+
 });
 
 var app = builder.Build();
@@ -49,6 +106,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -6,6 +6,8 @@ using CashSmart.API.Models.Usuario.Resposta;
 using System.Data.SqlTypes;
 using Microsoft.IdentityModel.Tokens;
 using CashSmart.API.Models.Usuario.Requisicao;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -50,6 +52,7 @@ public class  UsuarioController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpGet]
     [Route("Listar")]
     public async Task<IActionResult> ListarUsuariosAsync([FromQuery]bool ativo = true)
@@ -71,13 +74,15 @@ public class  UsuarioController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpGet]
-    [Route("{id}")]
-    public async Task<IActionResult> ObterUsuarioPorIdAsync([FromRoute]int id)
+    public async Task<IActionResult> ObterUsuarioPorIdAsync()
     {
         try
         {
-            var usuario = await _usuarioAplicacao.ObterUsuarioPorIdAsync(id);
+            Guid usuarioId= ObterIdUsuarioHeader();
+
+            var usuario = await _usuarioAplicacao.ObterUsuarioPorIdAsync(usuarioId);
 
             UsuarioResposta usuarioResposta = new UsuarioResposta
             {
@@ -103,9 +108,11 @@ public class  UsuarioController : ControllerBase
     {
         try
         {
+
+            Guid usuarioId= ObterIdUsuarioHeader();
             var UsuarioAtualizar = new Usuario
             {
-                Id = usuario.Id,
+                Id = usuarioId,
                 Nome = usuario.Nome,
                 Email = usuario.Email
             };
@@ -127,12 +134,13 @@ public class  UsuarioController : ControllerBase
     }
 
     [HttpDelete]
-    [Route("Deletar/{id}")]
-    public async Task<IActionResult> DeletarUsuarioAsync([FromRoute]int id)
+    [Route("Deletar")]
+    public async Task<IActionResult> DeletarUsuarioAsync()
     {
         try
         {
-            await _usuarioAplicacao.RemoverUsuarioAsync(id);
+            Guid usuarioId= ObterIdUsuarioHeader();
+            await _usuarioAplicacao.RemoverUsuarioAsync(usuarioId);
             return Ok();
         }
         catch (SqlNullValueException ex)
@@ -147,7 +155,7 @@ public class  UsuarioController : ControllerBase
 
     [HttpPost]
     [Route("Restaurar/{id}")]
-    public async Task<IActionResult> RestaurarUsuarioAsync([FromRoute]int id)
+    public async Task<IActionResult> RestaurarUsuarioAsync([FromRoute]Guid id)
     {
         try
         {
@@ -163,6 +171,17 @@ public class  UsuarioController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
+    #region Métodos Privados
+    private Guid ObterIdUsuarioHeader(){
+        var claimValue = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if(!Guid.TryParse(claimValue, out Guid userId))
+        {
+            throw new ArgumentException("Id do usuário inválido");
+        }
+        return userId;
+    }
+    #endregion
 
 
 

@@ -13,25 +13,25 @@ namespace CashSmart.Repositorio
 
         public async Task AdicionarParcelaAsync(Parcela parcela)
         {
-            await _context.parcelas.AddAsync(parcela);
+            await _context.Parcelas.AddAsync(parcela);
             await _context.SaveChangesAsync();
         }
 
         public async Task AtualizarParcelaAsync(Parcela parcela)
         {
-            _context.parcelas.Update(parcela);
+            _context.Parcelas.Update(parcela);
             await _context.SaveChangesAsync();
         }
 
 
         public async Task<Parcela> ObterParcelaPorIdAsync(int id)
         {
-            return await _context.parcelas.FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.Parcelas.FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<IEnumerable<Parcela>> ObterTodasParcelasAsync()
         {
-            return await _context.parcelas.ToListAsync();
+            return await _context.Parcelas.ToListAsync();
         }
     }
 }
