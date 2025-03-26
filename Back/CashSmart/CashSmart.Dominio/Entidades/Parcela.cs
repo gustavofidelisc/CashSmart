@@ -9,7 +9,7 @@ namespace CashSmart.Dominio.Entidades
         public DateTime DataVencimento { get; set; }
         public decimal Valor { get; set; }
         public int NumeroDaParcela { get; set; }
-        public int TransacaoID { get; set; }
+        public int TransacaoId { get; set; }
         public Transacao Transacao { get; set; }
     }
 }

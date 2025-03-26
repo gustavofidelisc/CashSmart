@@ -103,6 +103,7 @@ public class  UsuarioController : ControllerBase
     }
 
     [HttpPut]
+    [Authorize]
     [Route("Atualizar")]
     public async Task<IActionResult> AtualizarUsuarioAsync([FromBody] UsuarioAtualizar usuario)
     {
@@ -134,6 +135,7 @@ public class  UsuarioController : ControllerBase
     }
 
     [HttpDelete]
+    [Authorize]
     [Route("Deletar")]
     public async Task<IActionResult> DeletarUsuarioAsync()
     {
@@ -154,6 +156,7 @@ public class  UsuarioController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     [Route("Restaurar/{id}")]
     public async Task<IActionResult> RestaurarUsuarioAsync([FromRoute]Guid id)
     {

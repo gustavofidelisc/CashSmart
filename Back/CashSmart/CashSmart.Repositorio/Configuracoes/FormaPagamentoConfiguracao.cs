@@ -15,6 +15,11 @@ namespace CashSmart.Repositorio.Configuracoes
             builder.Property(fp => fp.DataCriacao).HasColumnName("DataCriacao").IsRequired();
             builder.Property(fp => fp.DataAtualizacao).HasColumnName("DataAtualizacao").IsRequired();       
             
+            builder
+                .HasMany(fp => fp.Transacoes)        
+                .WithOne(t => t.FormaPagamento)      
+                .HasForeignKey(t => t.FormaPagamentoId) 
+                .OnDelete(DeleteBehavior.Cascade); 
         }
     }
 }

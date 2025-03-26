@@ -68,11 +68,11 @@ namespace CashSmart.Repositorio.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Valor = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Parcelas = table.Column<int>(type: "int", nullable: false),
-                    FormaPagamentoID = table.Column<int>(type: "int", nullable: false),
+                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Data = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FormaPagamentoId = table.Column<int>(type: "int", nullable: false),
                     CategoriaId = table.Column<int>(type: "int", nullable: false),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false),
-                    UsuarioId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UsuarioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Ativo = table.Column<bool>(type: "bit", nullable: false),
                     DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DataAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -87,16 +87,17 @@ namespace CashSmart.Repositorio.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Transacao_FormasPagamento_FormaPagamentoID",
-                        column: x => x.FormaPagamentoID,
+                        name: "FK_Transacao_FormasPagamento_FormaPagamentoId",
+                        column: x => x.FormaPagamentoId,
                         principalTable: "FormasPagamento",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Transacao_Usuarios_UsuarioId1",
-                        column: x => x.UsuarioId1,
+                        name: "FK_Transacao_Usuarios_UsuarioId",
+                        column: x => x.UsuarioId,
                         principalTable: "Usuarios",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -133,14 +134,14 @@ namespace CashSmart.Repositorio.Migrations
                 column: "CategoriaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transacao_FormaPagamentoID",
+                name: "IX_Transacao_FormaPagamentoId",
                 table: "Transacao",
-                column: "FormaPagamentoID");
+                column: "FormaPagamentoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transacao_UsuarioId1",
+                name: "IX_Transacao_UsuarioId",
                 table: "Transacao",
-                column: "UsuarioId1");
+                column: "UsuarioId");
         }
 
         /// <inheritdoc />

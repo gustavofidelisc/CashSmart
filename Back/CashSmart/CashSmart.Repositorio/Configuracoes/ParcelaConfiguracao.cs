@@ -13,7 +13,11 @@ namespace CashSmart.Dominio.Entidades
             builder.Property(p => p.DataVencimento).HasColumnName("DataVencimento").IsRequired();
             builder.Property(p => p.Valor).HasColumnName("Valor").IsRequired();
             builder.Property(p => p.NumeroDaParcela).HasColumnName("NumeroDaParcela").IsRequired();
-            builder.Property(p => p.TransacaoID).HasColumnName("TransacaoID").IsRequired();
+            builder.Property(p => p.TransacaoId).HasColumnName("TransacaoID").IsRequired();
+
+            builder.HasOne(p => p.Transacao).WithMany(t => t.Parcelas).HasForeignKey(p => p.TransacaoId).OnDelete(DeleteBehavior.Cascade);
+            
+
         }
     }
 }

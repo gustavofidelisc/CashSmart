@@ -5,6 +5,7 @@ namespace CashSmart.Dominio.Entidades
         public string Nome { get; set; } = string.Empty;
         public int TipoTransacao { get; set; }
 
+        public List<Transacao> Transacoes { get; set; }
         public Categoria() : base()
         {
             

@@ -25,19 +25,25 @@ namespace CashSmart.Repositorio
         }
 
 
-        public async Task<Categoria> ObterCategoriaPorIdAsync(int id, bool ativo)
+        public async Task<Categoria> ObterCategoriaPorIdAsync(int id)
         {
-            return await _context.Categorias.Where(c => c.Ativo == ativo).FirstOrDefaultAsync(c => c.Id == id);
+            return await _context.Categorias.FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public Task<Categoria> ObterCategoriaPorNomeAsync(string query)
         {
-            return _context.Categorias.Where(c=> c.Ativo == true && c.Nome.Contains(query)).FirstOrDefaultAsync(c => c.Nome == query);
+            return _context.Categorias.Where(c=> c.Nome.Contains(query)).FirstOrDefaultAsync(c => c.Nome == query);
         }
 
-        public async Task<IEnumerable<Categoria>> ObterCategoriasAsync(bool ativo)
+        public async Task<IEnumerable<Categoria>> ObterCategoriasAsync()
         {
-            return await _context.Categorias.Where(c => c.Ativo == ativo).ToListAsync();
+            return await _context.Categorias.ToListAsync();
+        }
+
+        public async Task RemoverCategoriaAsync(Categoria categoria)
+        {
+            _context.Categorias.Remove(categoria);
+            await _context.SaveChangesAsync();
         }
     }
 }

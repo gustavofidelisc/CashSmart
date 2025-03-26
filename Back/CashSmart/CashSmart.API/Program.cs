@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Name;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,6 +49,20 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IUsuarioAplicacao, UsuarioAplicacao>();
 builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
+
+builder.Services.AddScoped<IParcelaRepositorio, ParcelaRepositorio>();
+
+
+builder.Services.AddScoped<IFormaPagamentoRepositorio, FormaPagamentoRepositorio>();
+
+
+builder.Services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
+builder.Services.AddScoped<ICategoriaAplicacao, CategoriaAplicacao>();
+
+builder.Services.AddScoped<ITransacaoRepositorio, TransacaoRepositorio>();
+
+
+builder.Services.AddScoped<ITiposTransacaoAplicacao, TiposTransacaoAplicacao>();
 
 // jwt
 builder.Services.AddTransient<IJwtTokenService, JwtTokenService>();

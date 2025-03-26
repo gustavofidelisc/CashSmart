@@ -10,6 +10,7 @@ public class CashSmartContexto : DbContext
     public DbSet<Categoria> Categorias { get; set; }
     public DbSet<FormaPagamento> FormasPagamento { get; set; }
     public DbSet<Parcela> Parcelas { get; set;}
+    public DbSet<Transacao> Transacoes { get; set; }
 
     public CashSmartContexto()
     {
@@ -34,6 +35,7 @@ public class CashSmartContexto : DbContext
         modelBuilder.ApplyConfiguration(new CategoriaConfiguracao());
         modelBuilder.ApplyConfiguration(new FormaPagamentoConfiguracao());
         modelBuilder.ApplyConfiguration(new ParcelaConfiguracao());
+        modelBuilder.ApplyConfiguration(new TransacaoConfiguracao());
     }
 
 }
