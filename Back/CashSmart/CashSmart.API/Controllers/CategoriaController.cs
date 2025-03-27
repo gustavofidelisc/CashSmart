@@ -1,4 +1,5 @@
 using System.Data.SqlTypes;
+using System.Security.Claims;
 using CashSmart.API.Models.Categoria;
 using CashSmart.Dominio.Entidades;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,8 @@ namespace CashSmart.API.Controllers
                 var categoriaDominio = new Categoria
                 {
                     Nome = categoria.Nome,
-                    TipoTransacao = categoria.TipoTransacao
+                    TipoTransacao = categoria.TipoTransacao,
+                    UsuarioId = categoria.UsuarioId
                 };
 
                 int categoriaId =  await _categoriaAplicacao.AdicionarCategoriaAsync(categoriaDominio);
@@ -61,5 +63,31 @@ namespace CashSmart.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("ObterPorId")]
+        public async Task<IActionResult> ObterCategoriaPorId([FromQuery] int id)
+        {
+            try
+            {
+                var categoria = await _categoriaAplicacao.ObterCategoriaPorIdAsync(id);
+                return Ok(categoria);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        #region Métodos Privados
+        private Guid ObterIdUsuarioHeader(){
+            var claimValue = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if(!Guid.TryParse(claimValue, out Guid userId))
+            {
+                throw new ArgumentException("Id do usuário inválido");
+            }
+            return userId;
+        }
+        #endregion
     }
 }

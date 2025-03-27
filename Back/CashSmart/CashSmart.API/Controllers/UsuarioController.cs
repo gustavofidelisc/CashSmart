@@ -80,7 +80,7 @@ public class  UsuarioController : ControllerBase
     {
         try
         {
-            Guid usuarioId= ObterIdUsuarioHeader();
+            Guid usuarioId= this.ObterUsuarioIdDoHeader();
 
             var usuario = await _usuarioAplicacao.ObterUsuarioPorIdAsync(usuarioId);
 
@@ -110,7 +110,7 @@ public class  UsuarioController : ControllerBase
         try
         {
 
-            Guid usuarioId= ObterIdUsuarioHeader();
+            Guid usuarioId= this.ObterUsuarioIdDoHeader();
             var UsuarioAtualizar = new Usuario
             {
                 Id = usuarioId,
@@ -141,7 +141,7 @@ public class  UsuarioController : ControllerBase
     {
         try
         {
-            Guid usuarioId= ObterIdUsuarioHeader();
+            Guid usuarioId= this.ObterUsuarioIdDoHeader();
             await _usuarioAplicacao.RemoverUsuarioAsync(usuarioId);
             return Ok();
         }
@@ -174,18 +174,4 @@ public class  UsuarioController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-
-    #region Métodos Privados
-    private Guid ObterIdUsuarioHeader(){
-        var claimValue = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if(!Guid.TryParse(claimValue, out Guid userId))
-        {
-            throw new ArgumentException("Id do usuário inválido");
-        }
-        return userId;
-    }
-    #endregion
-
-
-
 }

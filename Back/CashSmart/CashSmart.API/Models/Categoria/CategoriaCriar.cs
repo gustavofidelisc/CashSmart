@@ -4,5 +4,6 @@ namespace CashSmart.API.Models.Categoria
     {
         public string Nome { get; set; }
         public int TipoTransacao { get; set; }
+        public Guid UsuarioId { get; set; }
     }
 }

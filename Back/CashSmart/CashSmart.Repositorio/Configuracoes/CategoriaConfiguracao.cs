@@ -14,13 +14,11 @@ namespace CashSmart.Repositorio.Configuracoes
             builder.Property(c => c.Nome).HasColumnName("Nome").HasMaxLength(127).IsRequired();
             builder.Property(c => c.TipoTransacao).HasColumnName("TipoTransacao").IsRequired();
             builder.Property(c => c.DataCriacao).HasColumnName("DataCriacao").IsRequired();
-            builder.Property(c => c.DataAtualizacao).HasColumnName("DataAtualizacao").IsRequired();  
+            builder.Property(c => c.DataAtualizacao).HasColumnName("DataAtualizacao").IsRequired(); 
+            builder.Property(c => c.UsuarioId).HasColumnName("UsuarioId").IsRequired(); 
 
-            builder
-                .HasMany(c => c.Transacoes)          
-                .WithOne(t => t.Categoria)           
-                .HasForeignKey(t => t.CategoriaId)   
-                .OnDelete(DeleteBehavior.Cascade);    // Delete em cascata     
+            builder.HasMany(c => c.Transacoes).WithOne(t => t.Categoria).HasForeignKey(t => t.CategoriaId);
+
         }
     }
 }

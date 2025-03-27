@@ -8,6 +8,9 @@ namespace CashSmart.Dominio.Entidades
         public string Senha { get; set; } = string.Empty;
         public bool Ativo { get; set; }
 
+        public List<Categoria> Categorias { get; set; }
+        public List<FormaPagamento> FormasPagamento { get; set; }
+
         public List<Transacao> Transacoes { get; set; }
         public Usuario() : base()
         {

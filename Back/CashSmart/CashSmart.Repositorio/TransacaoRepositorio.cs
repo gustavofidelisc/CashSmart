@@ -11,7 +11,6 @@ namespace CashSmart.Repositorio
         {
         }
 
-
         public async Task<int> AdicionarTransacaoAsync(Transacao transacao){
             await _context.Transacoes.AddAsync(transacao);
             await _context.SaveChangesAsync();
@@ -47,9 +46,9 @@ namespace CashSmart.Repositorio
             await _context.SaveChangesAsync();
         }
 
-       c{
+        public async Task RemoverTransacaoAsync(Transacao transacao){
             _context.Transacoes.Remove(transacao);
             await _context.SaveChangesAsync();
         }
-     }
+    }
 }

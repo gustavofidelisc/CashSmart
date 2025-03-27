@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CashSmart.Repositorio.Migrations
 {
     [DbContext(typeof(CashSmartContexto))]
-    [Migration("20250326191233_inicial")]
-    partial class inicial
+    [Migration("20250327002547_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,9 +34,6 @@ namespace CashSmart.Repositorio.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("Ativo")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("DataAtualizacao")
                         .HasColumnType("datetime2")
                         .HasColumnName("DataAtualizacao");
@@ -55,7 +52,13 @@ namespace CashSmart.Repositorio.Migrations
                         .HasColumnType("int")
                         .HasColumnName("TipoTransacao");
 
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("UsuarioId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Categorias");
                 });
@@ -68,9 +71,6 @@ namespace CashSmart.Repositorio.Migrations
                         .HasColumnName("Id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Ativo")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("DataAtualizacao")
                         .HasColumnType("datetime2")
@@ -86,7 +86,13 @@ namespace CashSmart.Repositorio.Migrations
                         .HasColumnType("nvarchar(127)")
                         .HasColumnName("Nome");
 
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("UsuarioId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("FormasPagamento");
                 });
@@ -112,17 +118,18 @@ namespace CashSmart.Repositorio.Migrations
                         .HasColumnType("int")
                         .HasColumnName("NumeroDaParcela");
 
-                    b.Property<int>("TransacaoID")
+                    b.Property<int>("TransacaoId")
                         .HasColumnType("int")
                         .HasColumnName("TransacaoID");
 
                     b.Property<decimal>("Valor")
-                        .HasColumnType("decimal(18,2)")
+                        .HasPrecision(2)
+                        .HasColumnType("decimal(2,2)")
                         .HasColumnName("Valor");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TransacaoID");
+                    b.HasIndex("TransacaoId");
 
                     b.ToTable("Parcelas");
                 });
@@ -131,36 +138,45 @@ namespace CashSmart.Repositorio.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("Ativo")
-                        .HasColumnType("bit");
-
                     b.Property<int>("CategoriaId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CategoriaId");
 
                     b.Property<DateTime>("Data")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Data");
 
                     b.Property<DateTime>("DataAtualizacao")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DataAtualizacao");
 
                     b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DataCriacao");
 
                     b.Property<string>("Descricao")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(127)
+                        .HasColumnType("nvarchar(127)")
+                        .HasColumnName("Descricao");
 
                     b.Property<int>("FormaPagamentoId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("FormaPagamentoId");
 
                     b.Property<Guid>("UsuarioId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("UsuarioId");
 
                     b.Property<decimal>("Valor")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(2)
+                        .HasColumnType("decimal(2,2)")
+                        .HasColumnName("Valor");
 
                     b.HasKey("Id");
 
@@ -170,7 +186,7 @@ namespace CashSmart.Repositorio.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Transacao");
+                    b.ToTable("Transacoes");
                 });
 
             modelBuilder.Entity("CashSmart.Dominio.Entidades.Usuario", b =>
@@ -216,11 +232,33 @@ namespace CashSmart.Repositorio.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("CashSmart.Dominio.Entidades.Categoria", b =>
+                {
+                    b.HasOne("CashSmart.Dominio.Entidades.Usuario", "Usuario")
+                        .WithMany("Categorias")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("CashSmart.Dominio.Entidades.FormaPagamento", b =>
+                {
+                    b.HasOne("CashSmart.Dominio.Entidades.Usuario", "Usuario")
+                        .WithMany("FormasPagamento")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("CashSmart.Dominio.Entidades.Parcela", b =>
                 {
                     b.HasOne("CashSmart.Dominio.Entidades.Transacao", "Transacao")
                         .WithMany("Parcelas")
-                        .HasForeignKey("TransacaoID")
+                        .HasForeignKey("TransacaoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -238,13 +276,13 @@ namespace CashSmart.Repositorio.Migrations
                     b.HasOne("CashSmart.Dominio.Entidades.FormaPagamento", "FormaPagamento")
                         .WithMany("Transacoes")
                         .HasForeignKey("FormaPagamentoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("CashSmart.Dominio.Entidades.Usuario", "Usuario")
                         .WithMany("Transacoes")
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Categoria");
@@ -271,6 +309,10 @@ namespace CashSmart.Repositorio.Migrations
 
             modelBuilder.Entity("CashSmart.Dominio.Entidades.Usuario", b =>
                 {
+                    b.Navigation("Categorias");
+
+                    b.Navigation("FormasPagamento");
+
                     b.Navigation("Transacoes");
                 });
 #pragma warning restore 612, 618

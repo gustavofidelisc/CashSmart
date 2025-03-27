@@ -16,7 +16,9 @@ namespace CashSmart.Repositorio.Configuracoes
             builder.Property(u => u.DataCriacao).HasColumnName("DataCriacao").IsRequired();
             builder.Property(u => u.DataAtualizacao).HasColumnName("DataAtualizacao").IsRequired();
 
-            builder.HasMany(u => u.Transacoes).WithOne(t => t.Usuario).HasForeignKey(t => t.UsuarioId);
+            builder.HasMany(u => u.Transacoes).WithOne(t => t.Usuario).HasForeignKey(t => t.UsuarioId).OnDelete(DeleteBehavior.Restrict);
+            builder.HasMany(u => u.Categorias).WithOne(c => c.Usuario).HasForeignKey(c => c.UsuarioId);
+            builder.HasMany(u => u.FormasPagamento).WithOne(fp => fp.Usuario).HasForeignKey(fp => fp.UsuarioId);
         }
     }
 }
