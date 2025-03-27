@@ -35,9 +35,9 @@ namespace CashSmart.Repositorio
             return _context.Categorias.Where(c=> c.Nome.Contains(query)).FirstOrDefaultAsync(c => c.Nome == query);
         }
 
-        public async Task<IEnumerable<Categoria>> ObterCategoriasAsync()
+        public async Task<IEnumerable<Categoria>> ObterTodasCategoriasUsuarioAsync(Guid usuarioId)
         {
-            return await _context.Categorias.ToListAsync();
+            return await _context.Categorias.Where(c => c.UsuarioId == usuarioId).ToListAsync();
         }
 
         public async Task RemoverCategoriaAsync(Categoria categoria)

@@ -4,11 +4,8 @@ using CashSmart.Dominio.Entidades;
 using CashSmart.Aplicacao.Interface;
 using CashSmart.API.Models.Usuario.Resposta;
 using System.Data.SqlTypes;
-using Microsoft.IdentityModel.Tokens;
-using CashSmart.API.Models.Usuario.Requisicao;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
-
+using CashSmart.API.Models.Exceptions;
 [Route("api/[controller]")]
 [ApiController]
 
@@ -31,7 +28,7 @@ public class  UsuarioController : ControllerBase
 
             if(usuario.Senha != usuario.ConfirmacaoSenha)
             {
-                return BadRequest("As senhas não conferem");
+                throw new Exception("As senhas não conferem");
             }
             var usuarioDominio = new Usuario
             {
@@ -44,11 +41,17 @@ public class  UsuarioController : ControllerBase
         }
         catch (ArgumentNullException ex)
         {
-            return NotFound(ex.Message);
+            return BadRequest(new ExceptionResposta
+            {
+                Mensagem = ex.Message
+            });
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(new ExceptionResposta
+            {
+                Mensagem = ex.Message
+            });
         }
     }
 
@@ -70,7 +73,10 @@ public class  UsuarioController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest( new ExceptionResposta
+            {
+                Mensagem = ex.Message
+            });
         }
     }
 
@@ -94,22 +100,27 @@ public class  UsuarioController : ControllerBase
         }
         catch (SqlNullValueException ex)
         {
-            return NotFound(ex.Message);
+            return NotFound(new ExceptionResposta
+            {
+                Mensagem = ex.Message
+            });
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(new ExceptionResposta
+            {
+                Mensagem = ex.Message
+            });
         }
     }
 
-    [HttpPut]
     [Authorize]
+    [HttpPut]
     [Route("Atualizar")]
     public async Task<IActionResult> AtualizarUsuarioAsync([FromBody] UsuarioAtualizar usuario)
     {
         try
         {
-
             Guid usuarioId= this.ObterUsuarioIdDoHeader();
             var UsuarioAtualizar = new Usuario
             {
@@ -122,20 +133,29 @@ public class  UsuarioController : ControllerBase
             }
         catch(SqlNullValueException ex)
         {
-            return NotFound(ex.Message);
+            return NotFound(new ExceptionResposta
+            {
+                Mensagem = ex.Message
+            });
         }
         catch (ArgumentNullException ex)
         {
-            return NotFound(ex.Message);
+            return NotFound(new ExceptionResposta
+            {
+                Mensagem = ex.Message
+            });
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(new ExceptionResposta
+            {
+                Mensagem = ex.Message
+            });
         }
     }
 
-    [HttpDelete]
     [Authorize]
+    [HttpDelete]
     [Route("Deletar")]
     public async Task<IActionResult> DeletarUsuarioAsync()
     {
@@ -147,11 +167,17 @@ public class  UsuarioController : ControllerBase
         }
         catch (SqlNullValueException ex)
         {
-            return NotFound(ex.Message);
+            return NotFound(new ExceptionResposta
+            {
+                Mensagem = ex.Message
+            });
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(new ExceptionResposta
+            {
+                Mensagem = ex.Message
+            });
         }
     }
 
@@ -167,11 +193,17 @@ public class  UsuarioController : ControllerBase
         }
         catch (SqlNullValueException ex)
         {
-            return NotFound(ex.Message);
+            return NotFound(new ExceptionResposta
+            {
+                Mensagem = ex.Message
+            });
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(new ExceptionResposta
+            {
+                Mensagem = ex.Message
+            });
         }
     }
 }

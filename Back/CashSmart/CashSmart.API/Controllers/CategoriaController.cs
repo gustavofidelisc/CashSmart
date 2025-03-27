@@ -1,7 +1,11 @@
 using System.Data.SqlTypes;
-using System.Security.Claims;
 using CashSmart.API.Models.Categoria;
+using CashSmart.API.Models.Categoria.Requisicao;
+using CashSmart.API.Models.Categoria.Resposta;
+using CashSmart.API.Models.Exceptions;
 using CashSmart.Dominio.Entidades;
+using CashSmart.Dominio.Enumeradores;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Name;
 
@@ -17,7 +21,7 @@ namespace CashSmart.API.Controllers
         {
             _categoriaAplicacao = categoriaAplicacao;
         }
-
+        [Authorize]
         [HttpPost]
         [Route("Criar")]
         public async Task<IActionResult> AdcionarCategoriaAsync([FromBody] CategoriaCriar categoria)
@@ -28,7 +32,7 @@ namespace CashSmart.API.Controllers
                 {
                     Nome = categoria.Nome,
                     TipoTransacao = categoria.TipoTransacao,
-                    UsuarioId = categoria.UsuarioId
+                    UsuarioId = this.ObterUsuarioIdDoHeader()
                 };
 
                 int categoriaId =  await _categoriaAplicacao.AdicionarCategoriaAsync(categoriaDominio);
@@ -37,57 +41,115 @@ namespace CashSmart.API.Controllers
             }
             catch (ArgumentNullException ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new ExceptionResposta
+                {
+                    Mensagem = ex.Message
+                });
             }
             catch (SqlNullValueException ex)
             {
-                return NotFound(ex.Message);
+                return NotFound(new ExceptionResposta
+                {
+                    Mensagem = ex.Message
+                });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new ExceptionResposta
+                {
+                    Mensagem = ex.Message
+                });
             }
         }
-
+        [Authorize]
         [HttpGet]
         [Route("Listar")]
         public async Task<IActionResult> ListarCategorias()
         {
             try
             {
-                var categorias = await _categoriaAplicacao.ObterTodasCategoriasAsync();
-                return Ok(categorias);
+                Guid usuarioId = this.ObterUsuarioIdDoHeader();
+                var categorias = await _categoriaAplicacao.ObterTodasCategoriasUsuarioAsync(usuarioId);
+
+                var categoriasResposta = categorias.Select(c => new CategoriaResposta
+                {
+                    Id = c.Id,
+                    Nome = c.Nome,
+                    TipoTransacao = Enum.GetName(typeof(TipoDaTransacao), c.TipoTransacao)
+                }).ToList();
+                return Ok(categoriasResposta);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new ExceptionResposta
+                {
+                    Mensagem = ex.Message
+                });
             }
         }
-
+        [Authorize]
         [HttpGet]
         [Route("ObterPorId")]
         public async Task<IActionResult> ObterCategoriaPorId([FromQuery] int id)
         {
             try
             {
-                var categoria = await _categoriaAplicacao.ObterCategoriaPorIdAsync(id);
-                return Ok(categoria);
+                var categoria = await _categoriaAplicacao.ObterCategoriaPorIdAsync(id, this.ObterUsuarioIdDoHeader());
+
+                var categoriaReposta = new CategoriaResposta{
+                    Id = categoria.Id,
+                    Nome = categoria.Nome,
+                    TipoTransacao = Enum.GetName(typeof(TipoDaTransacao), categoria.TipoTransacao)
+                };
+                return Ok(categoriaReposta);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new ExceptionResposta
+                {
+                    Mensagem = ex.Message
+                });
             }
         }
-
-        #region Métodos Privados
-        private Guid ObterIdUsuarioHeader(){
-            var claimValue = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if(!Guid.TryParse(claimValue, out Guid userId))
+        [Authorize]
+        [HttpPut]
+        [Route("Atualizar")]     
+        public async Task<IActionResult> AtualizarCategoria([FromBody] CategoriaAtualizar categoria)
+        {
+            try
             {
-                throw new ArgumentException("Id do usuário inválido");
+                var categoriaDominio = new Categoria
+                {
+                    Id = categoria.Id,
+                    Nome = categoria.Nome,
+                    TipoTransacao = categoria.TipoTransacao,
+                    UsuarioId = this.ObterUsuarioIdDoHeader()
+                };
+
+                await _categoriaAplicacao.AtualizarCategoriaAsync(categoriaDominio, this.ObterUsuarioIdDoHeader());
+                return Ok();
             }
-            return userId;
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(new ExceptionResposta
+                {
+                    Mensagem = ex.Message
+                });
+            }
+            catch (SqlNullValueException ex)
+            {
+                return NotFound(new ExceptionResposta
+                {
+                    Mensagem = ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResposta
+                {
+                    Mensagem = ex.Message
+                });
+            }
         }
-        #endregion
     }
 }

@@ -1,9 +1,12 @@
 using System.Data.SqlTypes;
+using CashSmart.API.Models.Autenticacao.Resposta;
+using CashSmart.API.Models.Exceptions;
 using CashSmart.API.Models.Usuario.Requisicao;
 using CashSmart.Aplicacao.Interface;
 using CashSmart.Servicos.Services.Criptografia.Interface;
 using CashSmart.Servicos.Services.Jwt;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CashSmart.API.Controllers
@@ -32,18 +35,28 @@ namespace CashSmart.API.Controllers
                 var usuario = await _usuarioAplicacao.ObterUsuarioPorEmailAsync(usuarioLogin.Email);
                 if(usuario == null)
                 {
-                    return StatusCode(400, "Usuário ou senha inválidos");
+                    throw new ArgumentException("Usuário ou senha inválidos");
                 }
 
                 if(!_bcryptSenhaService.VerificarSenha(usuarioLogin.Senha, usuario.Senha))
                 {
-                    return StatusCode(400, "Usuário ou senha inválidos");
+                    throw new ArgumentException("Usuário ou senha inválidos");
                 }
-                return Ok(_jwtTokenService.GerarTokenJWT(usuario));
+
+                var resposta = new Autenticacao
+                {
+                    Token = _jwtTokenService.GerarTokenJWT(usuario)
+                };
+                return Ok(new Autenticacao{
+                    Token = resposta.Token
+                });
             }
-            catch (SqlNullValueException)
+            catch (Exception ex)
             {
-                return StatusCode(400, "Usuário ou senha inválidos");
+                return BadRequest(new ExceptionResposta
+                {
+                    Mensagem = ex.Message
+                });
             }
         }
     }

@@ -24,7 +24,7 @@ namespace CashSmart.Aplicacao
             await VerificarSeUsuarioExiste(usuario);
             if (string.IsNullOrEmpty(usuario.Senha))
             {
-                throw new SqlNullValueException("Senha não pode ser nulo");
+                throw new ArgumentNullException("Senha não pode ser nulo");
             }
             usuario.Senha = _bcryptSenhaService.CriptografarSenha(usuario.Senha);
 

@@ -3,6 +3,7 @@ using System.Linq;
 using CashSmart.Aplicacao.Interface;
 using CashSmart.Dominio.Entidades;
 using CashSmart.Repositorio;
+using CashSmart.Repositorio.Contratos;
 using Name;
 
 namespace CashSmart.Aplicacao
@@ -10,12 +11,17 @@ namespace CashSmart.Aplicacao
     public class CategoriaAplicacao : ICategoriaAplicacao
     {
         private readonly ICategoriaRepositorio _categoriaRepositorio;
+        private readonly IUsuarioAplicacao _usuarioAplicacao;
         private readonly ITiposTransacaoAplicacao _tiposTransacaoAplicacao;
 
-        public CategoriaAplicacao(ICategoriaRepositorio categoriaRepositorio, ITiposTransacaoAplicacao tiposTransacaoAplicacao)
+        public CategoriaAplicacao(
+            ICategoriaRepositorio categoriaRepositorio, 
+            ITiposTransacaoAplicacao tiposTransacaoAplicacao,
+            IUsuarioAplicacao usuarioAplicacao)
         {
             _categoriaRepositorio = categoriaRepositorio;
             _tiposTransacaoAplicacao = tiposTransacaoAplicacao;
+            _usuarioAplicacao = usuarioAplicacao;
         }
         
         public async Task<int> AdicionarCategoriaAsync(Categoria categoria)
@@ -25,13 +31,15 @@ namespace CashSmart.Aplicacao
             return await _categoriaRepositorio.AdicionarCategoriaAsync(categoria);
         }
 
-        public async Task AtualizarCategoriaAsync(Categoria categoria)
+        public async Task AtualizarCategoriaAsync(Categoria categoria, Guid usuarioId)
         {
             try{
                 
                 ValidarDadosCategoria(categoria);
 
-                var cartegoriaRepositorio =await ObterCategoriaPorIdAsync(categoria.Id);
+                await ValidarUsuarioCategoria(categoria, usuarioId);
+
+                var cartegoriaRepositorio =await ObterCategoriaPorIdAsync(categoria.Id, categoria.UsuarioId);
 
                 if (cartegoriaRepositorio == null)
                 {
@@ -40,8 +48,9 @@ namespace CashSmart.Aplicacao
 
                 cartegoriaRepositorio.Nome = categoria.Nome;
                 cartegoriaRepositorio.TipoTransacao = categoria.TipoTransacao;
+                cartegoriaRepositorio.DataAtualizacao = DateTime.UtcNow;
 
-                await _categoriaRepositorio.AtualizarCategoriaAsync(categoria);
+                await _categoriaRepositorio.AtualizarCategoriaAsync(cartegoriaRepositorio);
             }
             catch (Exception ex)
             {
@@ -49,24 +58,40 @@ namespace CashSmart.Aplicacao
             }
         }
 
-        public async Task<IEnumerable<Categoria>> ObterTodasCategoriasAsync()
+        public async Task<IEnumerable<Categoria>> ObterTodasCategoriasUsuarioAsync(Guid usuarioId)
         {
-            return await _categoriaRepositorio.ObterCategoriasAsync();
-        }
-
-        public async Task<Categoria> ObterCategoriaPorIdAsync(int id)
-        {
-            var cartegoriaRepositorio = await _categoriaRepositorio.ObterCategoriaPorIdAsync(id);
-            if (cartegoriaRepositorio == null)
+            var usuario = await _usuarioAplicacao.ObterUsuarioPorIdAsync(usuarioId);
+            if (usuario == null)
             {
-                throw new SqlNullValueException("Categoria não encontrada");
+                throw new SqlNullValueException("Usuário não encontrado");
             }
-            return cartegoriaRepositorio;
+            return await _categoriaRepositorio.ObterTodasCategoriasUsuarioAsync(usuario.Id);
         }
 
-        public async Task RemoverCategoriaAsync(int id)
+        public async Task<Categoria> ObterCategoriaPorIdAsync(int id, Guid usuarioId)
         {
-            var categoria = await ObterCategoriaPorIdAsync(id);
+            try
+            {
+                var categoria = await _categoriaRepositorio.ObterCategoriaPorIdAsync(id);
+                if (categoria == null)
+                {
+                    throw new SqlNullValueException("Categoria não encontrada");
+                }
+
+                await ValidarUsuarioCategoria(categoria, usuarioId);
+                return categoria;
+                
+            }
+            catch (Exception ex)
+            {
+                
+                throw ex;
+            }
+        }
+
+        public async Task RemoverCategoriaAsync(int id, Guid usuarioId)
+        {
+            var categoria = await ObterCategoriaPorIdAsync(id,usuarioId );
             await _categoriaRepositorio.AtualizarCategoriaAsync(categoria);
         }
 
@@ -88,6 +113,19 @@ namespace CashSmart.Aplicacao
             if (!tiposTransacao.Any(t => (int)t == categoria.TipoTransacao))
             {
                 throw new ArgumentNullException("Tipo de transação inválido");
+            }
+        }
+
+        public async Task ValidarUsuarioCategoria(Categoria categoria, Guid usuarioId)
+        {
+            var usuario = await _usuarioAplicacao.ObterUsuarioPorIdAsync(usuarioId);
+            if (usuario == null)
+            {
+                throw new SqlNullValueException("Usuário não encontrado");
+            }
+            if (categoria.UsuarioId != usuario.Id)
+            {
+                throw new ArgumentNullException("Categoria não encontrada");
             }
         }
         #endregion

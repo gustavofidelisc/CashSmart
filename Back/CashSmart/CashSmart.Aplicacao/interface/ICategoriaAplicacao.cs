@@ -6,11 +6,11 @@ namespace Name
     {
         public Task<int> AdicionarCategoriaAsync(Categoria categoria);
 
-        public Task AtualizarCategoriaAsync(Categoria categoria);
+        public Task AtualizarCategoriaAsync(Categoria categoria, Guid usuarioId);
 
-        public Task<IEnumerable<Categoria>> ObterTodasCategoriasAsync();
+        public Task<IEnumerable<Categoria>> ObterTodasCategoriasUsuarioAsync(Guid usuarioId);
 
-        public Task<Categoria> ObterCategoriaPorIdAsync(int id);
-        public Task RemoverCategoriaAsync(int id);
+        public Task<Categoria> ObterCategoriaPorIdAsync(int id, Guid usuarioId);
+        public Task RemoverCategoriaAsync(int id, Guid usuarioId);
     }
 }
