@@ -1,0 +1,29 @@
+
+
+.container_header{
+    display: flex;
+    justify-content: space-between;
+    margin: 0px 55px;
+    align-items: center;
+    height: 20%;
+}
+
+.container_header .container_logo img{
+    width: 130px;
+    height: 130px;
+    margin-right: 10px;
+}
+
+.container_header .button_header{
+    background-color: transparent;
+    border-color: blue;
+    color: blue;
+    width: 150px;
+    height: 35px;
+    font-size: 1.4rem;
+
+    &:hover{
+        background-color: blue;
+        color: white;
+    }
+}

@@ -36,8 +36,8 @@ public class  UsuarioController : ControllerBase
                 Email = usuario.Email,
                 Senha = usuario.Senha
             };
-            await _usuarioAplicacao.AdicionarUsuarioAsync(usuarioDominio);
-            return Ok(usuario);
+            Guid usuarioId = await _usuarioAplicacao.AdicionarUsuarioAsync(usuarioDominio);
+            return Ok(usuarioId);
         }
         catch (ArgumentNullException ex)
         {

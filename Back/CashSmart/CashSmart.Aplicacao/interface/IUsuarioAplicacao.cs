@@ -4,7 +4,7 @@ namespace CashSmart.Aplicacao.Interface
 {
     public interface IUsuarioAplicacao
     {
-        Task AdicionarUsuarioAsync(Usuario usuario);
+        Task<Guid> AdicionarUsuarioAsync(Usuario usuario);
         Task<Usuario> ObterUsuarioPorIdAsync(Guid id);
         Task<IEnumerable<Usuario>> ObterTodosUsuariosAsync(bool ativo);
         public  Task<Usuario> ObterUsuarioPorEmailAsync(string email);

@@ -18,7 +18,7 @@ namespace CashSmart.Aplicacao
             _bcryptSenhaService =  bcryptSenhaService;
         }
 
-        public async Task AdicionarUsuarioAsync(Usuario usuario)
+        public async Task<Guid> AdicionarUsuarioAsync(Usuario usuario)
         {
             ValidarDadosDoUsuario(usuario);
             await VerificarSeUsuarioExiste(usuario);
@@ -28,7 +28,7 @@ namespace CashSmart.Aplicacao
             }
             usuario.Senha = _bcryptSenhaService.CriptografarSenha(usuario.Senha);
 
-            await _usuarioRepositorio.AdicionarUsuarioAsync(usuario);
+            return await _usuarioRepositorio.AdicionarUsuarioAsync(usuario);
         }
 
 

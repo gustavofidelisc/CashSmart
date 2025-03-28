@@ -1,0 +1,70 @@
+.color_green{
+    color: #8eda2c;
+}
+
+.color_blue{
+    color: #5271ff
+}
+
+.container_register{
+    display: flex;
+    height: 80%;
+    justify-content: center;
+    padding: 10px 55px;
+}
+
+.container_register > div{
+    display: flex;
+    width: 40rem;
+    flex-direction: column;
+}
+
+.container_register h2{
+    font-size: 3.8rem;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.container_register .form_two_inputs{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.container_register .inputGroup{
+    height: 5rem;
+}
+
+
+.container_register .select{
+    height: 31.3px;
+    border-radius: 5px;
+    padding: 5px;
+    border-width: 1.95px;
+}
+
+.container_register .button_form{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 4rem;
+    font-size: 1.6rem;
+    align-items: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+@media screen and (max-width: 768px){
+    .container_register{
+        padding: 50px 0px;
+    }
+
+    .container_register > div{
+        display: flex;
+        width: 30rem;
+        flex-direction: column;
+    }
+
+}

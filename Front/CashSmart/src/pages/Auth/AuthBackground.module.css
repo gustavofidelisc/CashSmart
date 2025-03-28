@@ -1,0 +1,18 @@
+.container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+.container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../assets/background.avif');
+    background-size: contain;
+    opacity: 0.05; /* Ajuste a opacidade aqui */
+    z-index: -1;
+}
