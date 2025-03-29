@@ -1,6 +1,7 @@
 using CashSmart.API.Models.TipoTransacao.Resposta;
 using CashSmart.Aplicacao.Interface;
 using CashSmart.Dominio.Enumeradores;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CashSmart.API.Controllers
@@ -16,6 +17,7 @@ namespace CashSmart.API.Controllers
             _tiposTransacaoAplicacao = tiposTransacaoAplicacao;
         }
 
+        [Authorize]
         [HttpGet]
         [Route("Listar")]
         public IActionResult ListarTiposTransacao()

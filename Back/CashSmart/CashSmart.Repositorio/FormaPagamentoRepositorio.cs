@@ -25,19 +25,19 @@ namespace CashSmart.Repositorio
             await _context.SaveChangesAsync();
         }
 
-        public async Task<FormaPagamento> ObterFormaPagamentoPorIdAsync(int id)
+        public async Task<FormaPagamento> ObterFormaPagamentoPorIdAsync(int id, Guid usuarioId)
         {
-            return await _context.FormasPagamento.FirstOrDefaultAsync(f => f.Id == id);
+            return await _context.FormasPagamento.FirstOrDefaultAsync(f => f.Id == id && f.UsuarioId == usuarioId);
         }
 
-        public async Task<FormaPagamento> ObterFormaPagamentoPorNomeAsync(string query)
+        public async Task<FormaPagamento> ObterFormaPagamentoPorNomeAsync(string query, Guid usuarioId)
         {
-            return await _context.FormasPagamento.Where(f => f.Nome.Contains(query)).FirstOrDefaultAsync(f => f.Nome == query);
+            return await _context.FormasPagamento.FirstOrDefaultAsync(f => f.Nome.Contains(query) && f.UsuarioId == usuarioId);
         }
 
-        public async Task<IEnumerable<FormaPagamento>> ObterFormasPagamentoAsync()
+        public async Task<IEnumerable<FormaPagamento>> ObterFormasPagamentoAsync(Guid usuarioId)
         {
-            return await  _context.FormasPagamento.ToListAsync();
+            return await _context.FormasPagamento.Where(f => f.UsuarioId == usuarioId).ToListAsync();
         }
 
         public async Task RemoverFormaPagamentoAsync(FormaPagamento formaPagamento)

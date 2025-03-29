@@ -54,7 +54,7 @@ builder.Services.AddScoped<IParcelaRepositorio, ParcelaRepositorio>();
 
 
 builder.Services.AddScoped<IFormaPagamentoRepositorio, FormaPagamentoRepositorio>();
-
+builder.Services.AddScoped<IFormaPagamentoAplicacao, FormaPagamentoAplicacao>();
 
 builder.Services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
 builder.Services.AddScoped<ICategoriaAplicacao, CategoriaAplicacao>();
