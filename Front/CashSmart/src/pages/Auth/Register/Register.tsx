@@ -5,9 +5,13 @@ import { IoPersonCircleOutline } from 'react-icons/io5';
 
 import { Button, Form, InputGroup } from 'react-bootstrap';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AcessHeader } from '../../../components/AcessHeader/AcessHeader';
 import { AutenticacaoAPI } from '../../../services/autenticacaoAPI';
+import { useAutenticacaoContexto } from '../../../Context/AutenticacaoContexto';
+import { Navigate, useNavigate } from 'react-router-dom';
+
+
 
 export const Register: React.FC = () => {
     const [nome, setNome] = useState('');
@@ -18,7 +22,6 @@ export const Register: React.FC = () => {
     async function Registrar(){
         try {
             const response = await AutenticacaoAPI.Registrar(nome, email, senha, confirmeSenha);
-            console.log("Login bem-sucedido:", response);
         } catch (error) {
             console.error("Erro ao cadastrar:", error);
         }

@@ -8,25 +8,15 @@ import { MdEmail, MdLock } from 'react-icons/md';
 import { useAutenticacaoContexto } from '../../../Context/AutenticacaoContexto';
 import { Register } from '../Register/Register';
 
-interface ILoginProps {
-    children: React.ReactNode; 
-}
 
 
-export const Login: React.FC<ILoginProps> = ({children}) => {
+
+export const Login: React.FC = () => {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
 
-    const {estaAutenticado, login} = useAutenticacaoContexto();
-    if (estaAutenticado) return  (
-        <>{children}</>
-    )
 
-    // Permitir a tela de cadastro sem autenticação
-    if (location.pathname === "/cadastro") {
-        return <Register />;
-    }
-
+    const { login } = useAutenticacaoContexto();
     
     return (
         <div className={background.container}>

@@ -1,0 +1,23 @@
+.sidebar_elemento {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding-left: 1rem;
+    border-radius: 0.5rem;
+
+    & svg {
+        margin: 1rem;
+        width: 25px;
+        height: 30px;
+    }
+    & h3 {
+        padding: 2rem;
+        font-size: 2rem;
+        color: #000000;
+    }
+
+    &:hover{
+        background-color: rgb(150, 195, 234);
+        cursor: pointer;
+    }
+}
