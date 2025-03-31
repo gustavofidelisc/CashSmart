@@ -1,7 +1,7 @@
 using System.Data.SqlTypes;
 using CashSmart.API.Models.Exceptions;
-using CashSmart.API.Models.FormaPagamento.Requisicao;
-using CashSmart.API.Models.FormaPagamento.Resposta;
+using CashSmart.API.Models.Requisicao;
+using CashSmart.API.Models.Resposta;
 using CashSmart.Aplicacao.Interface;
 using CashSmart.Dominio.Entidades;
 using Microsoft.AspNetCore.Authorization;
@@ -14,7 +14,6 @@ namespace CashSmart.API.Controllers
     public class FormaPagamentoController : ControllerBase
     {
         private readonly IFormaPagamentoAplicacao _formaPagamentoAplicacao;
-        private readonly ITiposTransacaoAplicacao _tiposTransacaoAplicacao;
 
         public FormaPagamentoController(IFormaPagamentoAplicacao formaPagamentoAplicacao, ITiposTransacaoAplicacao tiposTransacaoAplicacao)
         {

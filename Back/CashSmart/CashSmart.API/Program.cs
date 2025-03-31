@@ -60,6 +60,7 @@ builder.Services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
 builder.Services.AddScoped<ICategoriaAplicacao, CategoriaAplicacao>();
 
 builder.Services.AddScoped<ITransacaoRepositorio, TransacaoRepositorio>();
+builder.Services.AddScoped<ITransacaoAplicacao, TransacaoAplicacao>();
 
 
 builder.Services.AddScoped<ITiposTransacaoAplicacao, TiposTransacaoAplicacao>();

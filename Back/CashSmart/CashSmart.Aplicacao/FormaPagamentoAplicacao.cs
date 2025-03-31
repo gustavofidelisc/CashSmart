@@ -8,8 +8,10 @@ namespace CashSmart.Aplicacao
     public class FormaPagamentoAplicacao : IFormaPagamentoAplicacao
     {
         private IFormaPagamentoRepositorio  _formaPagamentoRepositorio;
-        public FormaPagamentoAplicacao(IFormaPagamentoRepositorio formaPagamentoRepositorio)
+        private IUsuarioRepositorio _usuarioRepositorio;
+        public FormaPagamentoAplicacao(IFormaPagamentoRepositorio formaPagamentoRepositorio, IUsuarioRepositorio usuarioRepositorio)
         {
+            _usuarioRepositorio = usuarioRepositorio;
             _formaPagamentoRepositorio = formaPagamentoRepositorio;
         }
 
@@ -28,7 +30,7 @@ namespace CashSmart.Aplicacao
                 formaPagamentoDominio.Nome = formaPagamento.Nome;
                 await _formaPagamentoRepositorio.AtualizarFormaPagamentoAsync(formaPagamentoDominio);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }

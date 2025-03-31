@@ -17,28 +17,17 @@ namespace CashSmart.Repositorio
             return transacao.Id;
         }
 
-        public async Task<Transacao> obterTransacaoAsync(int id){
-            return await _context.Transacoes.FirstOrDefaultAsync(t => t.Id == id);
+        public async Task<IEnumerable<Transacao>> obterTodasTransacoesUsuarioAsync(Guid usuarioId){
+            return await _context.Transacoes.Include(t => t.Categoria)
+                    .Include(t => t.FormaPagamento)
+                    .Where(t => t.UsuarioId == usuarioId).ToListAsync();
         }
 
-        public async Task<IEnumerable<Transacao>> obterTodasTransacoesAsync(){
-            return await _context.Transacoes.ToListAsync();
-        }
-
-        public async Task<IEnumerable<Transacao>> obterTransacoesPorUsuarioAsync(Guid usuarioId){
-            return await _context.Transacoes.Where(t => t.UsuarioId == usuarioId).ToListAsync();
-        }
-
-        public async Task<IEnumerable<Transacao>> obterTransacoesPorCategoriaAsync(int categoriaId){
-            return await _context.Transacoes.Where(t => t.CategoriaId == categoriaId).ToListAsync();
-        }
-
-        public async Task<IEnumerable<Transacao>> obterTransacoesPorFormaPagamentoAsync(int formaPagamentoId){
-            return await _context.Transacoes.Where(t => t.FormaPagamentoId == formaPagamentoId).ToListAsync();
-        }
-
-        public async Task<IEnumerable<Transacao>> obterTransacoesPorPeriodoAsync( DateTime dataInicial, DateTime dataFinal){
-            return await _context.Transacoes.Where( t => t.Data >= dataInicial && t.Data <= dataFinal).ToListAsync();
+        public async Task<Transacao> obterTransacaoPorUsuarioAsync(int id, Guid usuarioId){
+            return await _context.Transacoes
+            .Include(t => t.Categoria)
+            .Include(t => t.FormaPagamento)
+            .FirstOrDefaultAsync(t => t.Id == id && t.UsuarioId == usuarioId);
         }
 
         public async Task AtualizarTransacaoAsync(Transacao transacao){

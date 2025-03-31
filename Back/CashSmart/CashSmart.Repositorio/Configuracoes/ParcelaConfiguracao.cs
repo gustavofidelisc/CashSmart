@@ -11,7 +11,7 @@ namespace CashSmart.Dominio.Entidades
             builder.Property(p => p.Id).HasColumnName("Id").IsRequired();
             builder.Property(p => p.DataAtualizacao).HasColumnName("DataAtualizacao").IsRequired();
             builder.Property(p => p.DataVencimento).HasColumnName("DataVencimento").IsRequired();
-            builder.Property(p => p.Valor).HasColumnName("Valor").HasPrecision(2).IsRequired();
+            builder.Property(p=> p.Valor).HasColumnName("Valor").HasPrecision(24, 2).IsRequired();
             builder.Property(p => p.NumeroDaParcela).HasColumnName("NumeroDaParcela").IsRequired();
             builder.Property(p => p.TransacaoId).HasColumnName("TransacaoID").IsRequired();
 

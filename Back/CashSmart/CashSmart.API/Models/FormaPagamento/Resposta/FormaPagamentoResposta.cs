@@ -1,4 +1,4 @@
-namespace CashSmart.API.Models.FormaPagamento.Resposta
+namespace CashSmart.API.Models.Resposta
 {
     public class FormaPagamentoResposta
     {

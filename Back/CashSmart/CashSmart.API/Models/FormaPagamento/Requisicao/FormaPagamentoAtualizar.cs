@@ -1,4 +1,4 @@
-namespace CashSmart.API.Models.FormaPagamento.Requisicao
+namespace CashSmart.API.Models.Requisicao
 {
     public class FormaPagamentoAtualizar
     {

@@ -1,7 +1,7 @@
 using System.Data.SqlTypes;
-using CashSmart.API.Models.Categoria;
-using CashSmart.API.Models.Categoria.Requisicao;
-using CashSmart.API.Models.Categoria.Resposta;
+using CashSmart.API.Models;
+using CashSmart.API.Models.Requisicao;
+using CashSmart.API.Models.Resposta;
 using CashSmart.API.Models.Exceptions;
 using CashSmart.Dominio.Entidades;
 using CashSmart.Dominio.Enumeradores;

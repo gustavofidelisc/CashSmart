@@ -1,4 +1,4 @@
-namespace CashSmart.API.Models.Categoria.Requisicao
+namespace CashSmart.API.Models.Requisicao
 {
     public class CategoriaAtualizar
     {

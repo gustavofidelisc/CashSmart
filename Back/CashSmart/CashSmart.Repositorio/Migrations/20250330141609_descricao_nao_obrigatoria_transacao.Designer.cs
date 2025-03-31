@@ -4,6 +4,7 @@ using CashSmart.Repositorio.Contexto;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CashSmart.Repositorio.Migrations
 {
     [DbContext(typeof(CashSmartContexto))]
-    partial class CashSmartContextoModelSnapshot : ModelSnapshot
+    [Migration("20250330141609_descricao_nao_obrigatoria_transacao")]
+    partial class descricao_nao_obrigatoria_transacao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,8 +123,8 @@ namespace CashSmart.Repositorio.Migrations
                         .HasColumnName("TransacaoID");
 
                     b.Property<decimal>("Valor")
-                        .HasPrecision(24, 2)
-                        .HasColumnType("decimal(24,2)")
+                        .HasPrecision(2)
+                        .HasColumnType("decimal(2,2)")
                         .HasColumnName("Valor");
 
                     b.HasKey("Id");
@@ -170,8 +173,8 @@ namespace CashSmart.Repositorio.Migrations
                         .HasColumnName("UsuarioId");
 
                     b.Property<decimal>("Valor")
-                        .HasPrecision(24, 2)
-                        .HasColumnType("decimal(24,2)")
+                        .HasPrecision(2)
+                        .HasColumnType("decimal(2,2)")
                         .HasColumnName("Valor");
 
                     b.HasKey("Id");

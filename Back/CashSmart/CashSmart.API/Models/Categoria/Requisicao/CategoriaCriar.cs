@@ -1,4 +1,4 @@
-namespace CashSmart.API.Models.Categoria
+namespace CashSmart.API.Models.Requisicao
 {
     public class CategoriaCriar
     {

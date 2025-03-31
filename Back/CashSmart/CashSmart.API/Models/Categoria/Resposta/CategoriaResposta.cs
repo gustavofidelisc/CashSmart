@@ -1,4 +1,4 @@
-namespace CashSmart.API.Models.Categoria.Resposta
+namespace CashSmart.API.Models.Resposta
 {
     public class CategoriaResposta
     {
