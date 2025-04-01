@@ -1,4 +1,4 @@
-import style from './Home.module.css';
+import style from './Dashboard.module.css';
 
 import { SideBar } from '../../components/Sidebar/Sidebar';
 
