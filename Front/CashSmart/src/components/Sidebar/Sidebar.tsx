@@ -24,7 +24,7 @@ export const SideBar: React.FC<ISideBarProps> = ({children}) =>
                         <SidebarElemento texto='Home' icone={<MdDashboard/>} link='/home'/>
                         <SidebarElemento texto='Transação' icone={<FaPlusCircle/>} link='/transacao'/>
                         <SidebarElemento texto='Categorias' icone={<FaFolderPlus/>} link='/categorias'/>
-                        <SidebarElemento texto='Metódos de pagamento' icone={<FaCreditCard/>} link='/metodo_pagamento'/>
+                        <SidebarElemento texto='Metódos de pagamento' icone={<FaCreditCard/>} link='/Metodos_pagamentos'/>
                     </div>
 
                 </aside>

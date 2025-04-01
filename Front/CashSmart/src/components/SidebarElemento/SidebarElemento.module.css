@@ -1,9 +1,9 @@
 .sidebar_elemento {
     text-decoration: none;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 6fr;
     align-items: center;
     padding-left: 1rem;
-    border-radius: 0.5rem;
 
     & svg {
         margin: 1rem;
@@ -12,12 +12,30 @@
     }
     & h3 {
         padding: 2rem;
-        font-size: 2rem;
+        font-size: 1.5rem;
         color: #000000;
     }
 
     &:hover{
         background-color: rgb(150, 195, 234);
         cursor: pointer;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .sidebar_elemento {
+        display: flex;
+        align-items: center;
+        
+        & h3 {
+            display: none;
+        }
+
+        & svg {
+            margin: 1rem;
+            width: 25px;
+            height: 30px;
+    }
     }
 }
