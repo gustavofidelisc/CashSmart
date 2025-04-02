@@ -1,0 +1,27 @@
+.cardContainer{
+    display: flex;
+    padding: 1rem;
+    width: 100%;
+    border-radius: 2rem;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.cardTitle{
+    display: flex;
+    justify-content: space-between;
+    & h3{
+        font-size: 1.6rem;
+        color: #7d7878;
+        margin-bottom: 1.3rem;
+    }
+
+    & .iconContainer{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+    }
+}
+
+

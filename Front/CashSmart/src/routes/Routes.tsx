@@ -2,7 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes, Outlet } from "react-router-dom
 import { Login } from "../pages/Auth/Login/Login";
 import { Register } from "../pages/Auth/Register/Register";
 import { AutenticacaoProvider, useAutenticacaoContexto } from "../Context/AutenticacaoContexto";
-import { Home } from "../pages/Dashboard/Dashboard";
+import { Dashboard } from "../pages/Dashboard/Dashboard";
 import { Categoria } from "../pages/Categoria/Categoria";
 import { FormaPagamento } from "../pages/FormaPagamento/FormaPagamento";
 
@@ -31,7 +31,7 @@ export const Rotas: React.FC = () => {
 
                     {/* Rotas privadas */}
                     <Route element={<RotasPrivadas />}>
-                        <Route path="/dashboard" element={<Home/>} />
+                        <Route path="/dashboard" element={<Dashboard/>} />
                         <Route path="/Categorias" element={<Categoria/>} />
                         <Route path="/Metodos_pagamentos" element={<FormaPagamento/>} />
                     </Route>

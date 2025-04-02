@@ -21,7 +21,7 @@ namespace CashSmart.API.Controllers
             _transacaoAplicacao = transacaoAplicacao;
         }
         [Authorize]
-        [HttpPost("adicionar")]
+        [HttpPost("Criar")]
         public async Task<IActionResult> AdicionarTransacao([FromBody] TransacaoCriar transacao)
         {
             try
@@ -63,7 +63,7 @@ namespace CashSmart.API.Controllers
         }
 
         [Authorize]
-        [HttpGet("listar")]
+        [HttpGet("Listar")]
         public async Task<IActionResult> ListarTodasTransacoes()
         {
             try
@@ -97,7 +97,7 @@ namespace CashSmart.API.Controllers
         }   
 
         [Authorize]
-        [HttpGet("listar/{id}")]
+        [HttpGet("Listar/{id}")]
         public async Task<IActionResult> ListarTransacaoPorId([FromRoute] int id)
         {
             try

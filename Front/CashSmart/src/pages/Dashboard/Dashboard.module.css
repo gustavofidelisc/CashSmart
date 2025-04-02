@@ -1,3 +1,76 @@
-.container{
-    
+.Header{
+    margin: 5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    & h2 {
+        font-size: 2.5rem;
+    }
+
+    & button {
+        padding: 0.5rem;
+        border-radius: 5px;
+        border: #ccc 0.1rem solid;
+        font-size: 1.6rem;
+        background-color: #4caa54;
+        color: rgb(255, 255, 255);
+        cursor: pointer;
+    }
+}
+
+.tabela {
+    gap: 25px;;
+    font-size: 1.6rem;
+    margin-top: 2rem;
+    & .thead tr th{
+        background-color: #f4f4f4;
+        font-weight: bold;
+        font-size: 1.8rem;
+    }
+
+    & .tbody tr{
+        background-color: #007bff;
+    }
+
+
+    & tr td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid #ccc;
+        font-size: 1.6rem;
+    }
+    & th {
+        background-color: #f4f4f4;
+    }
+    & tr:hover {
+        background-color: #f1f1f1;
+    }
+}
+
+.cards{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.cardDate{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media (min-width: 600px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas */
+    }
+}
+
+@media (min-width: 1200px) {
+    .cards {
+        grid-template-columns: repeat(4, 1fr); /* 4 colunas */
+    }
 }
