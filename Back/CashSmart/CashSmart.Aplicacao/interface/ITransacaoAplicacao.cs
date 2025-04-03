@@ -13,6 +13,8 @@ namespace CashSmart.Aplicacao.Interface
         public Task AtualizarTransacaoAsync(Transacao transacao, Guid usuarioId);
         public Task<TransacaoInformacoes> obterInformacoesTransacoesPorData(Guid usuarioId, DateTime  dataIncial, DateTime  dataFinal);
         public Task<SaldoUsuario> obterSaldoUsuario(Guid usuarioId, DateTime dataFinal);
+        public Task<GraficoInformacoes> obterValorTransacoesPorCategoriaNomes(Guid usuarioId, DateTime dataInicial, DateTime dataFinal);
+
 
     }
 }

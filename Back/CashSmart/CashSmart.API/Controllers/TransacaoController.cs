@@ -207,6 +207,29 @@ namespace CashSmart.API.Controllers
             }
         }
 
+        [Authorize]
+        [HttpGet("GraficoTransacoesPorCategoriaNomes")]
+        public async Task<IActionResult> obterValorTransacoesPorCategoriaNomes([FromQuery] DateTime dataInicial, [FromQuery]DateTime dataFinal){
+            try
+            {
+                var informacoes = await _transacaoAplicacao.obterValorTransacoesPorCategoriaNomes(this.ObterUsuarioIdDoHeader(), dataInicial, dataFinal);
+                return Ok(informacoes);
+            }
+            catch (SqlNullValueException ex)
+            {
+                return NotFound(new ExceptionResposta{
+                    Mensagem = ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResposta{
+                    Mensagem = ex.Message
+                });
+            }
+        }
+
+            
 
     }
 }

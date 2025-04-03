@@ -128,8 +128,18 @@ namespace CashSmart.Aplicacao
             return informacoes;
         }
 
-
-
+        public async Task<GraficoInformacoes> obterValorTransacoesPorCategoriaNomes(Guid usuarioId, DateTime dataInicial, DateTime dataFinal){
+            var informacoes = await _transacaoRepositorio.obterValorTransacoesPorCategoriaNomes(usuarioId, dataInicial, dataFinal);
+            if (informacoes == null)
+            {
+                return new GraficoInformacoes {
+                    CategoriaNomes = new string[0],
+                    Valores = new decimal[0],
+                    TipoTransacao = new int[0]
+                };
+            }
+            return informacoes;
+        }
         #region 
 
         private async Task VerificarTransacao(Transacao transacao)

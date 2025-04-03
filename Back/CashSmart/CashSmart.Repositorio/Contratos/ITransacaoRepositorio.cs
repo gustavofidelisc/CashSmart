@@ -16,5 +16,6 @@ namespace CashSmart.Repositorio.Contratos
         public Task<TransacaoInformacoes> obterInformacoesTransacoesPorData(Guid usuarioId, DateTime  dataIncial, DateTime  dataFinal);
         public Task<SaldoUsuario> obterSaldoUsuario(Guid usuarioId, DateTime dataFinal);
 
+        public Task<GraficoInformacoes> obterValorTransacoesPorCategoriaNomes (Guid usuarioId, DateTime dataInicial, DateTime dataFinal);
     }
 }

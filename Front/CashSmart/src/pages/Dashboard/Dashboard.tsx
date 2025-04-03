@@ -178,7 +178,7 @@ export const Dashboard: React.FC = () => {
         <CardSaldo icon={<FaArrowTrendDown/>} saldo={despesas} title="Despesas do Mês"/>
       </div>
 
-      
+      <Grafico labels={['opa,eita']} series={[1,6]}/>
 
       <Table responsive className={style.tabela}>
         <thead className={style.thead}>

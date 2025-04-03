@@ -104,7 +104,37 @@ namespace CashSmart.Repositorio
             catch (Exception ex)
             {
                 // Logar o erro
-                throw new Exception("Erro ao obter informações de transações por data.", ex);
+                throw new Exception("Erro ao obter informações de transações por data." + ex.Message, ex);
+            }
+        }
+
+        public async Task<GraficoInformacoes> obterValorTransacoesPorCategoriaNomes (Guid usuarioId, DateTime dataInicial, DateTime dataFinal)
+        {
+            try{
+                var informacoes = await _context.Database.GetDbConnection()
+            .QueryAsync<GraficoInformacoesResposta>(
+                "SP_INFORMACOES_GRAFICO_MES", 
+                new  
+                {
+                    ID_USUARIO = usuarioId,
+                    DATA_INICIAL = dataInicial,
+                    DATA_FINAL = dataFinal
+                }, 
+                commandType: CommandType.StoredProcedure);
+
+            var listaInformacoes = informacoes.ToList();
+
+            return new GraficoInformacoes
+            {
+                CategoriaNomes = listaInformacoes.Select(i => i.Nomes).ToArray(),
+                Valores = listaInformacoes.Select(i => i.Valores).ToArray(),
+                TipoTransacao = listaInformacoes.Select(i => i.TipoTransacao).ToArray()
+            };
+            }
+            catch (Exception ex)
+            {
+                // Logar o erro
+                throw new Exception("Erro ao obter informações de transações por data." +ex.Message, ex);
             }
         }
     }
