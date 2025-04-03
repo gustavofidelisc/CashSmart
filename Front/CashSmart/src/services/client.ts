@@ -13,3 +13,25 @@ export const HTTPClient = axios.create({
     ...(parsedToken && { Authorization: `Bearer ${parsedToken}` }) // Só adiciona se existir
   }
 });
+
+
+// Interceptor para tratar erros
+HTTPClient.interceptors.response.use(
+  (response) => response, // Se a resposta for bem-sucedida, apenas retorne
+  (error) => {
+      // Tratamento centralizado de erros
+      if (error.response) {
+          // Erros 4xx/5xx (como 400, 401, 500)
+          const errorMessage = error.response.data?.message || "Erro desconhecido na requisição";
+          return Promise.reject(new Error(errorMessage));
+      } else if (error.request) {
+          // A requisição foi feita, mas não houve resposta (ex: timeout)
+          return Promise.reject(new Error("Sem resposta do servidor"));
+      } else {
+          // Erro genérico (ex: erro de configuração do Axios)
+          return Promise.reject(error);
+      }
+  }
+);
+
+export default HTTPClient;

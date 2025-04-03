@@ -161,6 +161,52 @@ namespace CashSmart.API.Controllers
             }
         }
 
+         [Authorize]
+        [HttpGet("InformacoesTransacoesPorData")]
+        public async Task<IActionResult> ObterInformacoesTransacoesPorData([FromQuery] DateTime dataInicial, [FromQuery] DateTime dataFinal)
+        {
+            try
+            {
+                var informacoes = await _transacaoAplicacao.obterInformacoesTransacoesPorData(this.ObterUsuarioIdDoHeader(), dataInicial, dataFinal);
+                return Ok(informacoes);
+            }
+            catch (SqlNullValueException ex)
+            {
+                return NotFound(new ExceptionResposta{
+                    Mensagem = ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResposta{
+                    Mensagem = ex.Message
+                });
+            }
+        }
+
+        [Authorize]
+        [HttpGet("SaldoUsuario")]
+        public async Task<IActionResult> ObterSaldoUsuario( [FromQuery] DateTime dataFinal)
+        {
+            try
+            {
+                var saldo = await _transacaoAplicacao.obterSaldoUsuario(this.ObterUsuarioIdDoHeader(), dataFinal);
+                return Ok(saldo);
+            }
+            catch (SqlNullValueException ex)
+            {
+                return NotFound(new ExceptionResposta{
+                    Mensagem = ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResposta{
+                    Mensagem = ex.Message
+                });
+            }
+        }
+
 
     }
 }

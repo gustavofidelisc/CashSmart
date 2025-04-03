@@ -1,3 +1,4 @@
+import dayjs, { Dayjs } from "dayjs";
 import { HTTPClient } from "./client";
 
 export interface ITransacaoCriar {
@@ -27,6 +28,15 @@ export interface ITransacaoResposta {
     nomeFormaPagamento: string;
 }
 
+export interface ISaldoUsuario {
+    saldo: number;
+}
+
+export interface ITransacaoInformacoesPorData {
+    receitas: number,
+    despesas: number,
+}
+
 export const transacaoAPI = {
     async listarTransacoes(): Promise<ITransacaoResposta[]> {
         const response = await HTTPClient.get<ITransacaoResposta[]>('/api/Transacao/Listar');
@@ -38,5 +48,25 @@ export const transacaoAPI = {
     },
     async atualizarTransacao(transacao: ITransacaoAtualizar): Promise<void> {
         await HTTPClient.put(`/api/Transacao/Atualizar`, transacao);
+    },
+    async buscarInformacoesTransacoesPorData(datainicial: Dayjs): Promise<ITransacaoInformacoesPorData> {
+        const dataFinal = datainicial.endOf('month');
+        
+        // Usando UTC para ambas as datas
+        const response = await HTTPClient.get<ITransacaoInformacoesPorData>(
+            `/api/Transacao/InformacoesTransacoesPorData?` +
+            `dataInicial=${datainicial.format('YYYY-MM-DDTHH:mm:ss[Z]')}` +
+            `&dataFinal=${dataFinal.format('YYYY-MM-DDTHH:mm:ss[Z]')}`
+        );
+        return response.data;
+    },
+
+    async obterSaldoUsuario(dataAtual: Dayjs): Promise<ISaldoUsuario> {
+        const dataFinal = dataAtual.endOf('month');
+
+        const response = await HTTPClient.get<ISaldoUsuario>(`/api/Transacao/SaldoUsuario?` +
+            `dataFinal=${dataFinal.format('YYYY-MM-DDTHH:mm:ss[Z]')}` 
+        );
+        return response.data;
     }
 }

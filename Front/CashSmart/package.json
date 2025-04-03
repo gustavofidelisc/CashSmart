@@ -10,10 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "apexcharts": "^4.5.0",
     "axios": "^1.8.4",
     "bootstrap": "^5.3.3",
+    "dayjs": "^1.11.13",
     "frelaway": "file:",
     "react": "^19.0.0",
+    "react-apexcharts": "^1.7.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",
     "react-icons": "^5.4.0",

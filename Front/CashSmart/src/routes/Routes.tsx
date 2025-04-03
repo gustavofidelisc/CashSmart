@@ -5,6 +5,7 @@ import { AutenticacaoProvider, useAutenticacaoContexto } from "../Context/Autent
 import { Dashboard } from "../pages/Dashboard/Dashboard";
 import { Categoria } from "../pages/Categoria/Categoria";
 import { FormaPagamento } from "../pages/FormaPagamento/FormaPagamento";
+import { SidebarProvider } from "../Context/SidebarContexto";
 
 // Layout para rotas públicas (visível apenas para usuários NÃO autenticados)
 const RotasPublicas: React.FC = () => {
@@ -21,6 +22,7 @@ const RotasPrivadas: React.FC = () => {
 export const Rotas: React.FC = () => {
     return (
         <AutenticacaoProvider>
+            <SidebarProvider>
             <BrowserRouter>
                 <Routes>
                     {/* Rotas públicas */}
@@ -31,16 +33,17 @@ export const Rotas: React.FC = () => {
 
                     {/* Rotas privadas */}
                     <Route element={<RotasPrivadas />}>
-                        <Route path="/dashboard" element={<Dashboard/>} />
+                        <Route path="/Dashboard" element={<Dashboard/>} />
                         <Route path="/Categorias" element={<Categoria/>} />
                         <Route path="/Metodos_pagamentos" element={<FormaPagamento/>} />
                     </Route>
                     
 
                     {/* Redirecionamento de rotas desconhecidas */}
-                    <Route path="*" element={<Navigate to="/dashboard" replace />} />
+                    <Route path="*" element={<Navigate to="/Dashboard" replace />} />
                 </Routes>
             </BrowserRouter>
+            </SidebarProvider>
         </AutenticacaoProvider>
     );
 };

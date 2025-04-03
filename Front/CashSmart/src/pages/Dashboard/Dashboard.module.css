@@ -71,6 +71,6 @@
 
 @media (min-width: 1200px) {
     .cards {
-        grid-template-columns: repeat(4, 1fr); /* 4 colunas */
+        grid-template-columns: repeat(3, 1fr); /* 4 colunas */
     }
 }

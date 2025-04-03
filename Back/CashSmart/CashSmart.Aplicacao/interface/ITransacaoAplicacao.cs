@@ -1,4 +1,5 @@
 using CashSmart.Dominio.Entidades;
+using CashSmart.Repositorio.Models;
 
 namespace CashSmart.Aplicacao.Interface
 {
@@ -10,5 +11,8 @@ namespace CashSmart.Aplicacao.Interface
         public Task<Transacao> ObterTransacaoPorUsuarioAsync(int id, Guid usuarioId);
 
         public Task AtualizarTransacaoAsync(Transacao transacao, Guid usuarioId);
+        public Task<TransacaoInformacoes> obterInformacoesTransacoesPorData(Guid usuarioId, DateTime  dataIncial, DateTime  dataFinal);
+        public Task<SaldoUsuario> obterSaldoUsuario(Guid usuarioId, DateTime dataFinal);
+
     }
 }

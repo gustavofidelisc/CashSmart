@@ -4,6 +4,7 @@ using CashSmart.Dominio.Entidades;
 using CashSmart.Dominio.Enumeradores;
 using CashSmart.Repositorio;
 using CashSmart.Repositorio.Contratos;
+using CashSmart.Repositorio.Models;
 
 namespace CashSmart.Aplicacao
 {
@@ -104,10 +105,37 @@ namespace CashSmart.Aplicacao
                 throw ex;
             }
         }
+
+        public async Task<TransacaoInformacoes> obterInformacoesTransacoesPorData(Guid usuarioId, DateTime dataIncial, DateTime dataFinal){
+            var informacoes = await _transacaoRepositorio.obterInformacoesTransacoesPorData(usuarioId, dataIncial, dataFinal);
+            if (informacoes == null)
+            {
+                return new TransacaoInformacoes {
+                    Receitas = 0,
+                    Despesas = 0
+                };
+            }
+            return informacoes;
+        }
+        public async Task<SaldoUsuario> obterSaldoUsuario(Guid usuarioId, DateTime dataFinal){
+            var informacoes = await _transacaoRepositorio.obterSaldoUsuario(usuarioId, dataFinal);
+            if (informacoes == null)
+            {
+                return new SaldoUsuario {
+                    Saldo = 0
+                };
+            }
+            return informacoes;
+        }
+
+
+
         #region 
 
         private async Task VerificarTransacao(Transacao transacao)
         {
+            try{
+
             var formaPagamento = await _formaPagamentoRepositorio.ObterFormaPagamentoPorIdAsync(transacao.FormaPagamentoId, transacao.UsuarioId);
             if (formaPagamento == null)
             {
@@ -123,9 +151,13 @@ namespace CashSmart.Aplicacao
                 throw new SqlNullValueException("Data inválida.");
             }
 
+            }catch (Exception ex)
+            {
+                throw ex;
+            }
+
 
         }
-
 
         #endregion
 

@@ -1,4 +1,4 @@
-import { Button, Form, InputGroup } from 'react-bootstrap';
+import { Alert, Button, Form, InputGroup } from 'react-bootstrap';
 import style from './Login.module.css';
 import { use, useEffect, useState } from 'react';
 import { AcessHeader } from '../../../components/AcessHeader/AcessHeader';
@@ -17,6 +17,21 @@ export const Login: React.FC = () => {
 
 
     const { login } = useAutenticacaoContexto();
+
+    const handleLogin = async(e: React.FormEvent) => {
+        try {
+            e.preventDefault();
+            login(email, senha);
+        }
+        catch (error) {
+            return(
+                <Alert key='danger' variant='danger'>
+                    This is a danger alert—check it out!
+                </Alert>
+
+            )
+        }
+    }
     
     return (
         <div className={background.container}>
@@ -30,10 +45,7 @@ export const Login: React.FC = () => {
                         <span className={style.color_blue}>Smart</span>
                     </h2>
                     <p>Faça login para organizar suas financias</p>
-                    <Form className={style.form} onSubmit={(e) => {
-                        e.preventDefault();
-                        login(email, senha)
-                    }}>
+                    <Form className={style.form} onSubmit={handleLogin}>
                         <Form.Group className="mb-3" controlId="formEmail">
                             <InputGroup size="lg" className={style.inputGroup}>
                                 <InputGroup.Text id={style.email}>

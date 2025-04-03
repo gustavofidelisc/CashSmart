@@ -1,4 +1,5 @@
 using CashSmart.Dominio.Entidades;
+using CashSmart.Repositorio.Models;
 
 namespace CashSmart.Repositorio.Contratos
 {
@@ -12,5 +13,8 @@ namespace CashSmart.Repositorio.Contratos
         public Task AtualizarTransacaoAsync(Transacao transacao);
 
         public Task RemoverTransacaoAsync(Transacao transacao);
+        public Task<TransacaoInformacoes> obterInformacoesTransacoesPorData(Guid usuarioId, DateTime  dataIncial, DateTime  dataFinal);
+        public Task<SaldoUsuario> obterSaldoUsuario(Guid usuarioId, DateTime dataFinal);
+
     }
 }

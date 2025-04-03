@@ -20,9 +20,7 @@ export const CardSaldo: React.FC<ICardSaldoProps> = ({title, icon, saldo}) => {
           </div>
         </Card.Title>
         <Card.Text className={style.cardText}>
-          <h2>
             {`R$ ${saldo.toFixed(2)}`}
-          </h2>
         </Card.Text>
       </Card.Body>
     </Card>
