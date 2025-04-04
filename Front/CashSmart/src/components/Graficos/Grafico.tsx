@@ -23,6 +23,7 @@ interface ChartOptions {
   legend?: {
     position?: 'top' | 'right' | 'bottom' | 'left';
     [key: string]: any; // Para outras propriedades opcionais do legend
+    
   };
   // Adicione outras propriedades de options conforme necessário
 }

@@ -3,7 +3,7 @@
     padding: 1rem;
     width: 100%;
     
-    border-radius: 2rem;
+    border-radius: 100rem;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -13,7 +13,7 @@
     justify-content: space-between;
     & h3{
         font-size: 1.6rem;
-        color: #7d7878;
+        color: #5b5757;
         margin-bottom: 1.3rem;
     }
 
@@ -23,6 +23,10 @@
         justify-content: center;
         font-size: 2rem;
     }
+}
+
+.cardText{
+    font-size: 1.6rem;
 }
 
 

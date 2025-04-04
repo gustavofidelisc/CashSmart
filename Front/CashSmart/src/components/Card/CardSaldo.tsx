@@ -10,7 +10,7 @@ interface ICardSaldoProps {
 export const CardSaldo: React.FC<ICardSaldoProps> = ({title, icon, saldo}) => {
   return (
     <Card className={style.cardContainer}>
-      <Card.Body>
+      <Card.Body className={style.cardBody}>
         <Card.Title className={style.cardTitle}>
           <h3>
             {title}
@@ -20,7 +20,7 @@ export const CardSaldo: React.FC<ICardSaldoProps> = ({title, icon, saldo}) => {
           </div>
         </Card.Title>
         <Card.Text className={style.cardText}>
-            {`R$ ${saldo.toFixed(2)}`}
+            <span>{`R$ ${saldo.toFixed(2)}`}</span>
         </Card.Text>
       </Card.Body>
     </Card>

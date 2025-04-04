@@ -18,6 +18,10 @@
     }
 }
 
+.container{
+    padding: 2rem;
+}
+
 .tabela {
     gap: 25px;;
     font-size: 1.6rem;
@@ -51,17 +55,200 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1rem;
-    margin-top: 1rem;
+    margin-top: 2.5rem;
     flex-wrap: wrap;
     justify-content: center;
-    padding: 1rem;
 }
+
 
 .cardDate{
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
+.cardDate .dataAtual {
+    font-size: 1.6rem;
+    color: #010101;
+}	
+.cardDate .icon {
+    font-size: 2.5rem;
+    color: #4caa54;
+    cursor: pointer;
+}	
+
+
+.semDados {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+    color: #666;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin: 20px 0;
+  }
+  
+  .semDados h3 {
+    margin-top: 15px;
+    color: #6c757d;
+}
+
+.grafico{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+.header_grafico
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.header_grafico .grafico_buttons{
+    display: flex;
+    gap: 1rem;
+}
+
+/* Dashboard.module.css */
+
+/* Container principal */
+.tabela {
+    width: 100%;
+    margin-top: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+  }
+  
+  .tabela h2 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+  }
+  
+  /* Tabela */
+  .tabela > div {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .tabela table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  /* Cabeçalho */
+  .tabela .thead {
+    background-color: #f8f9fa;
+  }
+  
+  .tabela .thead tr th {
+    padding: 1.2rem 1.5rem;
+    text-align: left;
+    font-weight: 600;
+    color: #555;
+    font-size: 1.4rem;
+    border-bottom: 2px solid #eee;
+  }
+  
+  /* Linhas */
+  .tabela .tbody tr {
+    border-bottom: 1px solid #f1f1f1;
+    transition: background-color 0.2s;
+  }
+  
+  .tabela .tbody tr:last-child {
+    border-bottom: none;
+  }
+  
+  .tabela .tbody tr:hover {
+    background-color: #f9f9f9;
+  }
+  
+  /* Células */
+  .tabela .tbody tr td {
+    padding: 1.5rem;
+    vertical-align: middle;
+  }
+  
+  /* Estilo para descrição */
+  .tabela .tbody tr td:first-child {
+    font-weight: 500;
+    color: #333;
+  }
+  
+  /* Estilo para valores */
+  .receita {
+    color: #28a745;
+    font-weight: 600;
+  }
+  
+  .despesa {
+    color: #dc3545;
+    font-weight: 600;
+  }
+  
+  .arrow_down, .arrow_up {
+    font-size: 2.5rem;
+    border-radius: 2rem;
+    padding: 0.5rem;
+    margin-left: 0.5rem;
+  }
+
+  .arrow_down {
+    background-color: rgba(255, 0, 0, 0.403);
+    color: #dc3545;
+  }
+
+  .arrow_up {
+    background-color: rgba(0, 255, 0, 0.403);
+    color: #28a745;
+  }
+
+  .cardBody{
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    cursor: pointer;
+    &:hover{
+        background-color: #f1f1f1;
+    }
+  }
+
+  .cardInfo{
+    align-items: center;
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 0rem;
+  }
+
+  .cardText .text{
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 0rem;
+
+  }
+
+.card_container{
+    border-radius: 2rem;
+}
+
+
+   
 
 @media (min-width: 600px) {
     .cards {

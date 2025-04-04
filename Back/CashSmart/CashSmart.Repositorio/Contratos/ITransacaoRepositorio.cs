@@ -7,6 +7,7 @@ namespace CashSmart.Repositorio.Contratos
     {
         public Task<int> AdicionarTransacaoAsync(Transacao transacao);
         public Task<IEnumerable<Transacao>> obterTodasTransacoesUsuarioAsync(Guid usuarioId);
+        public Task<IEnumerable<Transacao>> obterTodasTransacoesUsuarioPorDataAsync(Guid usuarioId, DateTime dataInicial, DateTime dataFinal);
 
         public Task<Transacao> obterTransacaoPorUsuarioAsync(int id,Guid usuarioId);
 
@@ -16,6 +17,6 @@ namespace CashSmart.Repositorio.Contratos
         public Task<TransacaoInformacoes> obterInformacoesTransacoesPorData(Guid usuarioId, DateTime  dataIncial, DateTime  dataFinal);
         public Task<SaldoUsuario> obterSaldoUsuario(Guid usuarioId, DateTime dataFinal);
 
-        public Task<GraficoInformacoes> obterValorTransacoesPorCategoriaNomes (Guid usuarioId, DateTime dataInicial, DateTime dataFinal);
+        public Task<GraficoInformacoes> obterInformacoesGraficoPelaCategoria (Guid usuarioId, DateTime dataInicial, DateTime dataFinal, int tipoTransacaoId);
     }
 }

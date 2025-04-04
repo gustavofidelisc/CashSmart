@@ -37,9 +37,24 @@ export interface ITransacaoInformacoesPorData {
     despesas: number,
 }
 
+export interface ItransacaoInformacoesGrafico {
+    categoriaNomes: string[];
+    valores: number[];
+    tipoTransacao: number[];
+}
+
 export const transacaoAPI = {
     async listarTransacoes(): Promise<ITransacaoResposta[]> {
         const response = await HTTPClient.get<ITransacaoResposta[]>('/api/Transacao/Listar');
+        return response.data;
+    },
+
+    async listarTransacoesPorData(dataInicial: Dayjs): Promise<ITransacaoResposta[]> {
+        const dataFinal = dataInicial.endOf('month');
+        const response = await HTTPClient.get<ITransacaoResposta[]>('/api/Transacao/Listar' + 
+            `?dataInicial=${dataInicial.format('YYYY-MM-DDTHH:mm:ss[Z]')}` +
+            `&dataFinal=${dataFinal.format('YYYY-MM-DDTHH:mm:ss[Z]')}`
+        );
         return response.data;
     },
     async criarTransacao(transacao: ITransacaoCriar): Promise<{id: number}> {
@@ -66,6 +81,19 @@ export const transacaoAPI = {
 
         const response = await HTTPClient.get<ISaldoUsuario>(`/api/Transacao/SaldoUsuario?` +
             `dataFinal=${dataFinal.format('YYYY-MM-DDTHH:mm:ss[Z]')}` 
+        );
+        return response.data;
+    },
+
+    async obterInformacoesGraficoPorData(dataInicial: Dayjs, tipoTransacao:number): Promise<ItransacaoInformacoesGrafico> {
+        const dataFinal = dataInicial.endOf('month');
+
+        
+        const response = await HTTPClient.get<ItransacaoInformacoesGrafico>(
+            `/api/Transacao/obterInformacoesGraficoPelaCategoria?` +
+            `dataInicial=${dataInicial.format('YYYY-MM-DDTHH:mm:ss[Z]')}` +
+            `&dataFinal=${dataFinal.format('YYYY-MM-DDTHH:mm:ss[Z]')}`+
+            `&tipoTransacaoId=${tipoTransacao}`
         );
         return response.data;
     }

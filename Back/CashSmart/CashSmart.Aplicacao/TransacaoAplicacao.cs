@@ -48,12 +48,16 @@ namespace CashSmart.Aplicacao
             }
         }
 
-        public async Task<IEnumerable<Transacao>> ObterTransacoesUsuarioAsync(Guid usuarioId) {
-            var transacoes = await _transacaoRepositorio.obterTodasTransacoesUsuarioAsync(usuarioId);
-            if (transacoes == null)
+        public async Task<IEnumerable<Transacao>> ObterTransacoesUsuarioAsync(Guid usuarioId, DateTime dataInicial, DateTime dataFinal) {
+            if (dataInicial == DateTime.MinValue || dataFinal == DateTime.MinValue)
             {
-                throw new SqlNullValueException("Transações não encontradas.");
+                return  await _transacaoRepositorio.obterTodasTransacoesUsuarioAsync(usuarioId);;
             }
+            if (dataInicial > dataFinal)
+            {
+                throw new SqlNullValueException("Data inicial não pode ser maior que a data final.");
+            }
+            var transacoes = await _transacaoRepositorio.obterTodasTransacoesUsuarioPorDataAsync(usuarioId, dataInicial, dataFinal);
             return transacoes;
         }
 
@@ -128,8 +132,8 @@ namespace CashSmart.Aplicacao
             return informacoes;
         }
 
-        public async Task<GraficoInformacoes> obterValorTransacoesPorCategoriaNomes(Guid usuarioId, DateTime dataInicial, DateTime dataFinal){
-            var informacoes = await _transacaoRepositorio.obterValorTransacoesPorCategoriaNomes(usuarioId, dataInicial, dataFinal);
+        public async Task<GraficoInformacoes> obterInformacoesGraficoPelaCategoria(Guid usuarioId, DateTime dataInicial, DateTime dataFinal, int tipoTransacaoId){
+            var informacoes = await _transacaoRepositorio.obterInformacoesGraficoPelaCategoria(usuarioId, dataInicial, dataFinal, tipoTransacaoId);
             if (informacoes == null)
             {
                 return new GraficoInformacoes {

@@ -156,12 +156,12 @@
 
 /* Ajuste do conteúdo principal */
 .conteudo {
-    margin-left: 18%;
+    margin-left: 20%;
     transition: margin-left 0.3s ease-in-out;
 }
 
 .sidebar_collapsed + .conteudo {
-    margin-left: 5%;
+    margin-left: 7%;
 }
 
 
@@ -198,6 +198,10 @@
 
     .sidebar_collapsed {
         width: 0;
+    }
+
+    .sidebar_collapsed + .conteudo {
+        margin-left: 0%;
     }
 
     /* Adiciona um fundo escuro quando a sidebar está aberta */

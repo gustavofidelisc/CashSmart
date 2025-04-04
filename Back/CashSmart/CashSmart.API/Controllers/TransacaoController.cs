@@ -64,11 +64,11 @@ namespace CashSmart.API.Controllers
 
         [Authorize]
         [HttpGet("Listar")]
-        public async Task<IActionResult> ListarTodasTransacoes()
+        public async Task<IActionResult> ListarTodasTransacoes([FromQuery] DateTime dataInicial, [FromQuery] DateTime dataFinal)
         {
             try
             {
-                var transacoes = await _transacaoAplicacao.ObterTransacoesUsuarioAsync(this.ObterUsuarioIdDoHeader());
+                var transacoes = await _transacaoAplicacao.ObterTransacoesUsuarioAsync(this.ObterUsuarioIdDoHeader(), dataInicial, dataFinal);
 
                 var transacoesResposta = transacoes.Select(item => new TransacaoResposta
                 {
@@ -208,11 +208,11 @@ namespace CashSmart.API.Controllers
         }
 
         [Authorize]
-        [HttpGet("GraficoTransacoesPorCategoriaNomes")]
-        public async Task<IActionResult> obterValorTransacoesPorCategoriaNomes([FromQuery] DateTime dataInicial, [FromQuery]DateTime dataFinal){
+        [HttpGet("obterInformacoesGraficoPelaCategoria")]
+        public async Task<IActionResult> obterInformacoesGraficoPelaCategoria([FromQuery] DateTime dataInicial, [FromQuery]DateTime dataFinal, [FromQuery] int tipoTransacaoId){
             try
             {
-                var informacoes = await _transacaoAplicacao.obterValorTransacoesPorCategoriaNomes(this.ObterUsuarioIdDoHeader(), dataInicial, dataFinal);
+                var informacoes = await _transacaoAplicacao.obterInformacoesGraficoPelaCategoria(this.ObterUsuarioIdDoHeader(), dataInicial, dataFinal, tipoTransacaoId);
                 return Ok(informacoes);
             }
             catch (SqlNullValueException ex)

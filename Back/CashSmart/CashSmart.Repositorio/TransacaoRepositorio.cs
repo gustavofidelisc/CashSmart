@@ -26,6 +26,14 @@ namespace CashSmart.Repositorio
                     .Where(t => t.UsuarioId == usuarioId).ToListAsync();
         }
 
+        public async Task<IEnumerable<Transacao>> obterTodasTransacoesUsuarioPorDataAsync(Guid usuarioId, DateTime dataInicial, DateTime dataFinal){
+            return await _context.Transacoes.Include(t => t.Categoria)
+                    .Include(t => t.FormaPagamento)
+                    .OrderByDescending(t => t.Data)
+                    .Where(t => t.UsuarioId == usuarioId && t.Data >= dataInicial && t.Data <= dataFinal).ToListAsync();
+        }
+
+
         public async Task<Transacao> obterTransacaoPorUsuarioAsync(int id, Guid usuarioId){
             return await _context.Transacoes
             .Include(t => t.Categoria)
@@ -108,7 +116,7 @@ namespace CashSmart.Repositorio
             }
         }
 
-        public async Task<GraficoInformacoes> obterValorTransacoesPorCategoriaNomes (Guid usuarioId, DateTime dataInicial, DateTime dataFinal)
+        public async Task<GraficoInformacoes> obterInformacoesGraficoPelaCategoria (Guid usuarioId, DateTime dataInicial, DateTime dataFinal, int tipoTransacaoId)
         {
             try{
                 var informacoes = await _context.Database.GetDbConnection()
@@ -118,7 +126,8 @@ namespace CashSmart.Repositorio
                 {
                     ID_USUARIO = usuarioId,
                     DATA_INICIAL = dataInicial,
-                    DATA_FINAL = dataFinal
+                    DATA_FINAL = dataFinal,
+                    TIPO_TRANSACAO = tipoTransacaoId
                 }, 
                 commandType: CommandType.StoredProcedure);
 
