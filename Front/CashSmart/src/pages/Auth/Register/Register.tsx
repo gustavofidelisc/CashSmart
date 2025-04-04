@@ -22,10 +22,13 @@ export const Register: React.FC = () => {
     async function Registrar(){
         try {
             const response = await AutenticacaoAPI.Registrar(nome, email, senha, confirmeSenha);
+            navigate('/login');
         } catch (error) {
             console.error("Erro ao cadastrar:", error);
         }
     }
+    
+    const navigate = useNavigate();
 
     return (
         <div className={background.container}>

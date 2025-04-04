@@ -13,13 +13,18 @@ import {
   ICategoriaResponse,
 } from "../../services/categoriaAPI";
 
+import { GoPencil } from "react-icons/go";
+import { AiFillDelete } from "react-icons/ai";
+
 export const Categoria: React.FC = () => {
   const [nome, setNome] = useState<string>("");
   const [tipo, setTipo] = useState<number>(0);
   const [categoriaAtualizar, setCategoriaAtualizar] = useState<ICategoriaAtualizar | null>(null);
+  const [categoriaDeletar, setCategoriaDeletar] = useState<ICategoriaResponse | null>(null);
 
   const [showModalCriar, setShowModalCriar] = useState(false);
   const [showModalAtualizar, setShowModalAtualizar] = useState(false);
+  const [showModalDeletar, setShowModalDeletar] = useState(false);
 
   const [tipoTransacao, setTipoTransacao] = useState<ITipoTransacaoResposta[]>([]);
   const [categorias, setCategorias] = useState<ICategoriaResponse[]>([]);
@@ -71,9 +76,19 @@ export const Categoria: React.FC = () => {
     setShowModalAtualizar(true);
   };
 
+  const mostrarModalDeletar = (categoria: ICategoriaResponse) => {
+    setCategoriaDeletar(categoria);
+    setShowModalDeletar(true);
+  };
+
   const fecharModalAtualizar = () => {
     setCategoriaAtualizar(null);
     setShowModalAtualizar(false);
+  };
+
+  const fecharModalDeletar = () => {
+    setCategoriaDeletar(null);
+    setShowModalDeletar(false);
   };
 
   const atualizarCategoria = async () => {
@@ -88,6 +103,19 @@ export const Categoria: React.FC = () => {
       setShowModalAtualizar(false);
     } catch (error) {
       console.error("Erro ao atualizar categoria:", error);
+    }
+  };
+
+  const deletarCategoria = async () => {
+    if (!categoriaDeletar) return;
+
+    try {
+      await categoriaAPI.deletarCategoria(categoriaDeletar.id);
+      listarCategorias();
+      setShowModalDeletar(false);
+    } catch (error) {
+      console.error("Erro ao deletar categoria:", error);
+      alert("Erro ao deletar categoria.");
     }
   };
 
@@ -116,17 +144,20 @@ export const Categoria: React.FC = () => {
             <tr key={item.id} style={{ backgroundColor: item.tipoTransacao === "Receita" ? "#d4edda" : "#f8d7da" }}>
               <td>{item.nome}</td>
               <td>{item.tipoTransacao}</td>
-              <td>
+              <td className={style.acoes}>
                 <Button variant="warning" size="sm" className={style.button} onClick={() => mostrarModalAtualizar(item)}>
-                  Editar
+                  <GoPencil size={20} color="white" />
                 </Button>
-                <Button variant="danger" size="sm">Excluir</Button>
+                <Button variant="danger" size="sm" onClick={() => mostrarModalDeletar(item)}>
+                  <AiFillDelete size={20} color="white" />
+                </Button>
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
 
+      {/* Modal de Criação */}
       <Modal show={showModalCriar} onHide={() => setShowModalCriar(false)} size="lg" centered>
         <Modal.Header closeButton>
           <Modal.Title className="fs-1">Adicionar Categoria</Modal.Title>
@@ -161,6 +192,7 @@ export const Categoria: React.FC = () => {
         </Modal.Footer>
       </Modal>
 
+      {/* Modal de Atualização */}
       <Modal show={showModalAtualizar} onHide={fecharModalAtualizar} size="lg" centered>
         <Modal.Header closeButton>
           <Modal.Title className="fs-1">Editar Categoria</Modal.Title>
@@ -197,6 +229,29 @@ export const Categoria: React.FC = () => {
         <Modal.Footer>
           <Button variant="success" onClick={atualizarCategoria} className="fs-4">Atualizar</Button>
           <Button variant="danger" onClick={fecharModalAtualizar} className="fs-4">Fechar</Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Modal de Confirmação de Exclusão */}
+      <Modal show={showModalDeletar} onHide={fecharModalDeletar} centered>
+        <Modal.Header closeButton>
+          <Modal.Title className="text-center w-100">Confirmar Exclusão</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="text-center">
+          <p className="fs-4">Tem certeza que deseja excluir esta categoria? <br />
+            (Essa ação excluíra todas as transações associadas )</p>
+          <p className="fw-bold">{categoriaDeletar?.nome}</p>
+          <p style={{ color: categoriaDeletar?.tipoTransacao === "Receita" ? '#28a745' : '#dc3545' }} className="fs-5">
+            {categoriaDeletar?.tipoTransacao}
+          </p>
+        </Modal.Body>
+        <Modal.Footer className="justify-content-center">
+          <Button variant="danger" onClick={deletarCategoria} className="fs-4">
+            Confirmar Exclusão
+          </Button>
+          <Button variant="secondary" onClick={fecharModalDeletar} className="fs-4">
+            Cancelar
+          </Button>
         </Modal.Footer>
       </Modal>
     </SideBar>

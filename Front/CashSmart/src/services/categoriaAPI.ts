@@ -32,6 +32,10 @@ export const categoriaAPI = {
 
     async atualizarCategoria(categoria: ICategoriaAtualizar): Promise<void> {
         await HTTPClient.put(`/api/Categoria/Atualizar`, categoria);
+    },
+
+    async deletarCategoria(id: number): Promise<void> {
+        await HTTPClient.delete(`/api/Categoria/Deletar/${id}`);
     }
 
 }

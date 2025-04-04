@@ -46,3 +46,9 @@
         background-color: #f1f1f1;
     }
 }
+
+
+.acoes{
+    display: flex;
+    gap: 1rem;
+}
