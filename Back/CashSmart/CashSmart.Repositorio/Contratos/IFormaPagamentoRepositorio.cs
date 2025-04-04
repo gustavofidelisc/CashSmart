@@ -9,6 +9,6 @@ namespace CashSmart.Repositorio.Contratos
         public Task<IEnumerable<FormaPagamento>> ObterFormasPagamentoAsync(Guid usuarioId);
         public Task AtualizarFormaPagamentoAsync(FormaPagamento formaPagamento);
         public Task<FormaPagamento> ObterFormaPagamentoPorNomeAsync(string query, Guid usuarioId);
-        public Task RemoverFormaPagamentoAsync(FormaPagamento formaPagamento);
+        public Task RemoverFormaPagamentoAsync(int formaPagamentoId, Guid usuarioId);
     }
 }

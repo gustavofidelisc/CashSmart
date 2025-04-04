@@ -9,6 +9,7 @@ namespace CashSmart.Aplicacao.Interface
         Task<FormaPagamento> ObterFormaPagamentoPorIdAsync(int id, Guid usuarioId);
         Task<IEnumerable<FormaPagamento>> ObterFormasPagamentoAsync(Guid usuarioId);
         Task<FormaPagamento> ObterFormaPagamentoPorNomeAsync(string query, Guid usuarioId);
-        Task RemoverFormaPagamentoAsync(FormaPagamento formaPagamento);
+         public Task RemoverFormaPagamentoAsync(int formaPagamentoId, Guid usuarioId);
+
     }
 }

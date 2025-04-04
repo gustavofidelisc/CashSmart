@@ -60,19 +60,21 @@ namespace CashSmart.Aplicacao
             return formaPagamentoDominio;
         }
 
-        public async Task RemoverFormaPagamentoAsync(FormaPagamento formaPagamento)
+        public async Task RemoverFormaPagamentoAsync(int formaPagamentoId, Guid usuarioId)
         {
-            if (formaPagamento == null)
+            var usuario = await _usuarioRepositorio.ObterUsuarioPorIdAsync(usuarioId, true);
+            if (usuario == null)
+            {
+                throw new ArgumentNullException("Usuário não pode ser nulo.");
+            }
+            var formaPagamentoRepositorio = await _formaPagamentoRepositorio.ObterFormaPagamentoPorIdAsync(formaPagamentoId, usuarioId);
+            if (formaPagamentoRepositorio == null)
             {
                 throw new ArgumentNullException("Forma de pagamento não pode ser nula.");
             }
 
-            await _formaPagamentoRepositorio.ObterFormaPagamentoPorIdAsync(formaPagamento.Id, formaPagamento.UsuarioId);
-            if (formaPagamento.Id == 0)
-            {
-                throw new ArgumentException("Forma de pagamento não pode ser nula.");
-            }
-            await _formaPagamentoRepositorio.RemoverFormaPagamentoAsync(formaPagamento);
+
+            await _formaPagamentoRepositorio.RemoverFormaPagamentoAsync(formaPagamentoId, usuarioId);
         }
 
         #region 

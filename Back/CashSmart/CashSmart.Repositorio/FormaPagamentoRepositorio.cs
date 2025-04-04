@@ -2,6 +2,8 @@ using CashSmart.Dominio.Entidades;
 using CashSmart.Repositorio.Contexto;
 using CashSmart.Repositorio.Contratos;
 using Microsoft.EntityFrameworkCore;
+using Dapper;
+using System.Data;
 
 namespace CashSmart.Repositorio
 {
@@ -40,10 +42,20 @@ namespace CashSmart.Repositorio
             return await _context.FormasPagamento.Where(f => f.UsuarioId == usuarioId).ToListAsync();
         }
 
-        public async Task RemoverFormaPagamentoAsync(FormaPagamento formaPagamento)
+        public async Task RemoverFormaPagamentoAsync(int formaPagamentoId, Guid usuarioId)
         {
-            _context.FormasPagamento.Remove(formaPagamento);
-            await _context.SaveChangesAsync();
+            try{
+                await _context.Database.GetDbConnection().ExecuteAsync
+                ("SP_DELETAR_FORMA_PAGAMENTO_E_TRANSACOES", new { 
+                    ID_FORMA_PAGAMENTO = formaPagamentoId,
+                    ID_USUARIO = usuarioId
+                    }, commandType: CommandType.StoredProcedure);
+            }catch (Exception ex){
+                throw new Exception("Erro ao remover categoria" +ex.Message, ex);
+            }
+            
         }
+
+
     }
 }

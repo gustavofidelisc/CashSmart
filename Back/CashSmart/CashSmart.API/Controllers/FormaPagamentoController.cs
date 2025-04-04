@@ -161,5 +161,37 @@ namespace CashSmart.API.Controllers
             }
         }
 
+        [Authorize]
+        [HttpDelete("Deletar/{id}")]
+        public async Task<IActionResult> DeletarFormaPagamento([FromRoute] int id)
+        {
+            try
+            {
+                await _formaPagamentoAplicacao.RemoverFormaPagamentoAsync(id, this.ObterUsuarioIdDoHeader());
+                return NoContent();
+            }
+            catch (SqlNullValueException ex)
+            {
+                return NotFound(new ExceptionResposta
+                {
+                    Mensagem = ex.Message
+                });
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(new ExceptionResposta
+                {
+                    Mensagem = ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResposta
+                {
+                    Mensagem = ex.Message
+                });
+            }
+        }
+
     }
 }

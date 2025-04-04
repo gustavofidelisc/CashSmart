@@ -160,7 +160,7 @@ namespace CashSmart.API.Controllers
             try
             {
                 await _categoriaAplicacao.RemoverCategoriaAsync(id, this.ObterUsuarioIdDoHeader());
-                return Ok();
+                return NoContent();
             }
             catch (ArgumentNullException ex)
             {

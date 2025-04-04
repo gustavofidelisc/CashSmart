@@ -29,6 +29,10 @@ export const FormaPagamentoAPI = {
 
     async atualizarFormaPagamento(FormaPagamento: IFormaPagamentoAtualizar): Promise<void> {
         await HTTPClient.put(`/api/FormaPagamento/Atualizar`, FormaPagamento);
+    },
+
+    async deletarFormaPagamento(id: number): Promise<void> {
+        await HTTPClient.delete(`/api/FormaPagamento/Deletar/${id}`);
     }
 
 }

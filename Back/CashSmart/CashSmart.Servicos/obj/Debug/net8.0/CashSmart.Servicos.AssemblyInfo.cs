@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CashSmart.Servicos")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+12dc1802461d870b49ff9e6934a373d1c7383453")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2dd25a65119424df1dccb705712a1fb6f4ab6466")]
 [assembly: System.Reflection.AssemblyProductAttribute("CashSmart.Servicos")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CashSmart.Servicos")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

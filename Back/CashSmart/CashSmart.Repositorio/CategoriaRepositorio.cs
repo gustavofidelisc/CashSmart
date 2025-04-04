@@ -2,7 +2,7 @@ using CashSmart.Dominio.Entidades;
 using CashSmart.Repositorio.Contexto;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
-
+using System.Data;
 namespace CashSmart.Repositorio
 {
     public class CategoriaRepositorio : BaseRepositorio, ICategoriaRepositorio
@@ -48,7 +48,7 @@ namespace CashSmart.Repositorio
                 ("SP_DELETAR_CATEGORIA_E_TRANSACOES", new { 
                     ID_CATEGORIA = categoriaId,
                     ID_USUARIO = usuarioId
-                    }, commandType: System.Data.CommandType.StoredProcedure);
+                    }, commandType: CommandType.StoredProcedure);
             }catch (Exception ex){
                 throw new Exception("Erro ao remover categoria" +ex.Message, ex);
             }
