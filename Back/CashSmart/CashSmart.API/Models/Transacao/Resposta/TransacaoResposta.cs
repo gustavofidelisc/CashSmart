@@ -12,5 +12,8 @@ namespace CashSmart.API.Models.Transacao.Resposta
         public string nomeCategoria { get; set; } = string.Empty;
         public string TipoTransacao { get; set; } = string.Empty;
 
+        public int FormaPagamentoId { get; set; }
+        public int CategoriaId { get; set; }
+
     }
 }

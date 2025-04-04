@@ -73,12 +73,15 @@ namespace CashSmart.API.Controllers
                 var transacoesResposta = transacoes.Select(item => new TransacaoResposta
                 {
                     Id = item.Id,
-                    Data = item.Data,
+                    Data = item.Data.Date,
                     Descricao = item.Descricao,
                     Valor = item.Valor,
                     nomeCategoria = item.Categoria.Nome,
                     nomeFormaPagamento = item.FormaPagamento.Nome,
-                    TipoTransacao = Enum.GetName(typeof(TipoDaTransacao), item.Categoria.TipoTransacao)
+                    TipoTransacao = Enum.GetName(typeof(TipoDaTransacao), item.Categoria.TipoTransacao),
+                    FormaPagamentoId = item.FormaPagamentoId,
+                    CategoriaId = item.CategoriaId
+                
                 });
                 return Ok(transacoesResposta);
             }

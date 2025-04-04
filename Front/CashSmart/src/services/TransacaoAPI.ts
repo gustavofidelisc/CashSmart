@@ -26,6 +26,8 @@ export interface ITransacaoResposta {
     tipoTransacao: string;
     nomeCategoria: string;
     nomeFormaPagamento: string;
+    categoriaId: number;
+    formaPagamentoId: number;
 }
 
 export interface ISaldoUsuario {
@@ -61,8 +63,19 @@ export const transacaoAPI = {
         const response = await HTTPClient.post<ITransacaoResposta>('/api/Transacao/Criar', transacao);
         return response.data;
     },
-    async atualizarTransacao(transacao: ITransacaoAtualizar): Promise<void> {
-        await HTTPClient.put(`/api/Transacao/Atualizar`, transacao);
+    async atualizarTransacao(transacao: ITransacaoResposta): Promise<void> {
+        // Formata a data para o padrão UTC
+        const dataTransacao = dayjs(transacao.data).format('YYYY-MM-DDTHH:mm:ss[Z]');
+
+        const transacaoAtualizada: ITransacaoAtualizar = {
+            id: transacao.id,
+            descricao: transacao.descricao,
+            valor: transacao.valor,
+            dataTransacao: dataTransacao,
+            categoriaId: transacao.categoriaId,
+            formaPagamentoId: transacao.formaPagamentoId
+        };
+        await HTTPClient.put(`/api/Transacao/Atualizar`, transacaoAtualizada);
     },
     async buscarInformacoesTransacoesPorData(datainicial: Dayjs): Promise<ITransacaoInformacoesPorData> {
         const dataFinal = datainicial.endOf('month');

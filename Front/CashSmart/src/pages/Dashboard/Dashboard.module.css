@@ -124,102 +124,102 @@
 
 /* Container principal */
 .tabela {
-    width: 100%;
-    margin-top: 2rem;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    padding: 2rem;
-  }
-  
-  .tabela h2 {
-    font-size: 1.8rem;
-    color: #333;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #eee;
-  }
-  
-  /* Tabela */
-  .tabela > div {
-    width: 100%;
-    overflow-x: auto;
-  }
-  
-  .tabela table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  /* Cabeçalho */
-  .tabela .thead {
-    background-color: #f8f9fa;
-  }
-  
-  .tabela .thead tr th {
-    padding: 1.2rem 1.5rem;
-    text-align: left;
-    font-weight: 600;
-    color: #555;
-    font-size: 1.4rem;
-    border-bottom: 2px solid #eee;
-  }
-  
-  /* Linhas */
-  .tabela .tbody tr {
-    border-bottom: 1px solid #f1f1f1;
-    transition: background-color 0.2s;
-  }
-  
-  .tabela .tbody tr:last-child {
-    border-bottom: none;
-  }
-  
-  .tabela .tbody tr:hover {
-    background-color: #f9f9f9;
-  }
-  
-  /* Células */
-  .tabela .tbody tr td {
-    padding: 1.5rem;
-    vertical-align: middle;
-  }
-  
-  /* Estilo para descrição */
-  .tabela .tbody tr td:first-child {
-    font-weight: 500;
-    color: #333;
-  }
-  
-  /* Estilo para valores */
-  .receita {
-    color: #28a745;
-    font-weight: 600;
-  }
-  
-  .despesa {
-    color: #dc3545;
-    font-weight: 600;
-  }
-  
-  .arrow_down, .arrow_up {
-    font-size: 2.5rem;
-    border-radius: 2rem;
-    padding: 0.5rem;
-    margin-left: 0.5rem;
-  }
+  width: 100%;
+  margin-top: 2rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+}
 
-  .arrow_down {
+.tabela h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+/* Tabela */
+.tabela > div {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tabela table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Cabeçalho */
+.tabela .thead {
+  background-color: #f8f9fa;
+}
+
+.tabela .thead tr th {
+  padding: 1.2rem 1.5rem;
+  text-align: left;
+  font-weight: 600;
+  color: #555;
+  font-size: 1.4rem;
+  border-bottom: 2px solid #eee;
+}
+
+/* Linhas */
+.tabela .tbody tr {
+  border-bottom: 1px solid #f1f1f1;
+  transition: background-color 0.2s;
+}
+
+.tabela .tbody tr:last-child {
+  border-bottom: none;
+}
+
+.tabela .tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Células */
+.tabela .tbody tr td {
+  padding: 1.5rem;
+  vertical-align: middle;
+}
+
+/* Estilo para descrição */
+.tabela .tbody tr td:first-child {
+  font-weight: 500;
+  color: #333;
+}
+
+/* Estilo para valores */
+.receita {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.despesa {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+.arrow_down, .arrow_up {
+  font-size: 2.5rem;
+  border-radius: 2rem;
+  padding: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.arrow_down {
     background-color: rgba(255, 0, 0, 0.403);
     color: #dc3545;
   }
 
-  .arrow_up {
+.arrow_up {
     background-color: rgba(0, 255, 0, 0.403);
     color: #28a745;
   }
 
-  .cardBody{
+.cardBody{
     display: flex;
     justify-content: space-between;
     gap: 1rem;
@@ -229,35 +229,65 @@
     }
   }
 
-  .cardInfo{
+
+
+.cardInfo{
     align-items: center;
     display: flex;
     gap: 2rem;
     margin-bottom: 0rem;
   }
 
-  .cardText .text{
+.cardText .text {
     font-size: 1rem;
     color: #333;
     margin-bottom: 0rem;
+}
 
-  }
+.text_reduzido{
+  font-size: 1rem;
+    color: #333;
+    margin-bottom: 0rem;
+}
+
+#form_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
 
 .card_container{
     border-radius: 2rem;
 }
 
+@media (max-width: 600px) {
+    .cards {
+        grid-template-columns: repeat(1, 1fr); /* 1 coluna */
+    }
+    .arrow_down, .arrow_up {
+      width: 20%;
+    }
 
-   
-
-@media (min-width: 600px) {
+    .text_reduzido{
+       /* Novas propriedades adicionadas */
+      display: -webkit-box;
+      -webkit-line-clamp: 1; /* Limita a 2 linhas */
+      line-clamp: 1; /* Standard property for compatibility */
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 50%; /* ou um valor fixo como 250px */
+      white-space: normal; /* Permite quebra de linha */
+    }
+    
+}
+@media (min-width: 400px) {
     .cards {
         grid-template-columns: repeat(2, 1fr); /* 2 colunas */
     }
+    
 }
 
-@media (min-width: 1200px) {
-    .cards {
-        grid-template-columns: repeat(3, 1fr); /* 4 colunas */
-    }
-}
+   

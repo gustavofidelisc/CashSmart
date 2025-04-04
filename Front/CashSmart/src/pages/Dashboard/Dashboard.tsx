@@ -4,7 +4,7 @@ import style from "./Dashboard.module.css";
 import { Button, Card, Form, Modal, Table, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
 import { categoriaAPI, ICategoriaResponse } from "../../services/categoriaAPI";
 import { FormaPagamentoAPI, IFormaPagamentoResponse } from "../../services/formaPagamentoAPI";
-import { transacaoAPI, ITransacaoCriar, ITransacaoResposta, ItransacaoInformacoesGrafico } from "../../services/TransacaoAPI";
+import { transacaoAPI, ITransacaoCriar, ITransacaoResposta, ItransacaoInformacoesGrafico, ITransacaoAtualizar } from "../../services/TransacaoAPI";
 import { CardSaldo } from "../../components/Card/CardSaldo";
 import { Grafico } from "../../components/Graficos/Grafico";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
@@ -32,6 +32,17 @@ export const Dashboard: React.FC = () => {
   const [saldoUsuario, setSaldoUsuario] = useState<number>(0);
   const [showModalCriar, setShowModalCriar] = useState(false);
   const [showModalAtualizar, setShowModalAtualizar] = useState(false);
+  const [transacaoAtualizar, setTransacaoAtualizar] = useState<ITransacaoResposta>({
+    id: 0,
+    descricao: "",
+    valor: 0,
+    data: "",
+    tipoTransacao: "",
+    nomeCategoria: "",
+    nomeFormaPagamento: "",
+    categoriaId: 0,
+    formaPagamentoId: 0
+  });
   const [transacoes, setTransacoes] = useState<ITransacaoResposta[]>([]);
   const [categorias, setCategorias] = useState<ICategoriaResponse[]>([]);
   const [categoriasFiltradas, setCategoriasFiltradas] = useState<ICategoriaResponse[]>([]);
@@ -136,6 +147,11 @@ export const Dashboard: React.FC = () => {
     setCategoriasFiltradas(categorias.filter(c => c.tipoTransacao === tipo));
   };
 
+  const handleTransacaoAtualizar = (transacao: ITransacaoResposta) => {
+    setTransacaoAtualizar(transacao);
+    setShowModalAtualizar(true);
+  }
+
   // Função corrigida para mudança do tipo no gráfico
   const handleTipoTransacaoChangeGrafico = (novoTipo: number) => {
     setTipoTransacaoGrafico(novoTipo);
@@ -173,6 +189,31 @@ export const Dashboard: React.FC = () => {
       alert("Erro ao cadastrar transação.");
     }
   };
+
+  const atualizarTransacao = async () => {
+    try {
+      await transacaoAPI.atualizarTransacao(transacaoAtualizar);
+      setTransacaoAtualizar({
+        id: 0,
+        descricao: "",
+        valor: 0,
+        data: "",
+        tipoTransacao: "",
+        nomeCategoria: "",
+        nomeFormaPagamento: "",
+        categoriaId: 0,
+        formaPagamentoId: 0
+      });
+      setShowModalAtualizar(false);
+      listarTransacoesPorData();
+      buscarInformacoesTransacoesPorData();
+      obterSaldoUsuario();
+      obterInformacoesGrafico();
+    } catch (error) {
+      console.error("Erro ao atualizar transação:", error);
+      alert("Erro ao atualizar transação.");
+    }
+  }
 
   // Effects
   useEffect(() => {
@@ -269,16 +310,16 @@ export const Dashboard: React.FC = () => {
 
             </div>
 
-            <div className={style.tabela} onClick={() => setShowModalAtualizar(true)}>
+            <div className={style.tabela}>
                 <h2>Transações Do mês</h2>
                 {transacoes.map((transacao) => (
-                  <Card key={transacao.id} className={style.cardTransacao}>
+                  <Card key={transacao.id} className={style.cardTransacao} onClick={() => handleTransacaoAtualizar(transacao)}>
                     <Card.Body className={style.cardBody}>
                       <div className={style.cardInfo}>
                         {transacao.valor <= 0 ? <FaArrowDown className={style.arrow_down} /> : <FaArrowUp className={style.arrow_up} />}
                         <div className={style.cardText}>
                           <Card.Title>{`${transacao.nomeCategoria} / ${transacao.nomeFormaPagamento}` }</Card.Title>
-                          <Card.Text className={style.text}>{transacao.descricao}</Card.Text> 
+                          <Card.Text className={style.text_reduzido}>{transacao.descricao}</Card.Text> 
                         </div>
                       </div>
                       <div className={style.cardInfo}>
@@ -301,11 +342,11 @@ export const Dashboard: React.FC = () => {
 '     </div> 
       <Modal show={showModalCriar} onHide={() => setShowModalCriar(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Adicionar Transação</Modal.Title>
+        <Modal.Title className="text-center w-100">Adicionar Transação</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3">
+          <Form >
+            <Form.Group className="mb-3 d-flex justify-content-center align-items-center">
               <ToggleButtonGroup
                 type="radio"
                 name="tipoTransacao"
@@ -330,17 +371,19 @@ export const Dashboard: React.FC = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Descrição</Form.Label>
-              <Form.Control 
+              <Form.Label className="fs-2">Descrição</Form.Label>
+              <Form.Control className="fs-3" 
                 type="text" 
+                as="textarea"
+                rows={2}
                 value={descricao} 
                 onChange={(e) => setDescricao(e.target.value)} 
               />
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Valor</Form.Label>
-              <Form.Control 
+              <Form.Label className="fs-2">Valor</Form.Label>
+              <Form.Control className="fs-3" 
                 type="number" 
                 min="0.01" 
                 step="0.01" 
@@ -350,8 +393,8 @@ export const Dashboard: React.FC = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Data</Form.Label>
-              <Form.Control 
+              <Form.Label className="fs-2">Data</Form.Label>
+              <Form.Control className="fs-3" 
                 type="date" 
                 value={dataTransacao} 
                 onChange={(e) => setDataTransacao(e.target.value)} 
@@ -359,8 +402,9 @@ export const Dashboard: React.FC = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Categoria</Form.Label>
+              <Form.Label className="fs-2">Categoria</Form.Label>
               <Form.Select 
+                 className="fs-3"
                 value={categoriaId} 
                 onChange={(e) => setCategoriaId(Number(e.target.value))}
               >
@@ -374,8 +418,9 @@ export const Dashboard: React.FC = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Forma de Pagamento</Form.Label>
+              <Form.Label className="fs-2">Forma de Pagamento</Form.Label>
               <Form.Select 
+                className="fs-2"
                 value={formaPagamentoId} 
                 onChange={(e) => setFormaPagamentoId(Number(e.target.value))}
               >
@@ -402,11 +447,11 @@ export const Dashboard: React.FC = () => {
 
       <Modal show={showModalAtualizar} onHide={() => setShowModalAtualizar(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Adicionar Transação</Modal.Title>
+        <Modal.Title className="text-center w-100">Adicionar Transação</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-3 d-flex justify-content-center align-items-center">
               <ToggleButtonGroup
                 type="radio"
                 name="tipoTransacao"
@@ -431,39 +476,42 @@ export const Dashboard: React.FC = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Descrição</Form.Label>
-              <Form.Control 
+              <Form.Label className="fs-2">Descrição</Form.Label>
+              <Form.Control className="fs-3" 
                 type="text" 
-                value={descricao} 
-                onChange={(e) => setDescricao(e.target.value)} 
+                as="textarea"
+                rows={5}
+                value={transacaoAtualizar?.descricao} 
+                onChange={(e) => setTransacaoAtualizar({ ...transacaoAtualizar, descricao: e.target.value })} 
               />
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Valor</Form.Label>
-              <Form.Control 
+              <Form.Label className="fs-2">Valor</Form.Label>
+              <Form.Control className="fs-3" 
                 type="number" 
-                min="0.01" 
-                step="0.01" 
-                value={valor || ''} 
-                onChange={(e) => setValor(parseFloat(e.target.value) || 0)} 
+                min={0.01 }
+                step={0.01}
+                value={Math.abs(transacaoAtualizar?.valor) || 0.01} 
+                onChange={(e) => setTransacaoAtualizar({ ...transacaoAtualizar, valor: parseFloat(e.target.value) || 0 })} 
               />
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Data</Form.Label>
-              <Form.Control 
+              <Form.Label className="fs-2">Data</Form.Label>
+              <Form.Control className="fs-3" 
                 type="date" 
-                value={dataTransacao} 
-                onChange={(e) => setDataTransacao(e.target.value)} 
+                value={transacaoAtualizar?.data ? dayjs(transacaoAtualizar.data).format('YYYY-MM-DD') : ''} 
+                onChange={(e) => setTransacaoAtualizar({ ...transacaoAtualizar, data: e.target.value })} 
               />
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Categoria</Form.Label>
+              <Form.Label className="fs-2">Categoria</Form.Label>
               <Form.Select 
-                value={categoriaId} 
-                onChange={(e) => setCategoriaId(Number(e.target.value))}
+                className="fs-2"
+                value={transacaoAtualizar.categoriaId} 
+                onChange={(e) => setTransacaoAtualizar({ ...transacaoAtualizar, categoriaId: Number(e.target.value) })}
               >
                 <option value={0}>Selecione uma categoria</option>
                 {categoriasFiltradas.map((item) => (
@@ -475,10 +523,11 @@ export const Dashboard: React.FC = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Forma de Pagamento</Form.Label>
+              <Form.Label className="fs-2">Forma de Pagamento</Form.Label>
               <Form.Select 
-                value={formaPagamentoId} 
-                onChange={(e) => setFormaPagamentoId(Number(e.target.value))}
+                className="fs-2"
+                value={transacaoAtualizar.formaPagamentoId} 
+                onChange={(e) => setTransacaoAtualizar({ ...transacaoAtualizar, formaPagamentoId: Number(e.target.value) })}
               >
                 <option value={0}>Selecione uma forma de pagamento</option>
                 {formasPagamento.map((item) => (
@@ -491,7 +540,7 @@ export const Dashboard: React.FC = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="success" onClick={cadastrarTransacao}>
+          <Button variant="success" onClick={atualizarTransacao}>
             Adicionar
           </Button>
           <Button variant="danger" onClick={() => setShowModalAtualizar(false)}>
