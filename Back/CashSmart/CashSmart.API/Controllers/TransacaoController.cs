@@ -133,7 +133,7 @@ namespace CashSmart.API.Controllers
         }
 
         [Authorize]
-        [HttpPut("atualizar")]
+        [HttpPut("Atualizar")]
         public async Task<IActionResult> AtualizarTransacaoAsync( [FromBody] TransacaoAtualizar transacao){
             try
             {
@@ -164,8 +164,37 @@ namespace CashSmart.API.Controllers
             }
         }
 
+        [Authorize]
+        [HttpDelete("Deletar/{id}")]
+        public async Task<IActionResult> RemoverTransacao([FromRoute] int id)
+        {
+            try
+            {
+                var transacao = await _transacaoAplicacao.RemoverTransacaoAsync(id, this.ObterUsuarioIdDoHeader());
+                if (transacao == false)
+                {
+                    return NotFound(new ExceptionResposta{
+                        Mensagem = "Transação não encontrada."
+                    });
+                }
+                return Ok();
+            }
+            catch (SqlNullValueException ex)
+            {
+                return NotFound(new ExceptionResposta{
+                    Mensagem = ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResposta{
+                    Mensagem = ex.Message
+                });
+            }
+        }
+
          [Authorize]
-        [HttpGet("InformacoesTransacoesPorData")]
+        [HttpGet("Informacoes")]
         public async Task<IActionResult> ObterInformacoesTransacoesPorData([FromQuery] DateTime dataInicial, [FromQuery] DateTime dataFinal)
         {
             try
@@ -211,7 +240,7 @@ namespace CashSmart.API.Controllers
         }
 
         [Authorize]
-        [HttpGet("obterInformacoesGraficoPelaCategoria")]
+        [HttpGet("Informacoes/Grafico/Categoria")]
         public async Task<IActionResult> obterInformacoesGraficoPelaCategoria([FromQuery] DateTime dataInicial, [FromQuery]DateTime dataFinal, [FromQuery] int tipoTransacaoId){
             try
             {

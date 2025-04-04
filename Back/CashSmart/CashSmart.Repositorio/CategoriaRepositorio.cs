@@ -1,5 +1,6 @@
 using CashSmart.Dominio.Entidades;
 using CashSmart.Repositorio.Contexto;
+using Dapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace CashSmart.Repositorio
@@ -40,10 +41,18 @@ namespace CashSmart.Repositorio
             return await _context.Categorias.Where(c => c.UsuarioId == usuarioId).ToListAsync();
         }
 
-        public async Task RemoverCategoriaAsync(Categoria categoria)
+        public async Task RemoverCategoriaAsync(int categoriaId, Guid usuarioId)
         {
-            _context.Categorias.Remove(categoria);
-            await _context.SaveChangesAsync();
+            try{
+                await _context.Database.GetDbConnection().ExecuteAsync
+                ("SP_DELETAR_CATEGORIA_E_TRANSACOES", new { 
+                    ID_CATEGORIA = categoriaId,
+                    ID_USUARIO = usuarioId
+                    }, commandType: System.Data.CommandType.StoredProcedure);
+            }catch (Exception ex){
+                throw new Exception("Erro ao remover categoria" +ex.Message, ex);
+            }
+            
         }
     }
 }

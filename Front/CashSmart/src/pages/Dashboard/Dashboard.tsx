@@ -11,9 +11,7 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
 import { MdAttachMoney } from "react-icons/md";
 import { IoWalletOutline } from "react-icons/io5";
-import { FaArrowUp } from "react-icons/fa";
-import { FaArrowDown } from "react-icons/fa";
-
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
@@ -32,6 +30,7 @@ export const Dashboard: React.FC = () => {
   const [saldoUsuario, setSaldoUsuario] = useState<number>(0);
   const [showModalCriar, setShowModalCriar] = useState(false);
   const [showModalAtualizar, setShowModalAtualizar] = useState(false);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [transacaoAtualizar, setTransacaoAtualizar] = useState<ITransacaoResposta>({
     id: 0,
     descricao: "",
@@ -112,13 +111,11 @@ export const Dashboard: React.FC = () => {
     }
   };
 
-  // Função corrigida para obter informações do gráfico
   const obterInformacoesGrafico = async () => {
     setCarregandoGrafico(true);
     try {
       const response = await transacaoAPI.obterInformacoesGraficoPorData(dataAtual, tipoTransacaoGrafico);
       
-      // Converter valores para números positivos e filtrar inválidos
       const valoresPositivos = response.valores
         .map(v => Math.abs(typeof v === 'string' ? parseFloat(v) : Number(v)))
         .filter(v => !isNaN(v));
@@ -152,7 +149,6 @@ export const Dashboard: React.FC = () => {
     setShowModalAtualizar(true);
   }
 
-  // Função corrigida para mudança do tipo no gráfico
   const handleTipoTransacaoChangeGrafico = (novoTipo: number) => {
     setTipoTransacaoGrafico(novoTipo);
   };
@@ -215,6 +211,26 @@ export const Dashboard: React.FC = () => {
     }
   }
 
+  const handleDeleteClick = (transacao: ITransacaoResposta) => {
+    setTransacaoAtualizar(transacao);
+    setShowConfirmDelete(true);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      await transacaoAPI.deletarTransacao(transacaoAtualizar.id);
+      setTransacoes(transacoes.filter(t => t.id !== transacaoAtualizar.id));
+      setShowConfirmDelete(false);
+      setShowModalAtualizar(false);
+      buscarInformacoesTransacoesPorData();
+      obterSaldoUsuario();
+      obterInformacoesGrafico();
+    } catch (error) {
+      console.error("Erro ao deletar transação:", error);
+      alert("Erro ao deletar transação.");
+    }
+  };
+
   // Effects
   useEffect(() => {
     listarTransacoesPorData();
@@ -225,7 +241,7 @@ export const Dashboard: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    listarTransacoesPorData()
+    listarTransacoesPorData();
     buscarInformacoesTransacoesPorData();
     obterSaldoUsuario();
     obterInformacoesGrafico();
@@ -295,57 +311,58 @@ export const Dashboard: React.FC = () => {
                   </ToggleButtonGroup>
                 </div>
               </div>
-              {informacoesGrafico.valores.length > 0 ?(
+              {informacoesGrafico.valores.length > 0 ? (
                 <Grafico
                   key={`grafico-${tipoTransacaoGrafico}-${dataAtual.format('YYYY-MM')}`}
                   labels={informacoesGrafico.categoriaNomes}
                   series={informacoesGrafico.valores}
                 />
-               ) : 
-               <div className={style.semDados}>
+              ) : (
+                <div className={style.semDados}>
                   <MdAttachMoney size={50} />
                   <h3>Sem transações registradas</h3>
                 </div>
-              }
-
+              )}
             </div>
 
             <div className={style.tabela}>
-                <h2>Transações Do mês</h2>
-                {transacoes.map((transacao) => (
-                  <Card key={transacao.id} className={style.cardTransacao} onClick={() => handleTransacaoAtualizar(transacao)}>
-                    <Card.Body className={style.cardBody}>
-                      <div className={style.cardInfo}>
-                        {transacao.valor <= 0 ? <FaArrowDown className={style.arrow_down} /> : <FaArrowUp className={style.arrow_up} />}
-                        <div className={style.cardText}>
-                          <Card.Title>{`${transacao.nomeCategoria} / ${transacao.nomeFormaPagamento}` }</Card.Title>
-                          <Card.Text className={style.text_reduzido}>{transacao.descricao}</Card.Text> 
-                        </div>
+              <h2>Transações Do mês</h2>
+              {transacoes.map((transacao) => (
+                <Card key={transacao.id} className={style.cardTransacao} onClick={() => handleTransacaoAtualizar(transacao)}>
+                  <Card.Body className={style.cardBody}>
+                    <div className={style.cardInfo}>
+                      {transacao.valor <= 0 ? <FaArrowDown className={style.arrow_down} /> : <FaArrowUp className={style.arrow_up} />}
+                      <div className={style.cardText}>
+                        <Card.Title>{`${transacao.nomeCategoria} / ${transacao.nomeFormaPagamento}`}</Card.Title>
+                        <Card.Text className={style.text_reduzido}>{transacao.descricao}</Card.Text> 
                       </div>
-                      <div className={style.cardInfo}>
-                        <div className={style.cardText}>
-                          <Card.Title style={{
-                             color: transacao.valor > 0 ? '#28a745' : '#dc3545',
-                          } }>{transacao.valor.toLocaleString('pt-BR', { 
-                              style: 'currency', 
-                              currency: 'BRL' 
-                            })}</Card.Title>
-                          <Card.Text className={style.text}>{dayjs(transacao.data).format('DD/MM/YYYY')}</Card.Text>
-                        </div>
+                    </div>
+                    <div className={style.cardInfo}>
+                      <div className={style.cardText}>
+                        <Card.Title style={{ color: transacao.valor > 0 ? '#28a745' : '#dc3545' }}>
+                          {transacao.valor.toLocaleString('pt-BR', { 
+                            style: 'currency', 
+                            currency: 'BRL' 
+                          })}
+                        </Card.Title>
+                        <Card.Text className={style.text}>{dayjs(transacao.data).format('DD/MM/YYYY')}</Card.Text>
                       </div>
-                    </Card.Body>
-                  </Card>
-                ))}
+                    </div>
+                  </Card.Body>
+                </Card>
+              ))}
             </div>
           </>
         )}
-'     </div> 
+      </div>
+
+      {/* Modal de Criação */}
       <Modal show={showModalCriar} onHide={() => setShowModalCriar(false)}>
         <Modal.Header closeButton>
-        <Modal.Title className="text-center w-100">Adicionar Transação</Modal.Title>
+          <Modal.Title className="text-center w-100">Adicionar Transação</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form >
+          <Form>
             <Form.Group className="mb-3 d-flex justify-content-center align-items-center">
               <ToggleButtonGroup
                 type="radio"
@@ -372,7 +389,8 @@ export const Dashboard: React.FC = () => {
 
             <Form.Group className="mb-3">
               <Form.Label className="fs-2">Descrição</Form.Label>
-              <Form.Control className="fs-3" 
+              <Form.Control 
+                className="fs-3" 
                 type="text" 
                 as="textarea"
                 rows={2}
@@ -383,7 +401,8 @@ export const Dashboard: React.FC = () => {
 
             <Form.Group className="mb-3">
               <Form.Label className="fs-2">Valor</Form.Label>
-              <Form.Control className="fs-3" 
+              <Form.Control 
+                className="fs-3" 
                 type="number" 
                 min="0.01" 
                 step="0.01" 
@@ -394,7 +413,8 @@ export const Dashboard: React.FC = () => {
 
             <Form.Group className="mb-3">
               <Form.Label className="fs-2">Data</Form.Label>
-              <Form.Control className="fs-3" 
+              <Form.Control 
+                className="fs-3" 
                 type="date" 
                 value={dataTransacao} 
                 onChange={(e) => setDataTransacao(e.target.value)} 
@@ -404,7 +424,7 @@ export const Dashboard: React.FC = () => {
             <Form.Group className="mb-3">
               <Form.Label className="fs-2">Categoria</Form.Label>
               <Form.Select 
-                 className="fs-3"
+                className="fs-3"
                 value={categoriaId} 
                 onChange={(e) => setCategoriaId(Number(e.target.value))}
               >
@@ -444,10 +464,10 @@ export const Dashboard: React.FC = () => {
         </Modal.Footer>
       </Modal>
 
-
+      {/* Modal de Atualização */}
       <Modal show={showModalAtualizar} onHide={() => setShowModalAtualizar(false)}>
         <Modal.Header closeButton>
-        <Modal.Title className="text-center w-100">Adicionar Transação</Modal.Title>
+          <Modal.Title className="text-center w-100">Editar Transação</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -455,20 +475,23 @@ export const Dashboard: React.FC = () => {
               <ToggleButtonGroup
                 type="radio"
                 name="tipoTransacao"
-                value={tipoTransacao}
-                onChange={handleTipoTransacaoChange}
+                value={transacaoAtualizar.tipoTransacao}
+                onChange={(val: 'Receita' | 'Despesa') => setTransacaoAtualizar({ 
+                  ...transacaoAtualizar, 
+                  tipoTransacao: val 
+                })}
               >
                 <ToggleButton
                   id="tipo-receita"
                   value="Receita"
-                  variant={tipoTransacao === 'Receita' ? 'success' : 'outline-success'}
+                  variant={transacaoAtualizar.tipoTransacao === 'Receita' ? 'success' : 'outline-success'}
                 >
                   Receita
                 </ToggleButton>
                 <ToggleButton
                   id="tipo-despesa"
                   value="Despesa"
-                  variant={tipoTransacao === 'Despesa' ? 'danger' : 'outline-danger'}
+                  variant={transacaoAtualizar.tipoTransacao === 'Despesa' ? 'danger' : 'outline-danger'}
                 >
                   Despesa
                 </ToggleButton>
@@ -477,32 +500,44 @@ export const Dashboard: React.FC = () => {
 
             <Form.Group className="mb-3">
               <Form.Label className="fs-2">Descrição</Form.Label>
-              <Form.Control className="fs-3" 
+              <Form.Control 
+                className="fs-3" 
                 type="text" 
                 as="textarea"
                 rows={5}
-                value={transacaoAtualizar?.descricao} 
-                onChange={(e) => setTransacaoAtualizar({ ...transacaoAtualizar, descricao: e.target.value })} 
+                value={transacaoAtualizar.descricao} 
+                onChange={(e) => setTransacaoAtualizar({ 
+                  ...transacaoAtualizar, 
+                  descricao: e.target.value 
+                })} 
               />
             </Form.Group>
 
             <Form.Group className="mb-3">
               <Form.Label className="fs-2">Valor</Form.Label>
-              <Form.Control className="fs-3" 
+              <Form.Control 
+                className="fs-3" 
                 type="number" 
-                min={0.01 }
-                step={0.01}
-                value={Math.abs(transacaoAtualizar?.valor) || 0.01} 
-                onChange={(e) => setTransacaoAtualizar({ ...transacaoAtualizar, valor: parseFloat(e.target.value) || 0 })} 
+                min="0.01"
+                step="0.01"
+                value={Math.abs(transacaoAtualizar.valor) || 0.01} 
+                onChange={(e) => setTransacaoAtualizar({ 
+                  ...transacaoAtualizar, 
+                  valor: parseFloat(e.target.value) || 0 
+                })} 
               />
             </Form.Group>
 
             <Form.Group className="mb-3">
               <Form.Label className="fs-2">Data</Form.Label>
-              <Form.Control className="fs-3" 
+              <Form.Control 
+                className="fs-3" 
                 type="date" 
-                value={transacaoAtualizar?.data ? dayjs(transacaoAtualizar.data).format('YYYY-MM-DD') : ''} 
-                onChange={(e) => setTransacaoAtualizar({ ...transacaoAtualizar, data: e.target.value })} 
+                value={dayjs(transacaoAtualizar.data).format('YYYY-MM-DD')} 
+                onChange={(e) => setTransacaoAtualizar({ 
+                  ...transacaoAtualizar, 
+                  data: e.target.value 
+                })} 
               />
             </Form.Group>
 
@@ -511,14 +546,19 @@ export const Dashboard: React.FC = () => {
               <Form.Select 
                 className="fs-2"
                 value={transacaoAtualizar.categoriaId} 
-                onChange={(e) => setTransacaoAtualizar({ ...transacaoAtualizar, categoriaId: Number(e.target.value) })}
+                onChange={(e) => setTransacaoAtualizar({ 
+                  ...transacaoAtualizar, 
+                  categoriaId: Number(e.target.value) 
+                })}
               >
                 <option value={0}>Selecione uma categoria</option>
-                {categoriasFiltradas.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.nome}
-                  </option>
-                ))}
+                {categorias
+                  .filter(c => c.tipoTransacao === transacaoAtualizar.tipoTransacao)
+                  .map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.nome}
+                    </option>
+                  ))}
               </Form.Select>
             </Form.Group>
 
@@ -527,7 +567,10 @@ export const Dashboard: React.FC = () => {
               <Form.Select 
                 className="fs-2"
                 value={transacaoAtualizar.formaPagamentoId} 
-                onChange={(e) => setTransacaoAtualizar({ ...transacaoAtualizar, formaPagamentoId: Number(e.target.value) })}
+                onChange={(e) => setTransacaoAtualizar({ 
+                  ...transacaoAtualizar, 
+                  formaPagamentoId: Number(e.target.value) 
+                })}
               >
                 <option value={0}>Selecione uma forma de pagamento</option>
                 {formasPagamento.map((item) => (
@@ -540,11 +583,39 @@ export const Dashboard: React.FC = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="success" onClick={atualizarTransacao}>
-            Adicionar
+          <Button variant="danger" onClick={() => handleDeleteClick(transacaoAtualizar)}>
+            Deletar
           </Button>
-          <Button variant="danger" onClick={() => setShowModalAtualizar(false)}>
+          <Button variant="success" onClick={atualizarTransacao}>
+            Salvar Alterações
+          </Button>
+          <Button variant="secondary" onClick={() => setShowModalAtualizar(false)}>
             Fechar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Modal de Confirmação de Exclusão */}
+      <Modal show={showConfirmDelete} onHide={() => setShowConfirmDelete(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title className="text-center w-100">Confirmar Exclusão</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="text-center">
+          <p className="fs-4">Tem certeza que deseja excluir esta transação?</p>
+          <p className="fw-bold">{transacaoAtualizar.descricao}</p>
+          <p className="text-danger fs-5">
+            {transacaoAtualizar.valor.toLocaleString('pt-BR', { 
+              style: 'currency', 
+              currency: 'BRL' 
+            })}
+          </p>
+        </Modal.Body>
+        <Modal.Footer className="justify-content-center">
+          <Button variant="secondary" onClick={() => setShowConfirmDelete(false)}>
+            Cancelar
+          </Button>
+          <Button variant="danger" onClick={confirmDelete}>
+            Confirmar Exclusão
           </Button>
         </Modal.Footer>
       </Modal>

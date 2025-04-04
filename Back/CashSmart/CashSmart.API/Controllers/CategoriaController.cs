@@ -151,5 +151,38 @@ namespace CashSmart.API.Controllers
                 });
             }
         }
+
+        [Authorize]
+        [HttpDelete]
+        [Route("Deletar/{id}")]
+        public async Task<IActionResult> DeletarCategoria([FromRoute] int id)
+        {
+            try
+            {
+                await _categoriaAplicacao.RemoverCategoriaAsync(id, this.ObterUsuarioIdDoHeader());
+                return Ok();
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(new ExceptionResposta
+                {
+                    Mensagem = ex.Message
+                });
+            }
+            catch (SqlNullValueException ex)
+            {
+                return NotFound(new ExceptionResposta
+                {
+                    Mensagem = ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResposta
+                {
+                    Mensagem = ex.Message
+                });
+            }
+        }
     }
 }

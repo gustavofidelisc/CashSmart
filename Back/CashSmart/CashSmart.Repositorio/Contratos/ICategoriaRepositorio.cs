@@ -9,5 +9,6 @@ namespace CashSmart.Repositorio
         public Task<IEnumerable<Categoria>> ObterTodasCategoriasUsuarioAsync(Guid usuarioId);
         public Task AtualizarCategoriaAsync(Categoria categoria);
         public Task<Categoria> ObterCategoriaPorNomeAsync(string query);
+        public Task RemoverCategoriaAsync(int categoriaId, Guid usuarioId);
     }
 }

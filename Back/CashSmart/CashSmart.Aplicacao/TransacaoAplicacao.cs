@@ -110,6 +110,27 @@ namespace CashSmart.Aplicacao
             }
         }
 
+        public async Task<bool> RemoverTransacaoAsync(int id, Guid usuarioId) {
+            try
+            {
+                var transacao = await _transacaoRepositorio.obterTransacaoPorUsuarioAsync(id, usuarioId);
+                if (transacao == null)
+                {
+                    throw new SqlNullValueException("Transação não encontrada.");
+                }
+                if (transacao.UsuarioId != usuarioId)
+                {
+                    throw new SqlNullValueException("Transação não encontrada.");
+                }
+                await _transacaoRepositorio.RemoverTransacaoAsync(transacao);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<TransacaoInformacoes> obterInformacoesTransacoesPorData(Guid usuarioId, DateTime dataIncial, DateTime dataFinal){
             var informacoes = await _transacaoRepositorio.obterInformacoesTransacoesPorData(usuarioId, dataIncial, dataFinal);
             if (informacoes == null)

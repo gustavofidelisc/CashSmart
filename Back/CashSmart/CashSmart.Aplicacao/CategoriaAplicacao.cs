@@ -91,8 +91,24 @@ namespace CashSmart.Aplicacao
 
         public async Task RemoverCategoriaAsync(int id, Guid usuarioId)
         {
-            var categoria = await ObterCategoriaPorIdAsync(id,usuarioId );
-            await _categoriaRepositorio.AtualizarCategoriaAsync(categoria);
+            try{
+                var usuario = await _usuarioAplicacao.ObterUsuarioPorIdAsync(usuarioId);
+                if (usuario == null)
+                {
+                    throw new SqlNullValueException("Usuário não encontrado");
+                }
+                var categoria = await _categoriaRepositorio.ObterCategoriaPorIdAsync(id);
+                if (categoria == null)
+                {
+                    throw new SqlNullValueException("Categoria não encontrada");
+                }
+                
+                await _categoriaRepositorio.RemoverCategoriaAsync(id, usuario.Id);
+                }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         #region Metodos Privados

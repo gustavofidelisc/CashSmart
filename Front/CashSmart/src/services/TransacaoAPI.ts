@@ -77,12 +77,16 @@ export const transacaoAPI = {
         };
         await HTTPClient.put(`/api/Transacao/Atualizar`, transacaoAtualizada);
     },
+
+    async deletarTransacao(id: number): Promise<void> {
+        await HTTPClient.delete(`/api/Transacao/Deletar/${id}`);
+    },
     async buscarInformacoesTransacoesPorData(datainicial: Dayjs): Promise<ITransacaoInformacoesPorData> {
         const dataFinal = datainicial.endOf('month');
         
         // Usando UTC para ambas as datas
         const response = await HTTPClient.get<ITransacaoInformacoesPorData>(
-            `/api/Transacao/InformacoesTransacoesPorData?` +
+            `/api/Transacao/Informacoes?` +
             `dataInicial=${datainicial.format('YYYY-MM-DDTHH:mm:ss[Z]')}` +
             `&dataFinal=${dataFinal.format('YYYY-MM-DDTHH:mm:ss[Z]')}`
         );
@@ -103,7 +107,7 @@ export const transacaoAPI = {
 
         
         const response = await HTTPClient.get<ItransacaoInformacoesGrafico>(
-            `/api/Transacao/obterInformacoesGraficoPelaCategoria?` +
+            `/api/Transacao/Informacoes/Grafico/Categoria?` +
             `dataInicial=${dataInicial.format('YYYY-MM-DDTHH:mm:ss[Z]')}` +
             `&dataFinal=${dataFinal.format('YYYY-MM-DDTHH:mm:ss[Z]')}`+
             `&tipoTransacaoId=${tipoTransacao}`
