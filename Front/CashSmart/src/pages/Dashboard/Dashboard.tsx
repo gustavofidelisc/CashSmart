@@ -117,8 +117,7 @@ export const Dashboard: React.FC = () => {
       const response = await transacaoAPI.obterInformacoesGraficoPorData(dataAtual, tipoTransacaoGrafico);
       
       const valoresPositivos = response.valores
-        .map(v => Math.abs(typeof v === 'string' ? parseFloat(v) : Number(v)))
-        .filter(v => !isNaN(v));
+        .map(v => Math.abs(Number(v))).filter(v => !isNaN(v));
       
       setInformacoesGrafico({
         categoriaNomes: [...response.categoriaNomes],
@@ -175,16 +174,21 @@ export const Dashboard: React.FC = () => {
       setCategoriaId(0);
       setFormaPagamentoId(0);
       setTipoTransacao('Despesa');
-      listarTransacoesPorData();
-      buscarInformacoesTransacoesPorData();
-      obterSaldoUsuario();
-      obterInformacoesGrafico();
+      await obterInfomacoesAtualizadas();
       setShowModalCriar(false);
     } catch (error) {
       console.error("Erro ao cadastrar transação:", error);
       alert("Erro ao cadastrar transação.");
     }
+
   };
+
+  async function obterInfomacoesAtualizadas() {
+    await listarTransacoesPorData();
+    await buscarInformacoesTransacoesPorData();
+    await obterSaldoUsuario();
+    await obterInformacoesGrafico();
+  }
 
   const atualizarTransacao = async () => {
     try {
@@ -200,11 +204,8 @@ export const Dashboard: React.FC = () => {
         categoriaId: 0,
         formaPagamentoId: 0
       });
+      await obterInfomacoesAtualizadas()
       setShowModalAtualizar(false);
-      listarTransacoesPorData();
-      buscarInformacoesTransacoesPorData();
-      obterSaldoUsuario();
-      obterInformacoesGrafico();
     } catch (error) {
       console.error("Erro ao atualizar transação:", error);
       alert("Erro ao atualizar transação.");
