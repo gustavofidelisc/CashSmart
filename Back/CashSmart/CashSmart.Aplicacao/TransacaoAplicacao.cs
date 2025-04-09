@@ -165,6 +165,17 @@ namespace CashSmart.Aplicacao
             }
             return informacoes;
         }
+
+        public async Task<GraficoInformacoesAnuais> obterInformacoesTransacoesPorAno(Guid usuarioId, int ano){
+            if (ano < DateTime.MinValue.Year || ano > DateTime.MaxValue.Year)
+            {
+                throw new SqlNullValueException("Ano inválido.");
+            }
+            var informacoes = await _transacaoRepositorio.obterInformacoesTransacoesPorAno(usuarioId, ano);
+            return informacoes;
+        }
+
+
         #region 
 
         private async Task VerificarTransacao(Transacao transacao)

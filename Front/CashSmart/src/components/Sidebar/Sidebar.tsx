@@ -8,12 +8,13 @@ import { Nav } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useAutenticacaoContexto } from "../../Context/AutenticacaoContexto";
 import { useSidebarContexto } from "../../Context/SidebarContexto";
+import { BsGraphUp } from "react-icons/bs";
 
-interface ISideBarProps {
+interface ISidebarProps {
     children: React.ReactNode;
 }
 
-export const SideBar: React.FC<ISideBarProps> = ({ children }) => {
+export const Sidebar: React.FC<ISidebarProps> = ({ children }) => {
     const { expanded, toggleSidebar, closeSidebar } = useSidebarContexto();
     const navigate = useNavigate();
     const { logout } = useAutenticacaoContexto();
@@ -54,6 +55,10 @@ export const SideBar: React.FC<ISideBarProps> = ({ children }) => {
                     <Nav.Link className={style.nav_link} onClick={() => handleNavigation("/Dashboard")}>
                         <MdDashboard className={style.icon} />
                         {expanded && <span className={style.text}>Dashboard</span>}
+                    </Nav.Link>
+                    <Nav.Link className={style.nav_link} onClick={() => handleNavigation("/Relatorios")}>
+                        <BsGraphUp className={style.icon} />
+                        {expanded && <span className={style.text}>Relátorios anuais</span>}
                     </Nav.Link>
                     <Nav.Link className={style.nav_link} onClick={() => handleNavigation("/Categorias")}>
                         <FaFolderPlus className={style.icon} />

@@ -5,6 +5,7 @@ using CashSmart.Repositorio.Models;
 using Microsoft.EntityFrameworkCore;
 using Dapper;
 using System.Data;
+using System.Globalization;
 
 namespace CashSmart.Repositorio
 {
@@ -144,6 +145,69 @@ namespace CashSmart.Repositorio
             {
                 // Logar o erro
                 throw new Exception("Erro ao obter informações de transações por data." +ex.Message, ex);
+            }
+        }
+
+
+        public async Task<GraficoInformacoesAnuais> obterInformacoesTransacoesPorAno(Guid usuarioId, int ano)
+        {
+            try
+            {
+                // Executa a stored procedure que obtém os dados mensais
+                var informacoes = await _context.Database.GetDbConnection()
+                    .QueryAsync<dynamic>(
+                        "SP_INFORMACOES_ANUAIS_POR_MESES_TRANSACOES", 
+                        new 
+                        {
+                            ANO = ano,
+                            ID_USUARIO = usuarioId
+                        }, 
+                        commandType: CommandType.StoredProcedure);
+
+                // Converte para lista
+                var listaInformacoes = informacoes.ToList();
+
+                // Prepara arrays com 12 meses (meses sem dados terão valores zero)
+                var meses = new string[12];
+                var receitas = new decimal[12];
+                var despesas = new decimal[12];
+                var saldos = new decimal[12];
+
+                // Preenche os arrays com os dados retornados
+                foreach (var item in listaInformacoes)
+                {
+                    // Encontra o índice do mês (1-12)
+                    int mesIndex = DateTime.ParseExact(item.NOME_MES, "MMMM", CultureInfo.CurrentCulture).Month - 1;
+                    
+                    meses[mesIndex] = item.NOME_MES;
+                    receitas[mesIndex] = item.TOTAL_RECEITA;
+                    despesas[mesIndex] = item.TOTAL_DESPESA;
+                    saldos[mesIndex] = item.SALDO_MENSAL;
+                }
+
+                // Preenche meses faltantes (caso algum mês não tenha dados)
+                for (int i = 0; i < 12; i++)
+                {
+                    if (string.IsNullOrEmpty(meses[i]))
+                    {
+                        meses[i] = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i + 1);
+                        receitas[i] = 0;
+                        despesas[i] = 0;
+                        saldos[i] = 0;
+                    }
+                }
+
+                return new GraficoInformacoesAnuais
+                {
+                    Meses = meses,
+                    Receitas = receitas,
+                    Despesas = despesas,
+                    Saldos = saldos
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao obter informações anuais de transações: " + ex.Message, ex);
             }
         }
     }

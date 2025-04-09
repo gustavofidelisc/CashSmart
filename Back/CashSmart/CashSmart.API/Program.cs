@@ -9,6 +9,7 @@ using CashSmart.Repositorio.Contexto;
 using CashSmart.Repositorio.Contratos;
 using CashSmart.Servicos.Services.Criptografia;
 using CashSmart.Servicos.Services.Criptografia.Interface;
+using CashSmart.Servicos.Services.IA;
 using CashSmart.Servicos.Services.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 builder.Services.Configure<JwtConfiguracoes>(builder.Configuration.GetSection("Jwt"));
+builder.Services.Configure<GitHubTokenConfiguracoes>(builder.Configuration.GetSection("GitHubTokenAI"));
 
 
 builder.Services.AddDbContext<CashSmartContexto>(options =>
@@ -67,14 +69,14 @@ builder.Services.AddScoped<ITiposTransacaoAplicacao, TiposTransacaoAplicacao>();
 
 // jwt
 builder.Services.AddTransient<IJwtTokenService, JwtTokenService>();
+builder.Services.AddSingleton<OpenAIService>();
 
 // criptografia 
 builder.Services.AddTransient<IBcryptSenhaService, BcryptSenhaService >();
 
 builder.Services.AddCors(options => {
     options.AddDefaultPolicy(builder => {
-        builder.WithOrigins("http://localhost:5173")
-        .SetIsOriginAllowedToAllowWildcardSubdomains()
+        builder.AllowAnyOrigin() // remove o WithOrigins
         .AllowAnyHeader()
         .AllowAnyMethod();
     });
@@ -118,9 +120,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseCors();
 }
 app.UseHttpsRedirection();
+app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();

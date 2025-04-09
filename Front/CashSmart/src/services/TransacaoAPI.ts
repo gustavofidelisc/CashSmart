@@ -45,6 +45,12 @@ export interface ItransacaoInformacoesGrafico {
     tipoTransacao: number[];
 }
 
+export interface ITransacaoInformacoesPorAno {
+    receitas: number[];
+    despesas: number[];
+    saldos: number[];
+    meses: string[];
+}
 export const transacaoAPI = {
     async listarTransacoes(): Promise<ITransacaoResposta[]> {
         const response = await HTTPClient.get<ITransacaoResposta[]>('/api/Transacao/Listar');
@@ -113,5 +119,14 @@ export const transacaoAPI = {
             `&tipoTransacaoId=${tipoTransacao}`
         );
         return response.data;
-    }
+    },
+
+    async obterInformacoesGraficoPorAno(ano: number): Promise<ITransacaoInformacoesPorAno> {
+        const response = await HTTPClient.get<ITransacaoInformacoesPorAno>(
+            `/api/Transacao/Informacoes/Grafico/Ano?ano=${ano}`
+        );
+        return response.data;
+    },
+
+
 }

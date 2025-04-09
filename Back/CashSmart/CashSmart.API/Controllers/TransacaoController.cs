@@ -261,7 +261,27 @@ namespace CashSmart.API.Controllers
             }
         }
 
-            
+        [Authorize]
+        [HttpGet("Informacoes/Grafico/Ano")]
+        public async Task<IActionResult> obterInformacoesTransacoesPorAno([FromQuery] int ano){
+            try
+            {
+                var informacoes = await _transacaoAplicacao.obterInformacoesTransacoesPorAno(this.ObterUsuarioIdDoHeader(), ano);
+                return Ok(informacoes);
+            }
+            catch (SqlNullValueException ex)
+            {
+                return NotFound(new ExceptionResposta{
+                    Mensagem = ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResposta{
+                    Mensagem = ex.Message
+                });
+            }
+        }
 
     }
 }

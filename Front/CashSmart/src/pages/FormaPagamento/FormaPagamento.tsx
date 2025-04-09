@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { SideBar } from "../../components/Sidebar/Sidebar";
+import { Sidebar } from "../../components/Sidebar/Sidebar";
 import style from "./FormaPagamento.module.css";
 import { Button, Form, Modal, Table } from "react-bootstrap";
 import {
@@ -103,7 +103,7 @@ export const FormaPagamento: React.FC = () => {
   }, []);
 
   return (
-    <SideBar>
+    <Sidebar>
       <div className={style.Header}>
         <h2>Formas de Pagamento</h2>
         <button onClick={() => setShowModalCriar(true)}>+ Forma de Pagamento</button>
@@ -206,6 +206,6 @@ export const FormaPagamento: React.FC = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </SideBar>
+    </Sidebar>
   );
 };

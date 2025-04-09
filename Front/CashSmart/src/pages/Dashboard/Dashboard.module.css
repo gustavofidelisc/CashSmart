@@ -220,13 +220,20 @@
   }
 
 .cardBody{
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
     gap: 1rem;
     cursor: pointer;
     &:hover{
         background-color: #f1f1f1;
     }
+
+    & > *:last-child {
+      justify-self: end; /* Alinha horizontalmente à direita */
+      text-align: right; /* Alinha o texto à direita */
+    }
+
+
   }
 
 
@@ -267,7 +274,7 @@
         grid-template-columns: repeat(1, 1fr); /* 1 coluna */
     }
     .arrow_down, .arrow_up {
-      width: 20%;
+      width: 15%;
     }
 
     .text_reduzido{
@@ -278,7 +285,7 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 50%; /* ou um valor fixo como 250px */
+      max-width: 30%; /* ou um valor fixo como 250px */
       white-space: normal; /* Permite quebra de linha */
     }
     

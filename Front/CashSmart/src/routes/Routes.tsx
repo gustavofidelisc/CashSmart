@@ -6,6 +6,7 @@ import { Dashboard } from "../pages/Dashboard/Dashboard";
 import { Categoria } from "../pages/Categoria/Categoria";
 import { FormaPagamento } from "../pages/FormaPagamento/FormaPagamento";
 import { SidebarProvider } from "../Context/SidebarContexto";
+import { Relatorio } from "../pages/Relatorio/Relatorio";
 
 // Layout para rotas públicas (visível apenas para usuários NÃO autenticados)
 const RotasPublicas: React.FC = () => {
@@ -34,6 +35,7 @@ export const Rotas: React.FC = () => {
                     {/* Rotas privadas */}
                     <Route element={<RotasPrivadas />}>
                         <Route path="/Dashboard" element={<Dashboard/>} />
+                        <Route path="/Relatorios" element={<Relatorio/>} />
                         <Route path="/Categorias" element={<Categoria/>} />
                         <Route path="/Metodos_pagamentos" element={<FormaPagamento/>} />
                     </Route>

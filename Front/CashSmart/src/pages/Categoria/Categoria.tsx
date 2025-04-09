@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { SideBar } from "../../components/Sidebar/Sidebar";
+import { Sidebar } from "../../components/Sidebar/Sidebar";
 import style from "./Categoria.module.css";
 import { Button, Form, Modal, Table } from "react-bootstrap";
 import {
@@ -125,7 +125,7 @@ export const Categoria: React.FC = () => {
   }, []);
 
   return (
-    <SideBar>
+    <Sidebar>
       <div className={style.Header}>
         <h2>Categorias</h2>
         <button onClick={() => setShowModalCriar(true)}>+ Categoria</button>
@@ -254,6 +254,6 @@ export const Categoria: React.FC = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </SideBar>
+    </Sidebar>
   );
 };

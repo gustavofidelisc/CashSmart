@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { SideBar } from "../../components/Sidebar/Sidebar";
+import { Sidebar } from "../../components/Sidebar/Sidebar";
 import style from "./Dashboard.module.css";
 import { Button, Card, Form, Modal, Table, ToggleButton, ToggleButtonGroup } from "react-bootstrap";
 import { categoriaAPI, ICategoriaResponse } from "../../services/categoriaAPI";
@@ -77,7 +77,7 @@ export const Dashboard: React.FC = () => {
     try {
       const response = await categoriaAPI.listarCategorias();
       setCategorias(response);
-      setCategoriasFiltradas(response.filter(c => c.tipoTransacao === 'Despesa'));
+      setCategoriasFiltradas(response?.filter(c => c.tipoTransacao === 'Despesa'));
     } catch (error) {
       console.error("Erro ao listar categorias:", error);
     }
@@ -117,7 +117,7 @@ export const Dashboard: React.FC = () => {
       const response = await transacaoAPI.obterInformacoesGraficoPorData(dataAtual, tipoTransacaoGrafico);
       
       const valoresPositivos = response.valores
-        .map(v => Math.abs(Number(v))).filter(v => !isNaN(v));
+        ?.map(v => Math.abs(Number(v)))?.filter(v => !isNaN(v));
       
       setInformacoesGrafico({
         categoriaNomes: [...response.categoriaNomes],
@@ -140,7 +140,7 @@ export const Dashboard: React.FC = () => {
   const handleTipoTransacaoChange = (tipo: 'Receita' | 'Despesa') => {
     setTipoTransacao(tipo);
     setCategoriaId(0);
-    setCategoriasFiltradas(categorias.filter(c => c.tipoTransacao === tipo));
+    setCategoriasFiltradas(categorias?.filter(c => c.tipoTransacao === tipo));
   };
 
   const handleTransacaoAtualizar = (transacao: ITransacaoResposta) => {
@@ -220,7 +220,7 @@ export const Dashboard: React.FC = () => {
   const confirmDelete = async () => {
     try {
       await transacaoAPI.deletarTransacao(transacaoAtualizar.id);
-      setTransacoes(transacoes.filter(t => t.id !== transacaoAtualizar.id));
+      setTransacoes(transacoes?.filter(t => t.id !== transacaoAtualizar.id));
       setShowConfirmDelete(false);
       setShowModalAtualizar(false);
       buscarInformacoesTransacoesPorData();
@@ -253,7 +253,7 @@ export const Dashboard: React.FC = () => {
   }, [tipoTransacaoGrafico]);
 
   return (
-    <SideBar>
+    <Sidebar>
       <div className={style.Header}>
         <h2>Dashboard</h2>
         <button onClick={() => setShowModalCriar(true)}>+ Transação</button>
@@ -277,7 +277,7 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {carregandoGrafico ? (
-          <div className={style.loading}>Carregando gráfico...</div>
+          <div className={style.semDados}><h3>Carregando gráfico...</h3></div>
         ) : transacoes.length <= 0 ? (
           <div className={style.semDados}>
             <MdAttachMoney size={50} />
@@ -328,7 +328,7 @@ export const Dashboard: React.FC = () => {
 
             <div className={style.tabela}>
               <h2>Transações Do mês</h2>
-              {transacoes.map((transacao) => (
+              {transacoes?.map((transacao) => (
                 <Card key={transacao.id} className={style.cardTransacao} onClick={() => handleTransacaoAtualizar(transacao)}>
                   <Card.Body className={style.cardBody}>
                     <div className={style.cardInfo}>
@@ -430,7 +430,7 @@ export const Dashboard: React.FC = () => {
                 onChange={(e) => setCategoriaId(Number(e.target.value))}
               >
                 <option value={0}>Selecione uma categoria</option>
-                {categoriasFiltradas.map((item) => (
+                {categoriasFiltradas?.map((item) => (
                   <option key={item.id} value={item.id}>
                     {item.nome}
                   </option>
@@ -446,7 +446,7 @@ export const Dashboard: React.FC = () => {
                 onChange={(e) => setFormaPagamentoId(Number(e.target.value))}
               >
                 <option value={0}>Selecione uma forma de pagamento</option>
-                {formasPagamento.map((item) => (
+                {formasPagamento?.map((item) => (
                   <option key={item.id} value={item.id}>
                     {item.nome}
                   </option>
@@ -554,8 +554,8 @@ export const Dashboard: React.FC = () => {
               >
                 <option value={0}>Selecione uma categoria</option>
                 {categorias
-                  .filter(c => c.tipoTransacao === transacaoAtualizar.tipoTransacao)
-                  .map((item) => (
+                  ?.filter(c => c.tipoTransacao === transacaoAtualizar.tipoTransacao)
+                  ?.map((item) => (
                     <option key={item.id} value={item.id}>
                       {item.nome}
                     </option>
@@ -574,7 +574,7 @@ export const Dashboard: React.FC = () => {
                 })}
               >
                 <option value={0}>Selecione uma forma de pagamento</option>
-                {formasPagamento.map((item) => (
+                {formasPagamento?.map((item) => (
                   <option key={item.id} value={item.id}>
                     {item.nome}
                   </option>
@@ -620,6 +620,6 @@ export const Dashboard: React.FC = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </SideBar>
+    </Sidebar>
   );
 };
