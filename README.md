@@ -24,6 +24,8 @@ análises de padrões de gastos.
 * React Bootstrap (Estilização da interface) 
 * Axios (Consumo da API)
 * Apexcharts (Gráficos)
+* JWT (JSON Web Token) – Autenticação segura baseada em tokens
+* BCrypt – Criptografia de senhas dos usuários no banco de dados
 
 # Banco de dados
 
