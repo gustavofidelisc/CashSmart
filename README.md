@@ -27,6 +27,29 @@ análises de padrões de gastos.
 * JWT (JSON Web Token) – Autenticação segura baseada em tokens
 * BCrypt – Criptografia de senhas dos usuários no banco de dados
 
+# Requisitos e Como Rodar
+
+## 🖥️ Requisitos
+- .NET SDK 8.0 
+- Node.js versão 22 
+- SQL Server (local ou remoto)
+- Gerenciador de pacotes npm ou yarn
+
+## ▶️ Passo a Passo para Executar o Projeto
+
+### 🔧 Backend (.NET)
+```
+dotnet ef database update  # (para aplicar as migrations no banco no Repositorio)
+```
+```
+dotnet run
+```
+
+💻 Frontend (React com Vite)
+```
+npm install
+npm run dev
+```
 # Banco de dados
 
 Banco de dados utilizado foi o SQLServer, modelo de Entidade Relacionamento: 
