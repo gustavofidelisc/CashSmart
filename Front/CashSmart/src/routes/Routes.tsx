@@ -7,6 +7,7 @@ import { Categoria } from "../pages/Categoria/Categoria";
 import { FormaPagamento } from "../pages/FormaPagamento/FormaPagamento";
 import { SidebarProvider } from "../Context/SidebarContexto";
 import { Relatorio } from "../pages/Relatorio/Relatorio";
+import { UsuarioConfiguracao } from "../pages/Usuario/Usuario";
 
 // Layout para rotas públicas (visível apenas para usuários NÃO autenticados)
 const RotasPublicas: React.FC = () => {
@@ -38,6 +39,7 @@ export const Rotas: React.FC = () => {
                         <Route path="/Relatorios" element={<Relatorio/>} />
                         <Route path="/Categorias" element={<Categoria/>} />
                         <Route path="/Metodos_pagamentos" element={<FormaPagamento/>} />
+                        <Route path="/Usuario" element={<UsuarioConfiguracao />} />
                     </Route>
                     
 

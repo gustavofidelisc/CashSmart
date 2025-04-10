@@ -3,6 +3,8 @@ import style from "./Sidebar.module.css";
 import { MdDashboard } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
 import { FaBars, FaFolderPlus, FaCreditCard } from "react-icons/fa";
+import { FaUserGear } from "react-icons/fa6";
+
 import logo from "../../assets/logo.svg";
 import { Nav } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -67,6 +69,11 @@ export const Sidebar: React.FC<ISidebarProps> = ({ children }) => {
                     <Nav.Link className={style.nav_link} onClick={() => handleNavigation("/Metodos_pagamentos")}>
                         <FaCreditCard className={style.icon} />
                         {expanded && <span className={style.text}>Métodos de Pagamento</span>}
+                    </Nav.Link>
+
+                    <Nav.Link className={style.nav_link} onClick={() => handleNavigation("/Usuario")}>
+                        <FaUserGear className={style.icon} />
+                        {expanded && <span className={style.text}>Configuracoes</span>}
                     </Nav.Link>
                 </Nav>
 
