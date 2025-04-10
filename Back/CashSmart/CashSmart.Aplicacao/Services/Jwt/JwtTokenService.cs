@@ -6,7 +6,7 @@ using CashSmart.Dominio.Shared;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace CashSmart.Servicos.Services.Jwt
+namespace CashSmart.Aplicacao.Services.Jwt
 {
     public class JwtTokenService : IJwtTokenService
     {

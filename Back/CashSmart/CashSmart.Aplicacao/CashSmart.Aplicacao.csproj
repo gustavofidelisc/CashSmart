@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <PackageReference Include="Bcrypt.Net-Next" Version="4.0.3" />
     <ProjectReference Include="..\CashSmart.Dominio\CashSmart.Dominio.csproj" />
     <ProjectReference Include="..\CashSmart.Repositorio\CashSmart.Repositorio.csproj" />
     <ProjectReference Include="..\CashSmart.Servicos\CashSmart.Servicos.csproj" />

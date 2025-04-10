@@ -1,6 +1,6 @@
-using CashSmart.Servicos.Services.Criptografia.Interface;
+using CashSmart.Aplicacao.Services.Criptografia.Interface;
 using BCrypt.Net;
-namespace CashSmart.Servicos.Services.Criptografia
+namespace CashSmart.Aplicacao.Services.Criptografia
 {
     public class BcryptSenhaService : IBcryptSenhaService
     {

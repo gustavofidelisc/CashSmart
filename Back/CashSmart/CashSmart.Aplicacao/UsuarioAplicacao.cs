@@ -2,7 +2,8 @@ using System.Data.SqlTypes;
 using CashSmart.Aplicacao.Interface;
 using CashSmart.Dominio.Entidades;
 using CashSmart.Repositorio.Contratos;
-using CashSmart.Servicos.Services.Criptografia.Interface;
+using CashSmart.Aplicacao.Services.Criptografia.Interface;
+using CashSmart.Aplicacao.Services.Jwt;
 
 namespace CashSmart.Aplicacao
 {
@@ -11,11 +12,13 @@ namespace CashSmart.Aplicacao
 
         private readonly IUsuarioRepositorio _usuarioRepositorio;
         private readonly IBcryptSenhaService _bcryptSenhaService;
+        private readonly IJwtTokenService _jwtTokenService;
 
-        public UsuarioAplicacao(IUsuarioRepositorio usuarioRepositorio, IBcryptSenhaService bcryptSenhaService)
+        public UsuarioAplicacao(IUsuarioRepositorio usuarioRepositorio, IBcryptSenhaService bcryptSenhaService, IJwtTokenService jwtTokenService)
         {
             _usuarioRepositorio = usuarioRepositorio;
             _bcryptSenhaService =  bcryptSenhaService;
+            _jwtTokenService = jwtTokenService;
         }
 
         public async Task<Guid> AdicionarUsuarioAsync(Usuario usuario)
@@ -27,8 +30,25 @@ namespace CashSmart.Aplicacao
                 throw new ArgumentNullException("Senha não pode ser nulo");
             }
             usuario.Senha = _bcryptSenhaService.CriptografarSenha(usuario.Senha);
+            usuario.Email = usuario.Email.ToLower();
 
             return await _usuarioRepositorio.AdicionarUsuarioAsync(usuario);
+        }
+
+        public async Task<string> AutenticarUsuarioAsync(string email, string senha)
+        {
+            var usuario = await _usuarioRepositorio.ObterUsuarioPorEmailAsync(email.ToLower());
+            if (usuario == null)
+            {
+                throw new ArgumentNullException("Usuário não encontrado");
+            }
+            if (!_bcryptSenhaService.VerificarSenha(senha, usuario.Senha))
+            {
+                throw new ArgumentNullException("Senha inválida");
+            }
+
+            return  _jwtTokenService.GerarTokenJWT(usuario);
+            
         }
 
 
@@ -43,7 +63,7 @@ namespace CashSmart.Aplicacao
 
             usuarioDominio.DataAtualizacao = DateTime.Now;
             usuarioDominio.Nome = usuario.Nome;
-            usuarioDominio.Email = usuario.Email;
+            usuarioDominio.Email = usuario.Email.ToLower();
 
             await _usuarioRepositorio.AtualizarUsuarioAsync(usuarioDominio);
         }

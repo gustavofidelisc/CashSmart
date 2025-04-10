@@ -3,8 +3,7 @@ using CashSmart.API.Models.Autenticacao.Resposta;
 using CashSmart.API.Models.Exceptions;
 using CashSmart.API.Models.Usuario.Requisicao;
 using CashSmart.Aplicacao.Interface;
-using CashSmart.Servicos.Services.Criptografia.Interface;
-using CashSmart.Servicos.Services.Jwt;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -15,13 +14,9 @@ namespace CashSmart.API.Controllers
     [ApiController]
     public class AutenticacaoController : ControllerBase
     {
-        private readonly IJwtTokenService _jwtTokenService;
-        private readonly IBcryptSenhaService _bcryptSenhaService;
         private readonly IUsuarioAplicacao _usuarioAplicacao;
-        public AutenticacaoController(IJwtTokenService jwtTokenService, IBcryptSenhaService bcryptSenhaService, IUsuarioAplicacao usuarioAplicacao)
+        public AutenticacaoController( IUsuarioAplicacao usuarioAplicacao)
         {
-            _jwtTokenService = jwtTokenService;
-            _bcryptSenhaService = bcryptSenhaService;
             _usuarioAplicacao = usuarioAplicacao;
         }
 
@@ -32,23 +27,9 @@ namespace CashSmart.API.Controllers
         {
             try
             {
-                var usuario = await _usuarioAplicacao.ObterUsuarioPorEmailAsync(usuarioLogin.Email);
-                if(usuario == null)
-                {
-                    throw new ArgumentException("Usuário ou senha inválidos");
-                }
-
-                if(!_bcryptSenhaService.VerificarSenha(usuarioLogin.Senha, usuario.Senha))
-                {
-                    throw new ArgumentException("Usuário ou senha inválidos");
-                }
-
-                var resposta = new Autenticacao
-                {
-                    Token = _jwtTokenService.GerarTokenJWT(usuario)
-                };
+                var token = await _usuarioAplicacao.AutenticarUsuarioAsync(usuarioLogin.Email, usuarioLogin.Senha);
                 return Ok(new Autenticacao{
-                    Token = resposta.Token
+                    Token = token
                 });
             }
             catch (Exception ex)

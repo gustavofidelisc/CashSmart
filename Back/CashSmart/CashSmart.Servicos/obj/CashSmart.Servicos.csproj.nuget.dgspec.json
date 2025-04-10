@@ -215,10 +215,6 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "Bcrypt.Net-Next": {
-              "target": "Package",
-              "version": "[4.0.3, )"
-            },
             "OpenAI": {
               "target": "Package",
               "version": "[2.1.0, )"

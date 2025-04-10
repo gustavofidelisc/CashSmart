@@ -58,7 +58,7 @@ export const Sidebar: React.FC<ISidebarProps> = ({ children }) => {
                     </Nav.Link>
                     <Nav.Link className={style.nav_link} onClick={() => handleNavigation("/Relatorios")}>
                         <BsGraphUp className={style.icon} />
-                        {expanded && <span className={style.text}>Relátorios anuais</span>}
+                        {expanded && <span className={style.text}>Relatórios anuais</span>}
                     </Nav.Link>
                     <Nav.Link className={style.nav_link} onClick={() => handleNavigation("/Categorias")}>
                         <FaFolderPlus className={style.icon} />

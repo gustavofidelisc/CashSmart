@@ -1,6 +1,6 @@
 using CashSmart.Dominio.Entidades;
 
-namespace CashSmart.Servicos.Services.Jwt
+namespace CashSmart.Aplicacao.Services.Jwt
 {
     public interface IJwtTokenService
     {

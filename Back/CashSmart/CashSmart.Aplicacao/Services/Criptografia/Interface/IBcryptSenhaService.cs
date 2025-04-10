@@ -1,4 +1,4 @@
-namespace CashSmart.Servicos.Services.Criptografia.Interface
+namespace CashSmart.Aplicacao.Services.Criptografia.Interface
 {
     public interface IBcryptSenhaService
     {
