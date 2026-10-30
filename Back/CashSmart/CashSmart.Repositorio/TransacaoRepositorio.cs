@@ -176,13 +176,30 @@ namespace CashSmart.Repositorio
                 // Preenche os arrays com os dados retornados
                 foreach (var item in listaInformacoes)
                 {
-                    // Encontra o índice do mês (1-12)
-                    int mesIndex = DateTime.ParseExact(item.NOME_MES, "MMMM", CultureInfo.CurrentCulture).Month - 1;
-                    
-                    meses[mesIndex] = item.NOME_MES;
-                    receitas[mesIndex] = item.TOTAL_RECEITA;
-                    despesas[mesIndex] = item.TOTAL_DESPESA;
-                    saldos[mesIndex] = item.SALDO_MENSAL;
+                    int mes = 0;
+                    try
+                    {
+                        mes = Convert.ToInt32(item.NUMERO_MES);
+                    }
+                    catch
+                    {
+                        string nomeMes = (string)item.NOME_MES;
+                        if (DateTime.TryParseExact(nomeMes, "MMMM", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt) ||
+                            DateTime.TryParseExact(nomeMes, "MMMM", new CultureInfo("pt-BR"), DateTimeStyles.None, out dt) ||
+                            DateTime.TryParseExact(nomeMes, "MMMM", CultureInfo.CurrentCulture, DateTimeStyles.None, out dt))
+                        {
+                            mes = dt.Month;
+                        }
+                    }
+
+                    if (mes >= 1 && mes <= 12)
+                    {
+                        int mesIndex = mes - 1;
+                        meses[mesIndex] = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(mes);
+                        receitas[mesIndex] = item.TOTAL_RECEITA != null ? Convert.ToDecimal(item.TOTAL_RECEITA) : 0;
+                        despesas[mesIndex] = item.TOTAL_DESPESA != null ? Convert.ToDecimal(item.TOTAL_DESPESA) : 0;
+                        saldos[mesIndex] = item.SALDO_MENSAL != null ? Convert.ToDecimal(item.SALDO_MENSAL) : 0;
+                    }
                 }
 
                 // Preenche meses faltantes (caso algum mês não tenha dados)
