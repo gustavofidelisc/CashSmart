@@ -1,14 +1,105 @@
-Back/CashSmart/CashSmart.Dominio/bin
-Back/CashSmart/CashSmart.Dominio/obj
+# ====================================================================
+# CashSmart .gitignore - Backend (.NET / C#) & Frontend (Node / React)
+# ====================================================================
 
-Back/CashSmart/CashSmart.Repositorio/bin
-Back/CashSmart/CashSmart.Repositorio/obj
+# --------------------------------------------------------------------
+# Backend - .NET / C# / EF Core
+# --------------------------------------------------------------------
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+publish/
+Generated_Code/
 
-Back/CashSmart/CashSmart.Aplicacao/bin
-Back/CashSmart/CashSmart.Aplicacao/obj
+# Visual Studio & JetBrains Rider
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.ide/
+*.swp
+*.ipch
 
-Back/CashSmart/CashSmart.API/bin
-Back/CashSmart/CashSmart.API/obj
+# Test Results & Code Coverage
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+opencover.xml
 
-Back/CashSmart/CashSmart.Servicos/bin
-Back/CashSmart/CashSmart.Servicos/obj
+# EF Core / SQL Server
+*.mdf
+*.ldf
+*.ndf
+
+# Local Tools & Executables
+ngrok.exe
+ngrok.yml
+*.exe
+!CashSmart/Back/**/*.exe
+
+# --------------------------------------------------------------------
+# Frontend - Node.js / React / TypeScript / Vite
+# --------------------------------------------------------------------
+node_modules/
+dist/
+dist-ssr/
+build/
+.cache/
+.parcel-cache/
+
+# TypeScript & Linter
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
+
+# Logs & Debugging
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# --------------------------------------------------------------------
+# Environment Variables & Sensitive Files
+# --------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.local
+
+# --------------------------------------------------------------------
+# Docker & Volumes
+# --------------------------------------------------------------------
+.docker/
+docker-compose.override.yml
+*.mdf
+*.ldf
+
+# --------------------------------------------------------------------
+# Operating System Files
+# --------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
+
+# --------------------------------------------------------------------
+# Editors & IDEs Configs
+# --------------------------------------------------------------------
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.sublime-project
+*.sublime-workspace

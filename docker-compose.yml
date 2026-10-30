@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  cashsmart-db:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cashsmart-db
+    restart: unless-stopped
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "CashSmart@2026!"
+    ports:
+      - "1433:1433"
+    volumes:
+      - cashsmart_data:/var/opt/mssql
+
+volumes:
+  cashsmart_data:
+
